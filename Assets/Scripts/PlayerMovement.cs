@@ -39,6 +39,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 moveDir = (camRight * x + camForward * y).normalized;
 
         rb.MovePosition(rb.position + moveDir * speed * Time.fixedDeltaTime);
+       
     }
 
 }
