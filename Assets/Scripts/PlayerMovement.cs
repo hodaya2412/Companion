@@ -1,22 +1,36 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
 {
     public float speed = 10f;
-    public Transform cam;   
+    public Transform cam;
 
+    bool canMove = true;
     Rigidbody rb;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        if (cam == null && Camera.main != null) cam = Camera.main.transform;
+        if (cam == null && Camera.main != null)
+            cam = Camera.main.transform;
+    }
+
+    // 🔹 פונקציה שנקראת ע"י DialogueManager
+    public void SetMovementEnabled(bool enabled)
+    {
+        canMove = enabled;
+
+        // לעצור תנועה מיידית
+        if (!enabled)
+            rb.linearVelocity = Vector3.zero;
     }
 
     void FixedUpdate()
     {
+        if (!canMove) return;
+
         float x = 0f;
         float y = 0f;
 
@@ -39,7 +53,5 @@ public class PlayerMovement : MonoBehaviour
         Vector3 moveDir = (camRight * x + camForward * y).normalized;
 
         rb.MovePosition(rb.position + moveDir * speed * Time.fixedDeltaTime);
-       
     }
-
 }
