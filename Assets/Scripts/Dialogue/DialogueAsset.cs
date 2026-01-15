@@ -6,6 +6,7 @@ using UnityEngine;
 public class DialogueAsset : ScriptableObject
 {
     public List<DialogueLine> lines = new();
+    public List<string> endEvents;
 }
 
 [Serializable]

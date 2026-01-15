@@ -4,53 +4,86 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
 {
+    [Header("Movement")]
     public float speed = 10f;
     public Transform cam;
 
-    bool canMove = true;
-    Rigidbody rb;
+    [Header("Input System")]
+    InputActions inputAction; 
+
+    private Rigidbody rb;
+    private bool canMove = true;
+
+    private Vector3 moveInput; 
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+
         if (cam == null && Camera.main != null)
             cam = Camera.main.transform;
+
+        inputAction = new InputActions();
+        
     }
 
-    // 🔹 פונקציה שנקראת ע"י DialogueManager
+    void OnEnable()
+    {
+
+        if (inputAction != null)
+        {
+            inputAction.Player.Enable();
+            inputAction.Player.Move.performed += OnMove;
+            inputAction.Player.Move.canceled += OnMove;
+        }
+    }
+
+    void OnDisable()
+    {
+        if (inputAction != null)
+        {
+            inputAction.Player.Move.performed -= OnMove;
+            inputAction.Player.Move.canceled -= OnMove;
+            inputAction.Player.Disable();
+        }
+    }
+
+    
+    void OnMove(InputAction.CallbackContext ctx)
+    {
+        moveInput = ctx.ReadValue<Vector3>();
+    }
+
+    
     public void SetMovementEnabled(bool enabled)
     {
         canMove = enabled;
 
-        // לעצור תנועה מיידית
         if (!enabled)
+        {
+            moveInput = Vector3.zero;
             rb.linearVelocity = Vector3.zero;
+        }
     }
 
     void FixedUpdate()
     {
         if (!canMove) return;
 
-        float x = 0f;
-        float y = 0f;
-
-        if (Keyboard.current != null)
-        {
-            if (Keyboard.current.leftArrowKey.isPressed) x -= 1f;
-            if (Keyboard.current.rightArrowKey.isPressed) x += 1f;
-            if (Keyboard.current.downArrowKey.isPressed) y -= 1f;
-            if (Keyboard.current.upArrowKey.isPressed) y += 1f;
-        }
+     
+        float x = moveInput.x;
+        float z = moveInput.z;
 
         Vector3 camForward = cam ? cam.forward : Vector3.forward;
         Vector3 camRight = cam ? cam.right : Vector3.right;
 
         camForward.y = 0f;
         camRight.y = 0f;
+
         camForward.Normalize();
         camRight.Normalize();
 
-        Vector3 moveDir = (camRight * x + camForward * y).normalized;
+        Vector3 moveDir = (camRight * x + camForward * z).normalized;
 
         rb.MovePosition(rb.position + moveDir * speed * Time.fixedDeltaTime);
     }

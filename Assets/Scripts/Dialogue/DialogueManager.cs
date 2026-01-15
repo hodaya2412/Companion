@@ -11,10 +11,10 @@ public class DialogueManager : MonoBehaviour
     public GameObject panel;
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI bodyText;
-    public Image portraitImage; // אפשר להשאיר ריק אם אין
+    public Image portraitImage; 
 
     [Header("Player")]
-    public PlayerMovement playerMovement; // לגרור כאן את השחקן (או את הקומפוננטה שלו)
+    public PlayerMovement playerMovement; 
 
     [Header("Typing")]
     public float charsPerSecond = 45f;
@@ -24,6 +24,8 @@ public class DialogueManager : MonoBehaviour
     private Coroutine typingRoutine;
     private bool isTyping;
 
+
+    InputActions inputAction;
     void Awake()
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
@@ -31,15 +33,29 @@ public class DialogueManager : MonoBehaviour
 
         if (panel != null)
             panel.SetActive(false);
+
+
+        inputAction = new InputActions();
     }
 
-    void Update()
+    void OnEnable()
+    {
+        inputAction.Dialogue.Enable();
+        inputAction.Dialogue.NextDialogue.performed += OnAdvance;
+    }
+
+    void OnDisable()
+    {
+        inputAction.Dialogue.NextDialogue.performed -= OnAdvance;
+        inputAction.Dialogue.Disable();
+    }
+
+    private void OnAdvance(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
     {
         if (panel == null || !panel.activeSelf) return;
-
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return) || Input.GetMouseButtonDown(0))
-            Next();
+        Next();
     }
+
 
     public void StartDialogue(DialogueAsset dialogue)
     {
@@ -48,7 +64,6 @@ public class DialogueManager : MonoBehaviour
         current = dialogue;
         index = 0;
 
-        // ❌ נועלים תזוזה
         if (playerMovement != null)
             playerMovement.SetMovementEnabled(false);
 
@@ -62,9 +77,15 @@ public class DialogueManager : MonoBehaviour
 
         panel.SetActive(false);
 
-        // ✅ משחררים תזוזה
         if (playerMovement != null)
             playerMovement.SetMovementEnabled(true);
+
+        
+        if (current != null && current.endEvents != null)
+        {
+            foreach (var evt in current.endEvents)
+                GameEvents.OnDialogueEvent?.Invoke(evt);
+        }
 
         current = null;
         index = 0;
@@ -140,4 +161,7 @@ public class DialogueManager : MonoBehaviour
         isTyping = false;
         typingRoutine = null;
     }
+    
+
+    
 }
