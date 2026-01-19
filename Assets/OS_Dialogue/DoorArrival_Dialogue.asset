@@ -17,4 +17,5 @@ MonoBehaviour:
     text: You should click on the door
     portrait: {fileID: 0}
   endEvents: []
-  endActions: []
+  endActions:
+  - {fileID: 11400000, guid: f41c705210afa7d4aa36dd4f1c731e90, type: 2}
