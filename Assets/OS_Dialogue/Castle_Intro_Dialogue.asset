@@ -57,5 +57,6 @@ MonoBehaviour:
   - speaker: Companion
     text: "Good.\nThe first door is waiting.\nLet\u2019s move."
     portrait: {fileID: 0}
-  endEvents:
-  - GuideToFirstDoor
+  endEvents: []
+  endActions:
+  - {fileID: 11400000, guid: 8bc6de004f70e0648b1208b0c188fa10, type: 2}

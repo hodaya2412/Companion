@@ -6,7 +6,10 @@ using UnityEngine;
 public class DialogueAsset : ScriptableObject
 {
     public List<DialogueLine> lines = new();
+    //Old- event string
     public List<string> endEvents;
+    //New dialogue actions
+    public List<DialogueAction> endActions;
 }
 
 [Serializable]

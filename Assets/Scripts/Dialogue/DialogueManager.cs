@@ -80,8 +80,14 @@ public class DialogueManager : MonoBehaviour
         if (playerMovement != null)
             playerMovement.SetMovementEnabled(true);
 
-        
-        if (current != null && current.endEvents != null)
+        // NEW: Actions (מועדף)
+        if (current != null && current.endActions != null && current.endActions.Count > 0)
+        {
+            foreach (var action in current.endActions)
+                if (action != null) action.Execute();
+        }
+        // OLD: Strings (fallback)
+        else if (current != null && current.endEvents != null)
         {
             foreach (var evt in current.endEvents)
                 GameEvents.OnDialogueEvent?.Invoke(evt);

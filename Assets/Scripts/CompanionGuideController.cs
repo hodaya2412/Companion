@@ -16,13 +16,18 @@ public class CompanionGuideController : MonoBehaviour
     private bool guiding;
     private bool waitingAtDoor;
 
+    [Header("Arrival Dialogue")]
+    public DialogueAsset arrivalDialogue;
+    private bool playedArrivalDialogue;
+
+
     void Awake()
     {
         if (agent == null) agent = GetComponent<NavMeshAgent>();
         agent.stoppingDistance = stopDistance;
         agent.autoBraking = true;
 
-        // חשוב: בזמן Follow רגיל לא רוצים שה-Agent “ילחם” עם Rigidbody
+        
         agent.enabled = false;
     }
 
@@ -47,21 +52,26 @@ public class CompanionGuideController : MonoBehaviour
             {
                 StopAgent();
                 waitingAtDoor = true;
+                if (!playedArrivalDialogue && arrivalDialogue != null && DialogueManager.Instance != null)
+                {
+                    playedArrivalDialogue = true;
+                    DialogueManager.Instance.StartDialogue(arrivalDialogue);
+                }
             }
             return;
         }
 
-        // שלב 2: לחכות לשחקן ליד הדלת
+        
         if (player != null)
         {
             float d = Vector3.Distance(transform.position, player.position);
             if (d <= waitForPlayerRadius)
             {
-                // השחקן הגיע -> מסיימים הובלה וחוזרים ל-Follow
+               
                 guiding = false;
                 waitingAtDoor = false;
 
-                // מכבים NavMeshAgent ומחזירים Follow
+                
                 agent.enabled = false;
                 GameEvents.OnCompanionFollowEnabled?.Invoke(true);
             }
@@ -72,6 +82,7 @@ public class CompanionGuideController : MonoBehaviour
     {
         if (eventId == "GuideToFirstDoor" && firstDoorStop != null)
         {
+            playedArrivalDialogue = false;
             // מתחילים הובלה: מכבים Follow ומדליקים NavMeshAgent
             GameEvents.OnCompanionFollowEnabled?.Invoke(false);
 
