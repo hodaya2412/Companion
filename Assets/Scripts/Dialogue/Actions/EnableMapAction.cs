@@ -5,6 +5,6 @@ public class EnableMapAction : DialogueAction
 {
     public override void Execute()
     {
-        GameEvents.OnDialogueEvent?.Invoke("EnableMap");
+        GameEvents.OnDialogueEvent?.Invoke(this);
     }
 }

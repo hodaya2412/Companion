@@ -20,6 +20,10 @@ public class CompanionGuideController : MonoBehaviour
     public DialogueAsset arrivalDialogue;
     private bool playedArrivalDialogue;
 
+    [Header("Dialogue Actions")]
+    public GuideToFirstDoorAction guideToFirstDoorAction;
+
+
 
     void Awake()
     {
@@ -45,56 +49,58 @@ public class CompanionGuideController : MonoBehaviour
     {
         if (!guiding) return;
 
-        // שלב 1: להגיע לנקודת עצירה ליד הדלת
+        
         if (!waitingAtDoor)
         {
             if (HasArrived())
             {
                 StopAgent();
                 waitingAtDoor = true;
-                if (!playedArrivalDialogue && arrivalDialogue != null && DialogueManager.Instance != null)
-                {
-                    playedArrivalDialogue = true;
-                    DialogueManager.Instance.StartDialogue(arrivalDialogue);
-                }
             }
             return;
         }
 
-        
+  
         if (player != null)
         {
             float d = Vector3.Distance(transform.position, player.position);
             if (d <= waitForPlayerRadius)
             {
-               
-                guiding = false;
-                waitingAtDoor = false;
+                
+                if (!playedArrivalDialogue && arrivalDialogue != null && DialogueManager.Instance != null)
+                {
+                    playedArrivalDialogue = true;
+                    DialogueManager.Instance.StartDialogue(arrivalDialogue);
+                }
 
                 
+                guiding = false;
+                waitingAtDoor = false;
                 agent.enabled = false;
+
                 GameEvents.OnCompanionFollowEnabled?.Invoke(true);
             }
         }
     }
 
-    void HandleDialogueEvent(string eventId)
+
+    void HandleDialogueEvent(DialogueAction action)
     {
-        if (eventId == "GuideToFirstDoor" && firstDoorStop != null)
-        {
-            playedArrivalDialogue = false;
-            // מתחילים הובלה: מכבים Follow ומדליקים NavMeshAgent
-            GameEvents.OnCompanionFollowEnabled?.Invoke(false);
+        if (action != guideToFirstDoorAction) return;
 
-            agent.enabled = true;
-            agent.isStopped = false;
+        playedArrivalDialogue = false;
 
-            guiding = true;
-            waitingAtDoor = false;
+        GameEvents.OnCompanionFollowEnabled?.Invoke(false);
 
-            agent.SetDestination(firstDoorStop.position);
-        }
+        agent.enabled = true;
+        agent.isStopped = false;
+
+        guiding = true;
+        waitingAtDoor = false;
+
+        agent.SetDestination(firstDoorStop.position);
     }
+
 
     bool HasArrived()
     {

@@ -4,6 +4,9 @@ public class MapUIRootActivator : MonoBehaviour
 {
     public GameObject mapUIRoot;
 
+    [Header("Dialogue Actions")]
+    public EnableMapAction enableMapAction;
+
     void OnEnable()
     {
         GameEvents.OnDialogueEvent += HandleEvent;
@@ -14,11 +17,10 @@ public class MapUIRootActivator : MonoBehaviour
         GameEvents.OnDialogueEvent -= HandleEvent;
     }
 
-    void HandleEvent(string eventId)
+    void HandleEvent(DialogueAction action)
     {
-        if (eventId == "EnableMap")
-        {
-            mapUIRoot.SetActive(true);
-        }
+        if (action != enableMapAction) return;
+
+        mapUIRoot.SetActive(true);
     }
 }

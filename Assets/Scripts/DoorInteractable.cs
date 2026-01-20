@@ -33,8 +33,6 @@ public class DoorInteractable : MonoBehaviour
         isOpen = false;
         puzzlePanel.SetActive(false);
 
-       // Cursor.lockState = CursorLockMode.Locked;
-        //Cursor.visible = false;
 
         onPuzzleClosed?.Invoke();
     }
