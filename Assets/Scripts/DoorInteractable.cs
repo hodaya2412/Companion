@@ -21,6 +21,7 @@ public class DoorInteractable : MonoBehaviour
     {
         isOpen = true;
         puzzlePanel.SetActive(true);
+        puzzlePanel.transform.SetAsLastSibling();
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
