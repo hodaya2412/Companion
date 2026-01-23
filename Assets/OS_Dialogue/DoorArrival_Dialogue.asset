@@ -19,3 +19,4 @@ MonoBehaviour:
   endEvents: []
   endActions:
   - {fileID: 11400000, guid: f41c705210afa7d4aa36dd4f1c731e90, type: 2}
+  - {fileID: 11400000, guid: daad7c070dd5c0846a5cb5b1534bf3a8, type: 2}

@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
 public class CompanionGuideController : MonoBehaviour
@@ -49,7 +49,7 @@ public class CompanionGuideController : MonoBehaviour
     {
         if (!guiding) return;
 
-        
+
         if (!waitingAtDoor)
         {
             if (HasArrived())
@@ -60,16 +60,22 @@ public class CompanionGuideController : MonoBehaviour
             return;
         }
 
-  
+
         if (player != null)
         {
             float d = Vector3.Distance(transform.position, player.position);
+
             if (d <= waitForPlayerRadius)
             {
-                
+                // אם עדיין לא שוחק דיאלוג ההגעה
                 if (!playedArrivalDialogue && arrivalDialogue != null && DialogueManager.Instance != null)
                 {
                     playedArrivalDialogue = true;
+
+                    // קודם לשנות את מצב המשחק ל-Dialogue
+                    GameStateManager.Instance.SetState(GameState.Dialogue);
+
+                    Debug.Log("Starting arrival dialogue at the door!");
                     DialogueManager.Instance.StartDialogue(arrivalDialogue);
                 }
 
@@ -78,13 +84,14 @@ public class CompanionGuideController : MonoBehaviour
                 waitingAtDoor = false;
                 agent.enabled = false;
 
+              
                 GameEvents.OnCompanionFollowEnabled?.Invoke(true);
+               
             }
         }
     }
 
-
-    void HandleDialogueEvent(DialogueAction action)
+        void HandleDialogueEvent(DialogueAction action)
     {
         if (action != guideToFirstDoorAction) return;
 
@@ -99,6 +106,8 @@ public class CompanionGuideController : MonoBehaviour
         waitingAtDoor = false;
 
         agent.SetDestination(firstDoorStop.position);
+
+ 
     }
 
 

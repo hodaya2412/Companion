@@ -16,7 +16,7 @@ MonoBehaviour:
   displayName: Puzzle
   description: 
   icon: {fileID: 0}
-  category: 4
+  category: 0
   stackable: 0
   maxStack: 99
   puzzlePanel: {fileID: 0}

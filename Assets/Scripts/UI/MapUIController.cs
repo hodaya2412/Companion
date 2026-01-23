@@ -7,6 +7,13 @@ public class MapUIController : MonoBehaviour
     public void ToggleMap()
     {
         if (mapPanel == null) return;
-        mapPanel.SetActive(!mapPanel.activeSelf);
+
+        bool isActive = mapPanel.activeSelf;
+        mapPanel.SetActive(!isActive);
+
+        if (!isActive)
+            GameStateManager.Instance.SetState(GameState.Map);
+        else
+            GameStateManager.Instance.SetState(GameState.Playing);
     }
 }

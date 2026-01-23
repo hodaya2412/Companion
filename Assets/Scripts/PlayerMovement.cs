@@ -36,6 +36,8 @@ public class PlayerMovement : MonoBehaviour
             inputAction.Player.Move.performed += OnMove;
             inputAction.Player.Move.canceled += OnMove;
         }
+       GameEvents.OnStateChanged += HandleStateChanged;
+        HandleStateChanged(GameStateManager.Instance.CurrentState);
     }
 
     void OnDisable()
@@ -46,23 +48,31 @@ public class PlayerMovement : MonoBehaviour
             inputAction.Player.Move.canceled -= OnMove;
             inputAction.Player.Disable();
         }
+        if (GameStateManager.Instance != null)
+            GameEvents.OnStateChanged -= HandleStateChanged;
+    }
+    private void HandleStateChanged(GameState state)
+    {
+        // רק ב־Playing השחקן יכול לזוז
+        SetMovementEnabled(state == GameState.Playing);
     }
 
-    
     void OnMove(InputAction.CallbackContext ctx)
     {
         moveInput = ctx.ReadValue<Vector3>();
     }
 
-    
+
     public void SetMovementEnabled(bool enabled)
     {
-        canMove = enabled;
+        // Player can move only in Playing mode OR if being guided
+        GameState state = GameStateManager.Instance.CurrentState;
+        canMove = (enabled && state == GameState.Playing) || state == GameState.BeingGuided;
 
-        if (!enabled)
+        if (!canMove)
         {
             moveInput = Vector3.zero;
-            rb.linearVelocity = Vector3.zero;
+            rb.linearVelocity = Vector3.zero; // linearVelocity → velocity
         }
     }
 

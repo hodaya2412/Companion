@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+ο»Ώusing System.Collections.Generic;
 using UnityEngine;
 
 public class InventoryUIController : MonoBehaviour
@@ -6,7 +6,7 @@ public class InventoryUIController : MonoBehaviour
     [Header("UI")]
     public GameObject panel;                 // InventoryPanel
     public Transform contentParent;          // ScrollView/Viewport/Content
-    public InventorySlotUI slotPrefab;       // Prefab ωμ ρμεθ
+    public InventorySlotUI slotPrefab;       // Prefab Χ©Χ Χ΅ΧΧ•Χ
 
     [Header("Fixed Slots")]
     public int slotCount = 100;
@@ -15,8 +15,8 @@ public class InventoryUIController : MonoBehaviour
     public PlayerInventory inventory;
 
     [Header("Puzzle Open (Scene Reference)")]
-    public string puzzleItemId = "Item_Puzzle_Door01"; // μωιν λΰο ΰϊ δ-ID δξγειχ ωμ τψιθ δηιγδ
-    public GameObject puzzlePanel;                    // μβψεψ ΰϊ puzzlePanel ξδ-Hierarchy (αρφπδ)
+    public string puzzleItemId = "Item_Puzzle_Door01"; // ΧΧ©Χ™Χ Χ›ΧΧ ΧΧª Χ”-ID Χ”ΧΧ“Χ•Χ™Χ§ Χ©Χ Χ¤Χ¨Χ™Χ Χ”Χ—Χ™Χ“Χ”
+    public GameObject puzzlePanel;                    // ΧΧ’Χ¨Χ•Χ¨ ΧΧª puzzlePanel ΧΧ”-Hierarchy (Χ‘Χ΅Χ¦Χ Χ”)
 
     private readonly List<InventorySlotUI> slotUIs = new();
 
@@ -37,7 +37,7 @@ public class InventoryUIController : MonoBehaviour
     {
         GameEvents.OnInventoryChanged -= Refresh;
 
-        // πιχει ξΰζιπιν (μΰ ηεαδ ΰαμ θεα)
+        // Χ Χ™Χ§Χ•Χ™ ΧΧΧ–Χ™Χ Χ™Χ (ΧΧ Χ—Χ•Χ‘Χ” ΧΧ‘Χ ΧΧ•Χ‘)
         for (int i = 0; i < slotUIs.Count; i++)
         {
             if (slotUIs[i] != null)
@@ -47,10 +47,19 @@ public class InventoryUIController : MonoBehaviour
 
     public void Toggle()
     {
-        if (panel == null) return;
-        panel.SetActive(!panel.activeSelf);
+        if (GameStateManager.Instance.CurrentState != GameState.Playing &&
+            GameStateManager.Instance.CurrentState != GameState.Inventory)
+            return;
 
-        if (panel.activeSelf) Refresh();
+        bool isActive = panel.activeSelf;
+        panel.SetActive(!isActive);
+
+        if (!isActive)
+            GameStateManager.Instance.SetState(GameState.Inventory);
+        else
+            GameStateManager.Instance.SetState(GameState.Playing);
+
+        Refresh();
     }
 
     private void BuildFixedSlots()
@@ -62,7 +71,7 @@ public class InventoryUIController : MonoBehaviour
             var ui = Instantiate(slotPrefab, contentParent);
             ui.Set(null, 0);
 
-            // ξΰζιπιν μμηιφδ ςμ ρμεθ
+            // ΧΧΧ–Χ™Χ Χ™Χ ΧΧΧ—Χ™Χ¦Χ” ΧΆΧ Χ΅ΧΧ•Χ
             ui.Clicked += OnSlotClicked;
 
             slotUIs.Add(ui);
@@ -74,10 +83,10 @@ public class InventoryUIController : MonoBehaviour
         Debug.Log($"CLICKED: {item.displayName} | id={item.itemId} | target={puzzleItemId} | panelNull={puzzlePanel == null}");
         if (item == null) return;
 
-        // ΰν ζδ δτψιθ ωμ δηιγδ — τεϊηιν ΰϊ δτΰπμ ξδρφπδ
+        // ΧΧ Χ–Χ” Χ”Χ¤Χ¨Χ™Χ Χ©Χ Χ”Χ—Χ™Χ“Χ” β€” Χ¤Χ•ΧªΧ—Χ™Χ ΧΧª Χ”Χ¤ΧΧ Χ ΧΧ”Χ΅Χ¦Χ Χ”
         if (!string.IsNullOrEmpty(puzzleItemId) && item.itemId == puzzleItemId && puzzlePanel != null)
         {
-            puzzlePanel.transform.SetAsLastSibling(); // ξςμ δΰιπεεπθεψι
+            puzzlePanel.transform.SetAsLastSibling(); // ΧΧΆΧ Χ”ΧΧ™Χ Χ•Χ•Χ ΧΧ•Χ¨Χ™
             puzzlePanel.SetActive(true);
         }
         else
@@ -90,11 +99,11 @@ public class InventoryUIController : MonoBehaviour
     {
         if (inventory == null) return;
 
-        // 1) μΰτρ
+        // 1) ΧΧΧ¤Χ΅
         for (int i = 0; i < slotUIs.Count; i++)
             slotUIs[i].Set(null, 0);
 
-        // 2) μξμΰ μτι ξδ ωιω
+        // 2) ΧΧΧΧ ΧΧ¤Χ™ ΧΧ” Χ©Χ™Χ©
         int index = 0;
         foreach (var slot in inventory.Slots)
         {

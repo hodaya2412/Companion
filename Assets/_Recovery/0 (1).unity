@@ -1386,7 +1386,7 @@ MonoBehaviour:
   slotCount: 100
   inventory: {fileID: 270215616}
   puzzleItemId: Item_Puzzle_Door01
-  puzzlePanel: {fileID: 967796088}
+  puzzlePanel: {fileID: 0}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -2843,6 +2843,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 781775142}
   m_CullTransparentMesh: 1
+--- !u!1 &827481879
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 827481881}
+  - component: {fileID: 827481880}
+  m_Layer: 0
+  m_Name: PuzzleManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &827481880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 827481879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e97cf017ee08a4a459908eee213805df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PuzzleInventory
+--- !u!4 &827481881
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 827481879}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 143.9686, y: -0, z: 1519.3281}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -3293,7 +3337,6 @@ GameObject:
   - component: {fileID: 1025089077}
   - component: {fileID: 1025089079}
   - component: {fileID: 1025089078}
-  - component: {fileID: 1025089080}
   m_Layer: 5
   m_Name: InventoryPanel
   m_TagString: Untagged
@@ -3359,36 +3402,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1025089076}
   m_CullTransparentMesh: 1
---- !u!114 &1025089080
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1025089076}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 452a9c436bcf43c4ebe878d59ce59e6b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InventoryUIController
-  panel: {fileID: 1025089076}
-  contentParent: {fileID: 583785671}
-  slotPrefab: {fileID: 1049949420}
-  slotCount: 100
-  inventory: {fileID: 270215616}
-  puzzleItemId: Item_Puzzle_Door01
-  puzzlePanel: {fileID: 967796088}
---- !u!114 &1049949420 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1028873710763297792, guid: 6e68a33ce36f00f469854efc3dd557ee, type: 3}
-  m_PrefabInstance: {fileID: 5280671855891533369}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 829d281572f28e24e822bd32e06207ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
 --- !u!1 &1086463941
 GameObject:
   m_ObjectHideFlags: 0
@@ -3728,7 +3741,6 @@ GameObject:
   - component: {fileID: 1288199529}
   - component: {fileID: 1288199531}
   - component: {fileID: 1288199530}
-  - component: {fileID: 1288199532}
   m_Layer: 5
   m_Name: MapPanel
   m_TagString: Untagged
@@ -3794,19 +3806,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1288199528}
   m_CullTransparentMesh: 1
---- !u!114 &1288199532
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1288199528}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73948574319c63f4dbfcd5e76c0b71f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MapUIController
-  mapPanel: {fileID: 1288199528}
 --- !u!1 &1313936884
 GameObject:
   m_ObjectHideFlags: 0
@@ -4530,50 +4529,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1788105781
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1788105783}
-  - component: {fileID: 1788105782}
-  m_Layer: 0
-  m_Name: GameStateManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1788105782
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1788105781}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c15154a15aa51f14d9c0cb73e576804f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GameStateManager
---- !u!4 &1788105783
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1788105781}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1104.0479, y: -0, z: 7275.0117}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2081745683
 GameObject:
   m_ObjectHideFlags: 0
@@ -5234,4 +5189,4 @@ SceneRoots:
   - {fileID: 1269621336}
   - {fileID: 1086463943}
   - {fileID: 385446814}
-  - {fileID: 1788105783}
+  - {fileID: 827481881}

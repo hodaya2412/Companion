@@ -4,16 +4,34 @@ using UnityEngine.Events;
 public class DoorInteractable : MonoBehaviour
 {
     public GameObject puzzlePanel;
-
-    [Header("Events")]
     public UnityEvent onPuzzleOpened;
     public UnityEvent onPuzzleClosed;
 
     private bool isOpen = false;
+    private bool canOpenPuzzle = false;
+
+    void OnEnable()
+    {
+        GameEvents.OnDialogueEvent += HandleDialogueEvent;
+    }
+
+    void OnDisable()
+    {
+        GameEvents.OnDialogueEvent -= HandleDialogueEvent;
+    }
+
+    private void HandleDialogueEvent(DialogueAction action)
+    {
+        
+        if (action is UnlockPuzzleAction)
+        {
+            canOpenPuzzle = true;
+        }
+    }
 
     void OnMouseDown()
     {
-        if (isOpen) return;
+        if (!canOpenPuzzle || isOpen) return;
         OpenPuzzle();
     }
 
@@ -33,8 +51,6 @@ public class DoorInteractable : MonoBehaviour
     {
         isOpen = false;
         puzzlePanel.SetActive(false);
-
-
         onPuzzleClosed?.Invoke();
     }
 }
