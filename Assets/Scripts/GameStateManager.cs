@@ -3,10 +3,10 @@ using UnityEngine;
 
 public enum GameState
 {
-    Playing,    // השחקן יכול לזוז וללחוץ על כפתורים
-    Dialogue,   // השחקן לא יכול לזוז, כפתורים נעולים
-    Inventory,  // השחקן צופה באינוונטורי
-    Map,        // השחקן צופה במפה
+    Playing,    
+    Dialogue,  
+    Inventory,  
+    Map,        
     BeingGuided
 }
 

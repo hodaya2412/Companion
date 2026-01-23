@@ -102,6 +102,11 @@ public class DialogueManager : MonoBehaviour
         typingRoutine = null;
     }
 
+    public void SkipDialogue()
+    {
+        if (current == null) return;
+        EndDialogue();
+    }
 
     private void Next()
     {
