@@ -29,16 +29,16 @@ public class PlayerMovement : MonoBehaviour
 
     void OnEnable()
     {
-
         if (inputAction != null)
         {
             inputAction.Player.Enable();
             inputAction.Player.Move.performed += OnMove;
             inputAction.Player.Move.canceled += OnMove;
         }
-       GameEvents.OnStateChanged += HandleStateChanged;
-        HandleStateChanged(GameStateManager.Instance.CurrentState);
+
+        GameEvents.OnStateChanged += HandleStateChanged;
     }
+
 
     void OnDisable()
     {
@@ -49,11 +49,15 @@ public class PlayerMovement : MonoBehaviour
             inputAction.Player.Disable();
         }
         if (GameStateManager.Instance != null)
+        {
+            Debug.Log($"[PlayerMovement] Unsubscribing from OnStateChanged. Object: {gameObject.name}");
             GameEvents.OnStateChanged -= HandleStateChanged;
+        }
+
     }
     private void HandleStateChanged(GameState state)
     {
-        // רק ב־Playing השחקן יכול לזוז
+       
         SetMovementEnabled(state == GameState.Playing);
     }
 
