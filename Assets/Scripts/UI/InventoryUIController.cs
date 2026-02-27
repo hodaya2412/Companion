@@ -138,4 +138,18 @@ public class InventoryUIController : MonoBehaviour
             puzzlePanel.transform.SetAsLastSibling();
         }
     }
+
+    public void CloseSpecificPuzzle()
+    {
+        if (puzzlePanel != null)
+        {
+            puzzlePanel.SetActive(false);
+
+            // החזרת מצב המשחק ל-Playing כדי שהשחקן יוכל לזוז
+            if (GameStateManager.Instance != null)
+            {
+                GameStateManager.Instance.SetState(GameState.Playing);
+            }
+        }
+    }
 }

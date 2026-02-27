@@ -11,6 +11,7 @@ public class ItemGrant
 
 public class ItemGiver : MonoBehaviour
 {
+    public PlayerInventory inventory;
     public bool giveOnlyOnce = true;
     public List<ItemGrant> grants = new();
 
@@ -20,15 +21,19 @@ public class ItemGiver : MonoBehaviour
     {
         if (giveOnlyOnce && alreadyGiven) return;
 
-        var inv = FindFirstObjectByType<PlayerInventory>();
-        if (inv == null) return;
+        // הסרנו את ה-FindFirstObjectByType כי ה-inventory כבר משויך מלמעלה
+        if (inventory == null)
+        {
+            Debug.LogError("ItemGiver: Inventory file is missing!");
+            return;
+        }
 
         bool gaveAnything = false;
 
         foreach (var g in grants)
         {
             if (g.item == null || g.amount <= 0) continue;
-            if (inv.AddItem(g.item, g.amount))
+            if (inventory.AddItem(g.item, g.amount))
                 gaveAnything = true;
         }
 

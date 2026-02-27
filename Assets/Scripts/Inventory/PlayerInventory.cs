@@ -14,8 +14,8 @@ public class InventorySlot
         this.amount = amount;
     }
 }
-
-public class PlayerInventory : MonoBehaviour
+[CreateAssetMenu(fileName = "New Inventory", menuName = "Inventory/Player Inventory")]
+public class PlayerInventory : ScriptableObject
 {
     [SerializeField] private List<InventorySlot> slots = new();
     public IReadOnlyList<InventorySlot> Slots => slots;
@@ -68,5 +68,10 @@ public class PlayerInventory : MonoBehaviour
 
         NotifyChanged();
         return true;
+    }
+
+    private void OnEnable()
+    {
+        slots.Clear();
     }
 }
