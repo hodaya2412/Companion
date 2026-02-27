@@ -27,26 +27,33 @@ public class InventorySlotUI : MonoBehaviour
 
     private void OnButtonClicked()
     {
-        Debug.Log("Slot button clicked!");
         if (item != null) Clicked?.Invoke(item);
     }
-
 
     public void Set(InventoryItemData newItem, int amount)
     {
         item = newItem;
-        bool hasItem = item != null;
+        bool hasItem = (item != null);
 
+        // --- התיקון כאן: הסתרת או הצגת כל הסלוט ---
+        gameObject.SetActive(hasItem);
+
+        if (!hasItem) return; // אם אין פריט, אין צורך להמשיך לעדכן ויזואלית
+
+        // עדכון האייקון
         if (icon != null)
         {
-            icon.sprite = hasItem ? item.icon : null;
-            icon.enabled = hasItem && icon.sprite != null;
+            icon.sprite = item.icon;
+            icon.enabled = (icon.sprite != null);
         }
 
+        // עדכון טקסט הכמות
         if (amountText != null)
-            amountText.text = (hasItem && amount > 1) ? $"x{amount}" : "";
+        {
+            amountText.text = (amount > 1) ? $"x{amount}" : "";
+        }
 
         if (button != null)
-            button.interactable = hasItem;
+            button.interactable = true;
     }
 }

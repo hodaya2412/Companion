@@ -31,7 +31,15 @@ public class DoorInteractable : MonoBehaviour
 
     void OnMouseDown()
     {
+        // 1. בדיקה חדשה: אם האינוונטורי פתוח (או כל מצב שאינו Playing), אל תעשי כלום
+        if (GameStateManager.Instance.CurrentState != GameState.Playing)
+        {
+            return;
+        }
+
+        // 2. התנאים המקוריים שלך
         if (!canOpenPuzzle || isOpen) return;
+
         OpenPuzzle();
     }
 
