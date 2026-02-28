@@ -70,8 +70,9 @@ public class PlayerInventory : ScriptableObject
         return true;
     }
 
-    private void OnEnable()
+    public void ResetInventory()
     {
         slots.Clear();
+        NotifyChanged();
     }
 }

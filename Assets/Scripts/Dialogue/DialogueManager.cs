@@ -28,12 +28,17 @@ public class DialogueManager : MonoBehaviour
     InputActions inputAction;
     void Awake()
     {
-        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         Instance = this;
+        DontDestroyOnLoad(gameObject); // ✅ נשאר בין סצנות
 
         if (panel != null)
             panel.SetActive(false);
-
 
         inputAction = new InputActions();
     }
@@ -42,12 +47,16 @@ public class DialogueManager : MonoBehaviour
     {
         inputAction.Dialogue.Enable();
         inputAction.Dialogue.NextDialogue.performed += OnAdvance;
+        // הוספת האזנה לבקשת דיאלוג
+        GameEvents.OnDialogueRequested += StartDialogue;
     }
 
     void OnDisable()
     {
         inputAction.Dialogue.NextDialogue.performed -= OnAdvance;
         inputAction.Dialogue.Disable();
+        // הסרת האזנה (חשוב למניעת באגים)
+        GameEvents.OnDialogueRequested -= StartDialogue;
     }
 
     private void OnAdvance(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
@@ -59,6 +68,9 @@ public class DialogueManager : MonoBehaviour
 
     public void StartDialogue(DialogueAsset dialogue)
     {
+        if (playerMovement != null)
+            playerMovement.SetMovementEnabled(false);
+
         if (dialogue == null || dialogue.lines.Count == 0) return;
 
         current = dialogue;

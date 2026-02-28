@@ -7,4 +7,6 @@ public static class GameEvents
     public static Action<bool> OnCompanionFollowEnabled;
     public static Action OnInventoryChanged;
     public static Action<GameState> OnStateChanged;
+
+    public static Action<DialogueAsset> OnDialogueRequested;
 }
