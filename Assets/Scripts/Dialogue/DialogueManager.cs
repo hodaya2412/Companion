@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -68,6 +69,7 @@ public class DialogueManager : MonoBehaviour
 
     public void StartDialogue(DialogueAsset dialogue)
     {
+        EventSystem.current?.SetSelectedGameObject(null);
         if (playerMovement != null)
             playerMovement.SetMovementEnabled(false);
 

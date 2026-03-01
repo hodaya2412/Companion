@@ -1,0 +1,91 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95847929271290341bb73bbda3eeeffc, type: 3}
+  m_Name: George_Dialogue1
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueAsset
+  lines:
+  - speaker: Ran
+    text: "Excuse me, sir\u2026 do you know anything about a golden key?\nIt\u2019s
+      supposed to be connected to the castle."
+    portrait: {fileID: 0}
+  - speaker: George
+    text: "Heh.\nA golden key?\nKid, in this world, anything shiny is either stolen\u2026
+      or cursed.\nWhich one are you hoping for?"
+    portrait: {fileID: 0}
+  - speaker: Ran
+    text: "I\u2019m serious. I need it."
+    portrait: {fileID: 0}
+  - speaker: George
+    text: "You look serious.\nThat\u2019s your first mistake."
+    portrait: {fileID: 0}
+  - speaker: George
+    text: "Yeah\u2026 I\u2019ve heard of your key.\nBig thing. Heavy. Gold like a
+      king\u2019s lie.\nBut it\u2019s not lying around waiting for children with
+      brave faces."
+    portrait: {fileID: 0}
+  - speaker: Ran
+    text: So you do know where it is?
+    portrait: {fileID: 0}
+  - speaker: George
+    text: "I know where it might be.\nThat\u2019s different.\nTruth is a slippery
+      thing \u2014 like me after my third bottle."
+    portrait: {fileID: 0}
+  - speaker: George
+    text: "The key is in bad hands.\nHands that don\u2019t wash.\nBandits.\nThey\u2019ve
+      been sniffing around the old quarry past the dead oak."
+    portrait: {fileID: 0}
+  - speaker: Ran
+    text: Then tell me how to get it.
+    portrait: {fileID: 0}
+  - speaker: George
+    text: " Oh, I will. But nothing\u2019s free, little hero. They took something
+      from me too. A book."
+    portrait: {fileID: 0}
+  - speaker: Ran
+    text: A book?
+    portrait: {fileID: 0}
+  - speaker: George
+    text: " Not just a book. My book.  Old leather cover. Worn corners. Smells like
+      dust and regret. It\u2019s the only thing I\u2019ve got left that remembers
+      who I used to be."
+    portrait: {fileID: 0}
+  - speaker: Ran
+    text: You want me to bring it back?
+    portrait: {fileID: 0}
+  - speaker: George
+    text: "You catch on fast for someone your size.  Bring me the book. And I\u2019ll
+      tell you exactly where they\u2019re hiding the key\u2026 and how not to die
+      trying."
+    portrait: {fileID: 0}
+  - speaker: Ren
+    text: Deal.
+    portrait: {fileID: 0}
+  - speaker: George
+    text: 'Careful with that word, boy.
+
+      Deals shape a man more than battles
+      do.'
+    portrait: {fileID: 0}
+  - speaker: Ran
+    text: "I\u2019ll bring it back."
+    portrait: {fileID: 0}
+  - speaker: George
+    text: "We\u2019ll see."
+    portrait: {fileID: 0}
+  - speaker: George
+    text: "The bandits camp in the quarry east of the broken bridge. They keep their
+      loot in a locked crate inside a collapsed storage shack. Your book should be
+      there.  If you\u2019re lucky\u2026 they\u2019ll underestimate you.  If you\u2019re
+      smart\u2026 you\u2019ll let them."
+    portrait: {fileID: 0}
+  endEvents: []
+  endActions: []
