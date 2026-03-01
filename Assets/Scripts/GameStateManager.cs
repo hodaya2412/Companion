@@ -8,7 +8,8 @@ public enum GameState
     Dialogue,  
     Inventory,  
     Map,        
-    BeingGuided
+    BeingGuided,
+    choice
 }
 
 public class GameStateManager : MonoBehaviour

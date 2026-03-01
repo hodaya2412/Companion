@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ab43a5b12a349fa47970a7f27144d697, type: 3}
-  m_Name: GuideToFirstDoorAction
+  m_Name: GuideToWeapone
   m_EditorClassIdentifier: Assembly-CSharp::GuideToFirstDoorAction
-  targetID: 1
+  targetID: 4

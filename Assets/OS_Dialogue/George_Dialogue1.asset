@@ -18,8 +18,8 @@ MonoBehaviour:
       supposed to be connected to the castle."
     portrait: {fileID: 0}
   - speaker: George
-    text: "Heh.\nA golden key?\nKid, in this world, anything shiny is either stolen\u2026
-      or cursed.\nWhich one are you hoping for?"
+    text: "Heh. A golden key?\nKid, in this world, anything shiny is either stolen\u2026
+      or cursed. Which one are you hoping for?"
     portrait: {fileID: 0}
   - speaker: Ran
     text: "I\u2019m serious. I need it."
@@ -40,7 +40,7 @@ MonoBehaviour:
       thing \u2014 like me after my third bottle."
     portrait: {fileID: 0}
   - speaker: George
-    text: "The key is in bad hands.\nHands that don\u2019t wash.\nBandits.\nThey\u2019ve
+    text: "The key is in bad hands.\nHands that don\u2019t wash.\nBandits. They\u2019ve
       been sniffing around the old quarry past the dead oak."
     portrait: {fileID: 0}
   - speaker: Ran
@@ -82,10 +82,14 @@ MonoBehaviour:
     text: "We\u2019ll see."
     portrait: {fileID: 0}
   - speaker: George
-    text: "The bandits camp in the quarry east of the broken bridge. They keep their
+    text: 'The bandits camp in the quarry east of the broken bridge. They keep their
       loot in a locked crate inside a collapsed storage shack. Your book should be
-      there.  If you\u2019re lucky\u2026 they\u2019ll underestimate you.  If you\u2019re
-      smart\u2026 you\u2019ll let them."
+      there. '
+    portrait: {fileID: 0}
+  - speaker: George
+    text: " If you\u2019re lucky\u2026 they\u2019ll underestimate you.  If you\u2019re
+      smart\u2026 you\u2019ll let them. "
     portrait: {fileID: 0}
   endEvents: []
-  endActions: []
+  endActions:
+  - {fileID: 11400000, guid: 9aa675ed1e9651f4bb7a507f85350ae7, type: 2}

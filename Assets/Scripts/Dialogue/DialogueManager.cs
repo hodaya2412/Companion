@@ -84,9 +84,10 @@ public class DialogueManager : MonoBehaviour
         ShowLine();
     }
 
-    public void EndDialogue(DialogueAction followUpAction = null)
+    public void EndDialogue()
     {
-        if (typingRoutine != null) StopCoroutine(typingRoutine);
+        if (typingRoutine != null)
+            StopCoroutine(typingRoutine);
 
         panel.SetActive(false);
 
@@ -94,21 +95,17 @@ public class DialogueManager : MonoBehaviour
             playerMovement.SetMovementEnabled(true);
 
         // הפעלת פעולות סיום דיאלוג
-        if (current != null && current.endActions != null && current.endActions.Count > 0)
+        if (current != null && current.endActions != null)
         {
             foreach (var action in current.endActions)
-                if (action != null) action.Execute();
+            {
+                if (action != null)
+                    action.Execute();
+            }
         }
 
-        // קביעת מצב המשחק אחרי דיאלוג
-        if (followUpAction is GuideToFirstDoorAction)
-        {
-            GameStateManager.Instance.SetState(GameState.BeingGuided);
-        }
-        else
-        {
-            GameStateManager.Instance.SetState(GameState.Playing);
-        }
+        // תמיד חוזרים ל-Playing
+        GameStateManager.Instance.SetState(GameState.Playing);
 
         current = null;
         index = 0;

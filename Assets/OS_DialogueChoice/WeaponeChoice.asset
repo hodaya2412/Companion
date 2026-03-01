@@ -9,7 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab43a5b12a349fa47970a7f27144d697, type: 3}
-  m_Name: GuideToFirstDoorAction
-  m_EditorClassIdentifier: Assembly-CSharp::GuideToFirstDoorAction
-  targetID: 1
+  m_Script: {fileID: 11500000, guid: a6a93a7c0bbfc084bb21e0566899ae00, type: 3}
+  m_Name: WeaponeChoice
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueChoiceAction
+  positiveText: Yes
+  negativeText: No
+  positiveAction: {fileID: 0}
+  negativeAction: {fileID: 0}
