@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DialogueChoiceAction
   positiveText: Yes
   negativeText: No
-  positiveAction: {fileID: 0}
+  positiveAction: {fileID: 11400000, guid: 14ee93cc1a605224982568ed7d2f8572, type: 2}
   negativeAction: {fileID: 0}

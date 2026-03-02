@@ -9,9 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f2eb12b9e380984d822ceb522df38d5, type: 3}
-  m_Name: PlayerInventory
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerInventory
-  slots:
-  - item: {fileID: 11400000, guid: ad0d2f173a0889944bf354e441eb106f, type: 2}
-    amount: 1
+  m_Script: {fileID: 11500000, guid: 35bc415f3f2f2f1449da1f6d88a88eca, type: 3}
+  m_Name: PickUpAxe
+  m_EditorClassIdentifier: Assembly-CSharp::PickupWorldItemAction
+  worldItemId: Weapon_Axe_01

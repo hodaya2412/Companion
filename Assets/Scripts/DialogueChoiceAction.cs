@@ -13,7 +13,7 @@ public class DialogueChoiceAction : DialogueAction
 
     public override void Execute()
     {
-        Debug.Log("DialogueChoiceAction executed!");
+        Debug.Log("Positive choice executed!");
         GameEvents.OnDialogueChoiceRequested?.Invoke(this);
     }
 }

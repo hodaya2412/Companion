@@ -2,7 +2,7 @@ using UnityEngine;
 
 public enum ItemCategory
 {
-    Puzzle, KeyItem, Consumable, Quest, Misc
+    Puzzle, KeyItem, Consumable, Quest, Misc, Weapon
 }
 
 [CreateAssetMenu(fileName = "NewItem", menuName = "Game/Inventory/Item")]
