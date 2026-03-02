@@ -65,7 +65,7 @@ public class PlayerInventory : ScriptableObject
 
         if (slot.amount <= 0)
             slots.Remove(slot);
-
+        
         NotifyChanged();
         return true;
     }

@@ -6,6 +6,7 @@ public class DialogueChoiceUI : MonoBehaviour
     public GameObject panel;
     public Button yesButton;
     public Button noButton;
+    public DialogueChoiceAction onlyForChoice;
 
     private DialogueChoiceAction currentChoice;
 
@@ -21,6 +22,8 @@ public class DialogueChoiceUI : MonoBehaviour
 
     void ShowChoice(DialogueChoiceAction choice)
     {
+        if (onlyForChoice != null && choice != onlyForChoice)
+            return;
         Debug.Log("ShowChoice triggered! Positive: " + choice.positiveText + ", Negative: " + choice.negativeText);
 
         panel.SetActive(true);
