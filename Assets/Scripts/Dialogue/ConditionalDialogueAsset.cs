@@ -9,8 +9,6 @@ public class ConditionalDialogueAsset : ScriptableObject
     [Header("תנאי Quest (למשימות)")]
     public QuestConditionSO[] questConditions;
 
-    //[Header("תנאי Flags (לאירועים כלליים בלבד)")]
-    //public FlagConditionSO[] flagConditions;
 
     public bool CanPlay()
     {
@@ -23,16 +21,6 @@ public class ConditionalDialogueAsset : ScriptableObject
                     return false;
             }
         }
-
-        //// בדיקת תנאי Flags
-        //if (flagConditions != null)
-        //{
-        //    foreach (var condition in flagConditions)
-        //    {
-        //        if (condition != null && !condition.IsMet())
-        //            return false;
-        //    }
-        //}
 
         return true;
     }
