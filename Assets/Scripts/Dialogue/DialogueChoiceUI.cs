@@ -47,10 +47,10 @@ public class DialogueChoiceUI : MonoBehaviour
     {
         panel.SetActive(false);
 
-        if (positive && currentChoice.positiveAction != null)
-            currentChoice.positiveAction.Execute();
-        else if (!positive && currentChoice.negativeAction != null)
-            currentChoice.negativeAction.Execute();
+        if (positive)
+            currentChoice.ExecutePositiveActions();
+        else
+            currentChoice.ExecuteNegativeActions();
 
         currentChoice = null;
     }

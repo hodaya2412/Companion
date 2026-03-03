@@ -1,9 +1,12 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class NPCInteractable : MonoBehaviour
 {
-    [Header("Dialogue")]
+    [Header("Dialogue (Conditional)")]
+    public ConditionalDialogueAsset[] conditionalDialogues;
+
+    [Header("Fallback Dialogue (Optional)")]
     public DialogueAsset dialogueAsset;
 
     [Header("Visual")]
@@ -31,7 +34,7 @@ public class NPCInteractable : MonoBehaviour
         float dist = Vector3.Distance(transform.position, player.position);
         bool isClose = dist <= interactRange;
 
-        // ����/����� �� �� �� ������ ����� ����
+        // הצגת/הסתרת חץ רק אם קרובים ובמצב משחק Playing
         if (visualArrow != null)
         {
             bool shouldShow = isClose &&
@@ -41,7 +44,7 @@ public class NPCInteractable : MonoBehaviour
                 visualArrow.SetActive(shouldShow);
         }
 
-        // ����� ����� ������ �� D
+        // בדיקה ללחיצה על D
         if (isClose &&
             Keyboard.current != null &&
             Keyboard.current.dKey.wasPressedThisFrame &&
@@ -53,10 +56,25 @@ public class NPCInteractable : MonoBehaviour
 
     private void StartDialogue()
     {
-        if (dialogueAsset == null) return;
-        if (dialogueAsset.lines == null || dialogueAsset.lines.Count == 0) return;
+        // 🟢 בדיקה לדיאלוג מותנה ראשון שמתאים
+        if (conditionalDialogues != null && conditionalDialogues.Length > 0)
+        {
+            foreach (var cd in conditionalDialogues)
+            {
+                if (cd.CanPlay())
+                {
+                    DialogueManager.Instance.StartDialogue(cd.dialogue);
+                    Debug.Log("Starting conditional dialogue with: " + gameObject.name);
+                    return; // מפעילים את הדיאלוג הראשון שמתאים
+                }
+            }
+        }
 
-        Debug.Log("Starting dialogue with: " + gameObject.name);
-        GameEvents.OnDialogueRequested?.Invoke(dialogueAsset);
+        // 🟢 fallback לדיאלוג רגיל אם Conditional לא מתאים או לא מוגדר
+        if (dialogueAsset != null && dialogueAsset.lines != null && dialogueAsset.lines.Count > 0)
+        {
+            DialogueManager.Instance.StartDialogue(dialogueAsset);
+            Debug.Log("Starting fallback dialogue with: " + gameObject.name);
+        }
     }
 }

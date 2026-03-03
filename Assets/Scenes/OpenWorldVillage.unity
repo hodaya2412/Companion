@@ -2469,7 +2469,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f67e1e4e3036ad64a8bdf5fc82d12eba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NPCInteractable
-  dialogueAsset: {fileID: 11400000, guid: 356b2b9bbdc5ab141bf3940b480dd58c, type: 2}
+  conditionalDialogues:
+  - {fileID: 11400000, guid: dfc4fae10db0fe94dbf4af5967d6b28f, type: 2}
+  - {fileID: 11400000, guid: 9fe7dcac6fee1464681e9f222e947ae7, type: 2}
+  dialogueAsset: {fileID: 0}
   visualArrow: {fileID: 143539143}
   interactRange: 4
 --- !u!65 &858958988
@@ -4375,6 +4378,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f67e1e4e3036ad64a8bdf5fc82d12eba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NPCInteractable
+  conditionalDialogues:
+  - {fileID: 11400000, guid: cdc4470cc06d9a74880333558c3d40fd, type: 2}
+  - {fileID: 11400000, guid: e03ab115c5f02e542b4afc4a796e8fad, type: 2}
+  - {fileID: 11400000, guid: 796778144d040f9478fb1adc2b38f8ff, type: 2}
+  - {fileID: 11400000, guid: a9ae29047828e8d498c427994e19c185, type: 2}
   dialogueAsset: {fileID: 11400000, guid: d54830196279517439cabe352c1ed72e, type: 2}
   visualArrow: {fileID: 469694432}
   interactRange: 5
