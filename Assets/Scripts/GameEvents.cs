@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 
 public static class GameEvents
@@ -11,4 +11,6 @@ public static class GameEvents
     public static Action<GuideTargetID> OnGuideRequested;
     public static Action<DialogueAsset> OnDialogueRequested;
     public static Action<DialogueChoiceAction> OnDialogueChoiceRequested;
+
+
 }
