@@ -2449,7 +2449,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogue: {fileID: 11400000, guid: c6e73a66d7a13e444a0f6a7c9b7b4192, type: 2}
   delay: 0.2
-  onceFlagKey: CastleIntroPlayed
 --- !u!4 &748351023
 Transform:
   m_ObjectHideFlags: 0

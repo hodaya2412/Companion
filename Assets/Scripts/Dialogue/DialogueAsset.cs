@@ -1,13 +1,18 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "DialogueAsset", menuName = "Scriptable Objects/DialogueAsset")]
 public class DialogueAsset : ScriptableObject
 {
+    [Header("Dialogue ID (for persistence)")]
+    public string dialogueId;   
+
     public List<DialogueLine> lines = new();
+
     //Old- event string
     public List<string> endEvents;
+
     //New dialogue actions
     public List<DialogueAction> endActions;
 }

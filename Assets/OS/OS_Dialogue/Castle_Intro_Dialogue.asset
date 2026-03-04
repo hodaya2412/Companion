@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95847929271290341bb73bbda3eeeffc, type: 3}
   m_Name: Castle_Intro_Dialogue
   m_EditorClassIdentifier: 
+  dialogueId: Castle_intro
   lines:
   - speaker: Player
     text: "Where am I\u2026?"
@@ -60,3 +61,4 @@ MonoBehaviour:
   endEvents: []
   endActions:
   - {fileID: 11400000, guid: 8bc6de004f70e0648b1208b0c188fa10, type: 2}
+  - {fileID: 11400000, guid: 4d339b9aa9dd5094db4f891fe5a842c4, type: 2}

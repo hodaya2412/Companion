@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95847929271290341bb73bbda3eeeffc, type: 3}
   m_Name: DoorArrival_Dialogue
   m_EditorClassIdentifier: Assembly-CSharp::DialogueAsset
+  dialogueId: Door_Arrival
   lines:
   - speaker: Companion
     text: You should click on the door
