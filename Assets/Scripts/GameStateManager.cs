@@ -66,6 +66,7 @@ public class GameStateManager : MonoBehaviour
     public void SetFlag(string key, bool value = true)
     {
         gameFlags[key] = value;
+        GameEvents.OnFlagChanged?.Invoke(key, value);
         Debug.Log($"Flag '{key}' set to {value}");
     }
 

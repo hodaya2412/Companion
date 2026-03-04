@@ -12,5 +12,7 @@ public static class GameEvents
     public static Action<DialogueAsset> OnDialogueRequested;
     public static Action<DialogueChoiceAction> OnDialogueChoiceRequested;
 
+    public static Action<string, bool> OnFlagChanged;
+    public static Action<string> OnPuzzleStoneClicked;
 
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Dialogue Actions/Mark Dialogue Played")]
 public class MarkDialoguePlayedAction : DialogueAction
 {
-    public DialogueAsset dialogue; // או string id אם את מעדיפה
+    public DialogueAsset dialogue; 
     public override void Execute()
     {
         if (dialogue == null || GameStateManager.Instance == null) return;
