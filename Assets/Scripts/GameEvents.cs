@@ -14,5 +14,5 @@ public static class GameEvents
 
     public static Action<string, bool> OnFlagChanged;
     public static Action<string> OnPuzzleStoneClicked;
-
+    public static Action OnCombatTriggered;
 }

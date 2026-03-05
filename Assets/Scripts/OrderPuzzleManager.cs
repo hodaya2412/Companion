@@ -1,11 +1,11 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using TMPro;
 
 public class OrderPuzzleManager : MonoBehaviour
 {
     [Header("Identity & State")]
-    [Tooltip("חייב להיות זהה ל-ID שעל האבנים בעולם")]
     public string puzzleID = "ForestStones";
     public string solvedFlag = "Forest_PuzzleSolved";
 
@@ -13,45 +13,73 @@ public class OrderPuzzleManager : MonoBehaviour
     public GameObject puzzlePanel;
     public Button checkButton;
     public Button closeButton;
+    public TMP_Text timerText; // הטיימר בתוך החידה
+    public TMP_Text worldCooldownText; // טקסט חדש: להראות לשחקן כמה זמן לחכות (אופציונלי)
+
+    [Header("Puzzle Timing")]
+    public float puzzleDuration = 60f;
+    public float baseCooldown = 120f; // 2 דקות בסיס
+    public float penaltyPerFailure = 30f; // תוספת של 30 שניות על כל טעות
+
+    private float currentTimer;
+    private bool isTimerRunning;
+
+    // משתנים סטטיים כדי שישמרו בין פתיחות של הפאנל
+    private static float nextAllowedAttemptTime = 0f;
+    private static float currentPenaltyTotal = 0f;
 
     [Header("Puzzle Logic")]
-    [Tooltip("גררי לכאן את האבנים מה-UI בסדר הנכון מלמטה למעלה (גדולה, בינונית, קטנה)")]
     public List<RectTransform> puzzleStonesInOrder;
-
-    [Header("Actions to Execute on Win")]
     public List<DialogueAction> onWinActions;
 
     private void OnEnable()
     {
-        // האזנה לאירוע פתיחת החידה מהעולם
         GameEvents.OnPuzzleStoneClicked += HandlePuzzleTrigger;
-
         if (checkButton != null) checkButton.onClick.AddListener(CheckSolution);
         if (closeButton != null) closeButton.onClick.AddListener(ClosePuzzle);
     }
 
     private void OnDisable()
     {
-        // הסרת רישום למניעת בעיות זיכרון
         GameEvents.OnPuzzleStoneClicked -= HandlePuzzleTrigger;
-
         if (checkButton != null) checkButton.onClick.RemoveListener(CheckSolution);
         if (closeButton != null) closeButton.onClick.RemoveListener(ClosePuzzle);
     }
 
-    private void Start()
+    private void Update()
     {
-        // לוודא שהפאנל סגור בהתחלה
-        if (puzzlePanel != null) puzzlePanel.SetActive(false);
+        // 1. ניהול הטיימר בתוך החידה
+        if (isTimerRunning)
+        {
+            currentTimer -= Time.deltaTime;
+            if (timerText != null) timerText.text = "Time Left: " + Mathf.Ceil(currentTimer).ToString();
+            if (currentTimer <= 0) FailPuzzle();
+        }
+
+        // 2. עדכון זמן ההמתנה בעולם (אם השחקן ב-Cooldown)
+        if (Time.time < nextAllowedAttemptTime && worldCooldownText != null)
+        {
+            float waitTime = nextAllowedAttemptTime - Time.time;
+            worldCooldownText.gameObject.SetActive(true);
+            worldCooldownText.text = "Wait " + Mathf.Ceil(waitTime) + "s to try again";
+        }
+        else if (worldCooldownText != null)
+        {
+            worldCooldownText.gameObject.SetActive(false);
+        }
     }
 
     private void HandlePuzzleTrigger(string triggeredID)
     {
-        // אם מישהו בעולם צעק את ה-ID שלי - אני נפתח
         if (triggeredID == puzzleID)
         {
-            // בדיקה אם כבר נפתר בעבר (ליתר ביטחון)
             if (GameStateManager.Instance.GetFlag(solvedFlag)) return;
+
+            if (Time.time < nextAllowedAttemptTime)
+            {
+                Debug.Log("Still in cooldown!");
+                return;
+            }
 
             OpenPuzzle();
         }
@@ -60,29 +88,24 @@ public class OrderPuzzleManager : MonoBehaviour
     public void OpenPuzzle()
     {
         puzzlePanel.SetActive(true);
-        // משנה מצב כדי שהשחקן לא יזוז בזמן החידה
         GameStateManager.Instance.SetState(GameState.Choice);
+        currentTimer = puzzleDuration;
+        isTimerRunning = true;
     }
 
     public void ClosePuzzle()
     {
+        isTimerRunning = false;
         puzzlePanel.SetActive(false);
         GameStateManager.Instance.SetState(GameState.Playing);
     }
 
     private void CheckSolution()
     {
-        if (puzzleStonesInOrder == null || puzzleStonesInOrder.Count < 2) return;
-
         bool isCorrect = true;
-
-        // עוברים על הרשימה ובודקים שכל אבן גבוהה יותר (בציר Y) מהקודמת לה
         for (int i = 0; i < puzzleStonesInOrder.Count - 1; i++)
         {
-            float currentY = puzzleStonesInOrder[i].anchoredPosition.y;
-            float nextY = puzzleStonesInOrder[i + 1].anchoredPosition.y;
-
-            if (nextY <= currentY)
+            if (puzzleStonesInOrder[i + 1].anchoredPosition.y <= puzzleStonesInOrder[i].anchoredPosition.y)
             {
                 isCorrect = false;
                 break;
@@ -91,24 +114,35 @@ public class OrderPuzzleManager : MonoBehaviour
 
         if (isCorrect)
         {
-            Debug.Log("Puzzle Solved Successfully!");
+            isTimerRunning = false;
+            currentPenaltyTotal = 0; // איפוס הקנסות בהצלחה
             ExecuteWin();
         }
         else
         {
-            Debug.Log("Incorrect Order. Try again!");
-            // כאן אפשר להוסיף אנימציה של רעידה או צליל שגיאה
+            FailPuzzle();
         }
+    }
+
+    private void FailPuzzle()
+    {
+        isTimerRunning = false;
+
+        // חישוב הקנס: זמן בסיס + (מספר טעויות * 30 שניות)
+        float totalWait = baseCooldown + currentPenaltyTotal;
+        nextAllowedAttemptTime = Time.time + totalWait;
+
+        // הוספת 30 שניות לקנס של הפעם הבאה
+        currentPenaltyTotal += penaltyPerFailure;
+
+        ClosePuzzle();
+        GameEvents.OnCombatTriggered?.Invoke();
     }
 
     private void ExecuteWin()
     {
-        // הפעלת כל ה-Actions (כולל SetFlagAction שיצרת ב-Unity)
         foreach (var action in onWinActions)
-        {
             if (action != null) action.Execute();
-        }
-
         ClosePuzzle();
     }
 }
