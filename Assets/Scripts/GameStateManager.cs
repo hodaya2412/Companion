@@ -2,7 +2,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-
 public enum GameState
 {
     Playing,
@@ -19,10 +18,9 @@ public class GameStateManager : MonoBehaviour
 
     public GameState CurrentState { get; private set; } = GameState.Playing;
 
-    // 🟢 סטטוס אוניברסלי – כל דגל הוא מחרוזת
-    private Dictionary<string, bool> gameFlags = new Dictionary<string, bool>();
+    private readonly HashSet<string> gameFlags = new HashSet<string>();
 
-    void Awake()
+    private void Awake()
     {
         if (Instance != null && Instance != this)
         {
@@ -31,14 +29,17 @@ public class GameStateManager : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject);
 
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    void OnDestroy()
+    private void OnDestroy()
     {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
+        if (Instance == this)
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+            Instance = null;
+        }
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -46,7 +47,7 @@ public class GameStateManager : MonoBehaviour
         SetState(GameState.Playing);
     }
 
-    // ✅ ניהול מצב המשחק הכללי
+    
     public void SetState(GameState newState)
     {
         if (CurrentState == newState) return;
@@ -56,27 +57,32 @@ public class GameStateManager : MonoBehaviour
         Debug.Log("Game state changed to: " + CurrentState);
     }
 
-    // 🟢 פונקציות ניהול סטטוסים אוניברסליים (Flags)
+    
     public bool GetFlag(string key)
     {
-        if (gameFlags.ContainsKey(key)) return gameFlags[key];
-        return false; // ברירת מחדל = false
+        return gameFlags.Contains(key);
     }
 
+    
     public void SetFlag(string key, bool value = true)
     {
-        gameFlags[key] = value;
+        if (value)
+            gameFlags.Add(key);
+        else
+            gameFlags.Remove(key);
+
         GameEvents.OnFlagChanged?.Invoke(key, value);
         Debug.Log($"Flag '{key}' set to {value}");
     }
 
     public void ResetFlag(string key)
     {
-        if (gameFlags.ContainsKey(key))
-            gameFlags[key] = false;
+        if (gameFlags.Remove(key))
+        {
+            GameEvents.OnFlagChanged?.Invoke(key, false);
+        }
     }
 
-    // 🟢 פונקציה לבדיקת מצב Flag - שימוש בדיאלוגים מותנים
     public bool CheckFlag(string key, bool expectedValue = true)
     {
         return GetFlag(key) == expectedValue;
