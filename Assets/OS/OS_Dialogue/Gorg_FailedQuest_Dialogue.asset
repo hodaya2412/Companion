@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95847929271290341bb73bbda3eeeffc, type: 3}
   m_Name: Gorg_FailedQuest_Dialogue
   m_EditorClassIdentifier: Assembly-CSharp::DialogueAsset
+  dialogueId: 
   lines:
   - speaker: Goerge
     text: "Oh no\u2026 you weren\u2019t able to bring the book back? I hoped you
       could help me.\""
     portrait: {fileID: 0}
   endEvents: []
-  endActions: []
+  endActions:
+  - {fileID: 11400000, guid: f74a5732b47d5804bae18287207787bb, type: 2}
