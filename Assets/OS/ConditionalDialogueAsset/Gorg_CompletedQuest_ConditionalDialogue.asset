@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a33f0d6d2622d5748ba1d7af0aeafcc4, type: 3}
-  m_Name: Gorg_FailedQuest_ConditionalDialogue
+  m_Name: Gorg_CompletedQuest_ConditionalDialogue
   m_EditorClassIdentifier: Assembly-CSharp::ConditionalDialogueAsset
-  dialogue: {fileID: 11400000, guid: 9ca7a922142a9de489bf2f7e9f5801f2, type: 2}
+  dialogue: {fileID: 11400000, guid: bcd93f5710f03cd4c9cf346970f695ef, type: 2}
   questConditions:
-  - {fileID: 11400000, guid: 9ae10e3f1e04fd24baf9ee9ce0bd038a, type: 2}
-  flagConditions: []
+  - {fileID: 11400000, guid: a3dcc4ac284bffb49969343c7459f694, type: 2}
+  flagConditions:
+  - {fileID: 11400000, guid: cc719be5a45056d4b97efe8ebb7811fd, type: 2}

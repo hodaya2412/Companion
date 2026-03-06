@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95847929271290341bb73bbda3eeeffc, type: 3}
   m_Name: Gorg_CompletedQuest_Dialogue
   m_EditorClassIdentifier: Assembly-CSharp::DialogueAsset
+  dialogueId: 
   lines:
   - speaker: George
     text: "Thank you so much for returning the book! You\u2019ve really helped me"
     portrait: {fileID: 0}
   endEvents: []
-  endActions: []
+  endActions:
+  - {fileID: 11400000, guid: 5fa9aecefa0eb2d4799427df259522d0, type: 2}
+  - {fileID: 11400000, guid: 7e26470f924d76a4a868f4562e37981d, type: 2}

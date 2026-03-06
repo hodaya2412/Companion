@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95847929271290341bb73bbda3eeeffc, type: 3}
+  m_Name: CompanionBook
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueAsset
+  dialogueId: BookDialoge
+  lines:
+  - speaker: Nero
+    text: "So\u2026 you finally found it."
+    portrait: {fileID: 0}
+  - speaker: Ran
+    text: You know this book?
+    portrait: {fileID: 0}
+  - speaker: Nero
+    text: "I know what it can become\u2026 for the right person."
+    portrait: {fileID: 0}
+  - speaker: Ran
+    text: And what is that supposed to mean?
+    portrait: {fileID: 0}
+  - speaker: Nero
+    text: "That depends on whether you\u2019re curious\u2026 or careful."
+    portrait: {fileID: 0}
+  - speaker: Nero
+    text: Most people carry answers in their hands and never dare to look.
+    portrait: {fileID: 0}
+  endEvents: []
+  endActions:
+  - {fileID: 11400000, guid: 2343ec435073f9b49b4891bc42cad55b, type: 2}
