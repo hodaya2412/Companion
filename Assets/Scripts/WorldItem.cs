@@ -6,12 +6,24 @@ public class WorldItem : MonoBehaviour
     public InventoryItemData itemData;
     public PlayerInventory inventory;
 
+    [Header("Optional persistent flag")]
+    public string collectedFlag; // דגל שמציין שהפריט כבר נאסף בעבר
+
     private void Start()
     {
-        // בדיקה אם הספר כבר נמצא בתיק של השחקן ברגע שהסצנה עולה
+        // בדיקה אם הדגל כבר דלוק
+        if (!string.IsNullOrEmpty(collectedFlag) &&
+            GameStateManager.Instance != null &&
+            GameStateManager.Instance.GetFlag(collectedFlag))
+        {
+            Debug.Log($"[Persistent State] {worldItemId} already collected via flag. Disabling world object.");
+            gameObject.SetActive(false);
+            return;
+        }
+
+        // בדיקה אם הפריט כבר באינוונטורי
         if (inventory != null && itemData != null)
         {
-            // אנחנו משתמשים ב-itemId מתוך ה-itemData כדי לבדוק בתיק
             if (inventory.HasItem(itemData.itemId))
             {
                 Debug.Log($"[Persistent State] {worldItemId} is already in inventory. Disabling world object.");
@@ -19,6 +31,7 @@ public class WorldItem : MonoBehaviour
             }
         }
     }
+
     public void Pickup()
     {
         if (inventory != null && itemData != null)
@@ -27,6 +40,13 @@ public class WorldItem : MonoBehaviour
 
             if (added)
             {
+                // מדליקים את הדגל אם הוגדר
+                if (!string.IsNullOrEmpty(collectedFlag) &&
+                    GameStateManager.Instance != null)
+                {
+                    GameStateManager.Instance.SetFlag(collectedFlag, true);
+                }
+
                 if (WorldItemRegistry.Instance != null)
                 {
                     WorldItemRegistry.Instance.Unregister(worldItemId);
