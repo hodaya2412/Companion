@@ -56,7 +56,9 @@ public class ProximityInteract : MonoBehaviour
 
     private void HandleInteraction()
     {
-        bool isSolved = GameStateManager.Instance.GetFlag(requiredFlag);
+        bool noFlagRequired = string.IsNullOrEmpty(requiredFlag);
+        bool isSolved = noFlagRequired ||
+                        (GameStateManager.Instance != null && GameStateManager.Instance.GetFlag(requiredFlag));
 
         if (isSolved)
         {

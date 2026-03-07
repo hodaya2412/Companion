@@ -17,5 +17,7 @@ public static class GameEvents
     public static Action OnCombatTriggered;
 
     public static Action<string> OnItemPickedUp;
+
+    public static System.Action OnMirrorPlacedInForest;
 }
 
