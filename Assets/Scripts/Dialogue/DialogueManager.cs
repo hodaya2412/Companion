@@ -12,10 +12,7 @@ public class DialogueManager : MonoBehaviour
     public GameObject panel;
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI bodyText;
-    public Image portraitImage; 
-
-    [Header("Player")]
-    public PlayerMovement playerMovement; 
+    public Image portraitImage;
 
     [Header("Typing")]
     public float charsPerSecond = 45f;
@@ -25,8 +22,8 @@ public class DialogueManager : MonoBehaviour
     private Coroutine typingRoutine;
     private bool isTyping;
 
+    private InputActions inputAction;
 
-    InputActions inputAction;
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -36,7 +33,7 @@ public class DialogueManager : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject); // ✅ נשאר בין סצנות
+        DontDestroyOnLoad(gameObject);
 
         if (panel != null)
             panel.SetActive(false);
@@ -48,7 +45,6 @@ public class DialogueManager : MonoBehaviour
     {
         inputAction.Dialogue.Enable();
         inputAction.Dialogue.NextDialogue.performed += OnAdvance;
-        // הוספת האזנה לבקשת דיאלוג
         GameEvents.OnDialogueRequested += StartDialogue;
     }
 
@@ -56,7 +52,6 @@ public class DialogueManager : MonoBehaviour
     {
         inputAction.Dialogue.NextDialogue.performed -= OnAdvance;
         inputAction.Dialogue.Disable();
-        // הסרת האזנה (חשוב למניעת באגים)
         GameEvents.OnDialogueRequested -= StartDialogue;
     }
 
@@ -66,21 +61,22 @@ public class DialogueManager : MonoBehaviour
         Next();
     }
 
-
     public void StartDialogue(DialogueAsset dialogue)
     {
-        EventSystem.current?.SetSelectedGameObject(null);
-        if (playerMovement != null)
-            playerMovement.SetMovementEnabled(false);
+        if (dialogue == null || dialogue.lines == null || dialogue.lines.Count == 0)
+            return;
 
-        if (dialogue == null || dialogue.lines.Count == 0) return;
+        EventSystem.current?.SetSelectedGameObject(null);
 
         current = dialogue;
         index = 0;
 
+        GameEvents.OnDialogueStarted?.Invoke();
         GameStateManager.Instance.SetState(GameState.Dialogue);
 
-        panel.SetActive(true);
+        if (panel != null)
+            panel.SetActive(true);
+
         ShowLine();
     }
 
@@ -89,12 +85,9 @@ public class DialogueManager : MonoBehaviour
         if (typingRoutine != null)
             StopCoroutine(typingRoutine);
 
-        panel.SetActive(false);
+        if (panel != null)
+            panel.SetActive(false);
 
-        if (playerMovement != null)
-            playerMovement.SetMovementEnabled(true);
-
-        // הפעלת פעולות סיום דיאלוג
         if (current != null && current.endActions != null)
         {
             foreach (var action in current.endActions)
@@ -104,7 +97,7 @@ public class DialogueManager : MonoBehaviour
             }
         }
 
-        // תמיד חוזרים ל-Playing
+        GameEvents.OnDialogueEnded?.Invoke();
         GameStateManager.Instance.SetState(GameState.Playing);
 
         current = null;
@@ -130,6 +123,7 @@ public class DialogueManager : MonoBehaviour
         }
 
         index++;
+
         if (index >= current.lines.Count)
         {
             EndDialogue();
@@ -141,9 +135,12 @@ public class DialogueManager : MonoBehaviour
 
     private void ShowLine()
     {
+        if (current == null || index < 0 || index >= current.lines.Count) return;
+
         var line = current.lines[index];
 
-        if (nameText != null) nameText.text = line.speaker;
+        if (nameText != null)
+            nameText.text = line.speaker;
 
         if (portraitImage != null)
         {
@@ -158,20 +155,26 @@ public class DialogueManager : MonoBehaviour
             }
         }
 
-        if (typingRoutine != null) StopCoroutine(typingRoutine);
+        if (typingRoutine != null)
+            StopCoroutine(typingRoutine);
+
         typingRoutine = StartCoroutine(TypeLine(line.text));
     }
 
     private IEnumerator TypeLine(string text)
     {
         isTyping = true;
-        if (bodyText != null) bodyText.text = "";
+
+        if (bodyText != null)
+            bodyText.text = "";
 
         float delay = 1f / Mathf.Max(1f, charsPerSecond);
 
         for (int i = 0; i < text.Length; i++)
         {
-            bodyText.text += text[i];
+            if (bodyText != null)
+                bodyText.text += text[i];
+
             yield return new WaitForSeconds(delay);
         }
 
@@ -181,13 +184,13 @@ public class DialogueManager : MonoBehaviour
 
     private void FinishTypingInstant()
     {
-        if (typingRoutine != null) StopCoroutine(typingRoutine);
+        if (typingRoutine != null)
+            StopCoroutine(typingRoutine);
 
-        bodyText.text = current.lines[index].text;
+        if (bodyText != null && current != null)
+            bodyText.text = current.lines[index].text;
+
         isTyping = false;
         typingRoutine = null;
     }
-    
-
-    
 }

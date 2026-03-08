@@ -87,4 +87,22 @@ public class GameStateManager : MonoBehaviour
     {
         return GetFlag(key) == expectedValue;
     }
+
+    private void OnEnable()
+    {
+        GameEvents.RequestCurrentGameState += GetCurrentState;
+        GameEvents.RequestFlagState += GetFlag;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.RequestCurrentGameState -= GetCurrentState;
+        GameEvents.RequestFlagState -= GetFlag;
+
+    }
+
+    private GameState GetCurrentState()
+    {
+        return CurrentState;
+    }
 }

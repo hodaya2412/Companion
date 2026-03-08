@@ -15,9 +15,13 @@ public static class GameEvents
     public static Action<string, bool> OnFlagChanged;
     public static Action<string> OnPuzzleStoneClicked;
     public static Action OnCombatTriggered;
-
     public static Action<string> OnItemPickedUp;
+    public static Action OnMirrorPlacedInForest;
 
-    public static System.Action OnMirrorPlacedInForest;
+    // חדש - להורדת צמידות
+    public static Action OnDialogueStarted;
+    public static Action OnDialogueEnded;
+
+    public static Func<GameState> RequestCurrentGameState;
+    public static Func<string, bool> RequestFlagState;
 }
-

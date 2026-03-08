@@ -11,15 +11,14 @@ public class DialogueOnStart : MonoBehaviour
 
         string id = string.IsNullOrWhiteSpace(dialogue.dialogueId) ? dialogue.name : dialogue.dialogueId;
 
-        if (GameStateManager.Instance != null &&
-            GameStateManager.Instance.GetFlag(id))
-            return;
+        bool alreadyPlayed = GameEvents.RequestFlagState?.Invoke(id) ?? false;
+        if (alreadyPlayed) return;
 
         Invoke(nameof(Begin), delay);
     }
 
     void Begin()
     {
-        DialogueManager.Instance.StartDialogue(dialogue);
+        GameEvents.OnDialogueRequested?.Invoke(dialogue);
     }
 }

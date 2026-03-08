@@ -48,7 +48,9 @@ public class NPCInteractable : MonoBehaviour
     private void OnInteract(InputAction.CallbackContext ctx)
     {
         if (player == null) return;
-        if (GameStateManager.Instance.CurrentState != GameState.Playing) return;
+
+        GameState currentState = GameEvents.RequestCurrentGameState?.Invoke() ?? GameState.Playing;
+        if (currentState != GameState.Playing) return;
 
         float dist = Vector3.Distance(transform.position, player.position);
         bool isClose = dist <= interactRange;
@@ -68,8 +70,8 @@ public class NPCInteractable : MonoBehaviour
 
         if (visualArrow != null)
         {
-            bool shouldShow = isClose &&
-                              GameStateManager.Instance.CurrentState == GameState.Playing;
+            GameState currentState = GameEvents.RequestCurrentGameState?.Invoke() ?? GameState.Playing;
+            bool shouldShow = isClose && currentState == GameState.Playing;
 
             if (visualArrow.activeSelf != shouldShow)
                 visualArrow.SetActive(shouldShow);
@@ -78,15 +80,13 @@ public class NPCInteractable : MonoBehaviour
 
     private void StartDialogue()
     {
-        if (DialogueManager.Instance == null) return;
-
         if (conditionalDialogues != null && conditionalDialogues.Length > 0)
         {
             foreach (var cd in conditionalDialogues)
             {
-                if (cd != null && cd.CanPlay())
+                if (cd != null && cd.dialogue != null && cd.CanPlay())
                 {
-                    DialogueManager.Instance.StartDialogue(cd.dialogue);
+                    GameEvents.OnDialogueRequested?.Invoke(cd.dialogue);
                     Debug.Log("Starting conditional dialogue with: " + gameObject.name);
                     return;
                 }
@@ -95,7 +95,7 @@ public class NPCInteractable : MonoBehaviour
 
         if (dialogueAsset != null && dialogueAsset.lines != null && dialogueAsset.lines.Count > 0)
         {
-            DialogueManager.Instance.StartDialogue(dialogueAsset);
+            GameEvents.OnDialogueRequested?.Invoke(dialogueAsset);
             Debug.Log("Starting fallback dialogue with: " + gameObject.name);
         }
     }

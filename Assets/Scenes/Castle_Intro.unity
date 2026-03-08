@@ -3538,7 +3538,6 @@ MonoBehaviour:
   nameText: {fileID: 1580001484}
   bodyText: {fileID: 627191629}
   portraitImage: {fileID: 0}
-  playerMovement: {fileID: 270215613}
   charsPerSecond: 45
 --- !u!4 &1541092440
 Transform:

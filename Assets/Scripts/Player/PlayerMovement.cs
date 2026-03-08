@@ -9,12 +9,11 @@ public class PlayerMovement : MonoBehaviour
     public Transform cam;
 
     [Header("Input System")]
-    InputActions inputAction; 
+    private InputActions inputAction;
 
     private Rigidbody rb;
     private bool canMove = true;
-
-    private Vector3 moveInput; 
+    private Vector3 moveInput;
 
     void Awake()
     {
@@ -24,7 +23,6 @@ public class PlayerMovement : MonoBehaviour
             cam = Camera.main.transform;
 
         inputAction = new InputActions();
-        
     }
 
     void OnEnable()
@@ -37,8 +35,9 @@ public class PlayerMovement : MonoBehaviour
         }
 
         GameEvents.OnStateChanged += HandleStateChanged;
+        GameEvents.OnDialogueStarted += HandleDialogueStarted;
+        GameEvents.OnDialogueEnded += HandleDialogueEnded;
     }
-
 
     void OnDisable()
     {
@@ -48,17 +47,25 @@ public class PlayerMovement : MonoBehaviour
             inputAction.Player.Move.canceled -= OnMove;
             inputAction.Player.Disable();
         }
-        if (GameStateManager.Instance != null)
-        {
-            Debug.Log($"[PlayerMovement] Unsubscribing from OnStateChanged. Object: {gameObject.name}");
-            GameEvents.OnStateChanged -= HandleStateChanged;
-        }
 
+        GameEvents.OnStateChanged -= HandleStateChanged;
+        GameEvents.OnDialogueStarted -= HandleDialogueStarted;
+        GameEvents.OnDialogueEnded -= HandleDialogueEnded;
     }
+
     private void HandleStateChanged(GameState state)
     {
-       
         SetMovementEnabled(state == GameState.Playing);
+    }
+
+    private void HandleDialogueStarted()
+    {
+        SetMovementEnabled(false);
+    }
+
+    private void HandleDialogueEnded()
+    {
+        SetMovementEnabled(true);
     }
 
     void OnMove(InputAction.CallbackContext ctx)
@@ -66,17 +73,15 @@ public class PlayerMovement : MonoBehaviour
         moveInput = ctx.ReadValue<Vector3>();
     }
 
-
     public void SetMovementEnabled(bool enabled)
     {
-        // Player can move only in Playing mode OR if being guided
-        GameState state = GameStateManager.Instance.CurrentState;
+        GameState state = GameEvents.RequestCurrentGameState?.Invoke() ?? GameState.Playing;
         canMove = (enabled && state == GameState.Playing) || state == GameState.BeingGuided;
 
         if (!canMove)
         {
             moveInput = Vector3.zero;
-            rb.linearVelocity = Vector3.zero; // linearVelocity → velocity
+            rb.linearVelocity = Vector3.zero;
         }
     }
 
@@ -84,7 +89,6 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!canMove) return;
 
-     
         float x = moveInput.x;
         float z = moveInput.z;
 
