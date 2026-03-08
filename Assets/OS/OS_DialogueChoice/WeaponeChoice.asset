@@ -16,4 +16,5 @@ MonoBehaviour:
   negativeText: No
   positiveActions:
   - {fileID: 11400000, guid: 14ee93cc1a605224982568ed7d2f8572, type: 2}
+  - {fileID: 11400000, guid: ca154b795c6e8a040bc120a3b92548bf, type: 2}
   negativeActions: []
