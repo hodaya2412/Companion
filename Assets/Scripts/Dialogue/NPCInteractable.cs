@@ -16,6 +16,12 @@ public class NPCInteractable : MonoBehaviour
     public float interactRange = 5f;
 
     private Transform player;
+    private InputActions inputAction;
+
+    private void Awake()
+    {
+        inputAction = new InputActions();
+    }
 
     private void Start()
     {
@@ -27,6 +33,32 @@ public class NPCInteractable : MonoBehaviour
             visualArrow.SetActive(false);
     }
 
+    private void OnEnable()
+    {
+        inputAction.Interact.Enable();
+        inputAction.Interact.Interact.performed += OnInteract;
+    }
+
+    private void OnDisable()
+    {
+        inputAction.Interact.Interact.performed -= OnInteract;
+        inputAction.Interact.Disable();
+    }
+
+    private void OnInteract(InputAction.CallbackContext ctx)
+    {
+        if (player == null) return;
+        if (GameStateManager.Instance.CurrentState != GameState.Playing) return;
+
+        float dist = Vector3.Distance(transform.position, player.position);
+        bool isClose = dist <= interactRange;
+
+        if (isClose)
+        {
+            StartDialogue();
+        }
+    }
+
     private void Update()
     {
         if (player == null) return;
@@ -34,7 +66,6 @@ public class NPCInteractable : MonoBehaviour
         float dist = Vector3.Distance(transform.position, player.position);
         bool isClose = dist <= interactRange;
 
-        // הצגת/הסתרת חץ רק אם קרובים ובמצב משחק Playing
         if (visualArrow != null)
         {
             bool shouldShow = isClose &&
@@ -43,34 +74,25 @@ public class NPCInteractable : MonoBehaviour
             if (visualArrow.activeSelf != shouldShow)
                 visualArrow.SetActive(shouldShow);
         }
-
-        // בדיקה ללחיצה על D
-        if (isClose &&
-            Keyboard.current != null &&
-            Keyboard.current.dKey.wasPressedThisFrame &&
-            GameStateManager.Instance.CurrentState == GameState.Playing)
-        {
-            StartDialogue();
-        }
     }
 
     private void StartDialogue()
     {
-        // 🟢 בדיקה לדיאלוג מותנה ראשון שמתאים
+        if (DialogueManager.Instance == null) return;
+
         if (conditionalDialogues != null && conditionalDialogues.Length > 0)
         {
             foreach (var cd in conditionalDialogues)
             {
-                if (cd.CanPlay())
+                if (cd != null && cd.CanPlay())
                 {
                     DialogueManager.Instance.StartDialogue(cd.dialogue);
                     Debug.Log("Starting conditional dialogue with: " + gameObject.name);
-                    return; // מפעילים את הדיאלוג הראשון שמתאים
+                    return;
                 }
             }
         }
 
-        // 🟢 fallback לדיאלוג רגיל אם Conditional לא מתאים או לא מוגדר
         if (dialogueAsset != null && dialogueAsset.lines != null && dialogueAsset.lines.Count > 0)
         {
             DialogueManager.Instance.StartDialogue(dialogueAsset);

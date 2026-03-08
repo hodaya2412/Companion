@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95847929271290341bb73bbda3eeeffc, type: 3}
   m_Name: George_Dialogue1
   m_EditorClassIdentifier: Assembly-CSharp::DialogueAsset
+  dialogueId: 
   lines:
   - speaker: Ran
     text: "Excuse me, sir\u2026 do you know anything about a golden key?\nIt\u2019s
@@ -93,5 +94,3 @@ MonoBehaviour:
   endEvents: []
   endActions:
   - {fileID: 11400000, guid: 05a395f0006c8ea4ba515394b5bf3e49, type: 2}
-  - {fileID: 11400000, guid: 9aa675ed1e9651f4bb7a507f85350ae7, type: 2}
-  - {fileID: 11400000, guid: 64e0ecaf3c8c5d74fab6c798c7373a5f, type: 2}
