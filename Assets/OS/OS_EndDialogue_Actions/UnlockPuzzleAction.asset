@@ -9,6 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa13fad646b9ec84c806b3d908c4668b, type: 3}
-  m_Name: MetGeorge
-  m_EditorClassIdentifier: Assembly-CSharp::ProgressKeySO
+  m_Script: {fileID: 11500000, guid: d485bc026bf961a4b82567037f33d560, type: 3}
+  m_Name: UnlockPuzzleAction
+  m_EditorClassIdentifier: Assembly-CSharp::TriggerGameEventAction
+  eventType: 0
