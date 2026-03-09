@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90190e0895e6f9544aa0122253db4ed8, type: 3}
   m_Name: Set_CastleIntroPlayed
   m_EditorClassIdentifier: Assembly-CSharp::SetFlagAction
-  flagName: CastleIntroPlayed
+  flagName: Castle_intro
   value: 1

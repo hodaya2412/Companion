@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d485bc026bf961a4b82567037f33d560, type: 3}
   m_Name: UnlockPuzzleAction
   m_EditorClassIdentifier: Assembly-CSharp::TriggerGameEventAction
-  eventType: 0
+  eventType: 1
