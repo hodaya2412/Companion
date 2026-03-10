@@ -1,6 +1,6 @@
-using System.Collections;
+using System;
 using UnityEngine;
-using UnityEngine.Events;
+
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -18,7 +18,6 @@ public class PlayerHealth : MonoBehaviour
     [Tooltip("אם את רוצה שהרגנרציה תעבוד רק מעל 0")]
     public bool regenOnlyIfAlive = true;
 
-    public UnityEvent<float, float> OnHealthChanged; 
 
     private float lastDamageTime;
 
@@ -37,14 +36,14 @@ public class PlayerHealth : MonoBehaviour
     {
         if (regenOnlyIfAlive && currentHealth <= 0f) return;
 
-        // אם עבר מספיק זמן מאז הפגיעה האחרונה
         if (Time.time >= lastDamageTime + regenDelay)
         {
             if (currentHealth < maxHealth)
             {
-                currentHealth += regenRate * Time.deltaTime; // עולה בהדרגה
+                currentHealth += regenRate * Time.deltaTime;
                 currentHealth = Mathf.Min(currentHealth, maxHealth);
-                OnHealthChanged?.Invoke(currentHealth, maxHealth);
+
+              GameEvents.OnHealthChanged?.Invoke(currentHealth, maxHealth);
             }
         }
     }
@@ -56,8 +55,8 @@ public class PlayerHealth : MonoBehaviour
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 
-        lastDamageTime = Time.time; // עוצר רגנרציה ומתחיל דיליי מחדש
-        OnHealthChanged?.Invoke(currentHealth, maxHealth);
+        lastDamageTime = Time.time;
+        GameEvents.OnHealthChanged?.Invoke(currentHealth, maxHealth);
 
         if (currentHealth <= 0f)
         {
@@ -71,12 +70,12 @@ public class PlayerHealth : MonoBehaviour
 
         currentHealth += amount;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-        OnHealthChanged?.Invoke(currentHealth, maxHealth);
+
+        GameEvents.OnHealthChanged?.Invoke(currentHealth, maxHealth);
     }
 
     private void Die()
     {
-        
         Debug.Log("Player Died");
     }
 }

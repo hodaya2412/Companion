@@ -18,7 +18,7 @@ public class HealthBarUI : MonoBehaviour
 
         if (playerHealth != null)
         {
-            playerHealth.OnHealthChanged.AddListener(UpdateBar);
+            GameEvents.OnHealthChanged += UpdateBar;
             UpdateBar(playerHealth.currentHealth, playerHealth.maxHealth);
         }
     }
@@ -26,7 +26,7 @@ public class HealthBarUI : MonoBehaviour
     private void OnDestroy()
     {
         if (playerHealth != null)
-            playerHealth.OnHealthChanged.RemoveListener(UpdateBar);
+            GameEvents.OnHealthChanged -= UpdateBar;
     }
 
     private void UpdateBar(float current, float max)

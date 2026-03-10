@@ -6,7 +6,6 @@ public class PlayerCombat : MonoBehaviour
     [Header("References")]
     public Transform attackPoint;
     public LayerMask enemyLayer;
-    public PlayerEquipment playerEquipment;
 
     [Header("Unarmed Attack")]
     public float unarmedDamage = 10f;
@@ -22,28 +21,49 @@ public class PlayerCombat : MonoBehaviour
     private InputActions inputActions;
     private float lastAttackTime = -999f;
 
+    // משתנים מקומיים מסונכרנים
+    private GameState currentGameState;
+    private bool hasWeaponEquipped;
+
     private void Awake()
     {
         inputActions = new InputActions();
-
-        if (playerEquipment == null)
-            playerEquipment = GetComponent<PlayerEquipment>();
-
-        if (attackPoint == null)
-            attackPoint = transform;
+        if (attackPoint == null) attackPoint = transform;
     }
 
     private void OnEnable()
     {
         inputActions.Player.Enable();
         inputActions.Player.Attack.performed += OnAttackPerformed;
+
+        // רישום לאירועים גלובליים
+        GameEvents.OnStateChanged += HandleStateChanged;
+
+        // סנכרון מול מערכת הציוד
+        if (PlayerEquipment.Instance != null)
+        {
+            PlayerEquipment.Instance.OnWeaponEquipped += HandleWeaponChanged;
+            hasWeaponEquipped = PlayerEquipment.Instance.HasWeaponEquipped();
+        }
+
+        // עדכון מצב משחק ראשוני
+        if (GameEvents.RequestCurrentGameState != null)
+            currentGameState = GameEvents.RequestCurrentGameState();
     }
 
     private void OnDisable()
     {
         inputActions.Player.Attack.performed -= OnAttackPerformed;
         inputActions.Player.Disable();
+
+        GameEvents.OnStateChanged -= HandleStateChanged;
+
+        if (PlayerEquipment.Instance != null)
+            PlayerEquipment.Instance.OnWeaponEquipped -= HandleWeaponChanged;
     }
+
+    private void HandleStateChanged(GameState newState) => currentGameState = newState;
+    private void HandleWeaponChanged(InventoryItemData weapon) => hasWeaponEquipped = (weapon != null);
 
     private void OnAttackPerformed(InputAction.CallbackContext context)
     {
@@ -52,23 +72,24 @@ public class PlayerCombat : MonoBehaviour
 
     private void TryAttack()
     {
-        if (GameStateManager.Instance != null &&
-            GameStateManager.Instance.CurrentState != GameState.Playing)
-            return;
+        // בדיקת תקינות מצב משחק
+        if (currentGameState != GameState.Playing) return;
 
-        if (Time.time < lastAttackTime + attackCooldown)
-            return;
+        // Cooldown
+        if (Time.time < lastAttackTime + attackCooldown) return;
 
         lastAttackTime = Time.time;
 
-        bool hasWeapon = playerEquipment != null && playerEquipment.HasWeaponEquipped();
-        float damage = hasWeapon ? weaponDamage : unarmedDamage;
-        float range = hasWeapon ? weaponRange : unarmedRange;
+        // קביעת נתונים לפי המשתנה המקומי המסונכרן
+        float damage = hasWeaponEquipped ? weaponDamage : unarmedDamage;
+        float range = hasWeaponEquipped ? weaponRange : unarmedRange;
 
-        Debug.Log(hasWeapon
-            ? $"Weapon attack! Damage: {damage}, Range: {range}"
-            : $"Unarmed attack! Damage: {damage}, Range: {range}");
+        PerformAttackOverlap(damage, range);
+    }
 
+    private void PerformAttackOverlap(float damage, float range)
+    {
+        // חישוב מיקום ה-Box לפני השחקן
         Vector3 center = attackPoint.position + transform.forward * range * 0.5f;
         Vector3 halfExtents = new Vector3(0.7f, 1f, range * 0.5f);
 
@@ -79,16 +100,10 @@ public class PlayerCombat : MonoBehaviour
             enemyLayer
         );
 
-        Debug.Log("Hits found: " + hits.Length);
-
         foreach (Collider hit in hits)
         {
-            EnemyHealth enemy = hit.GetComponentInParent<EnemyHealth>();
-            if (enemy != null)
-            {
-                Debug.Log("Sending hit event to: " + enemy.gameObject.name);
-                GameEvents.OnEnemyHit?.Invoke(enemy.gameObject, damage);
-            }
+            // שליחת אירוע נזק - ה-EnemyHealth יקבל אותו
+            GameEvents.OnEnemyHit?.Invoke(hit.gameObject, damage);
         }
     }
 
@@ -96,9 +111,7 @@ public class PlayerCombat : MonoBehaviour
     {
         if (attackPoint == null) attackPoint = transform;
 
-        bool hasWeapon = playerEquipment != null && playerEquipment.HasWeaponEquipped();
-        float range = hasWeapon ? weaponRange : unarmedRange;
-
+        float range = hasWeaponEquipped ? weaponRange : unarmedRange;
         Vector3 center = attackPoint.position + transform.forward * range * 0.5f;
         Vector3 halfExtents = new Vector3(0.7f, 1f, range * 0.5f);
 

@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using TMPro; // ✅ בשביל TMP_Text
+using TMPro;
 
 public class InventoryUIController : MonoBehaviour
 {
     [Header("UI References")]
-    public GameObject panel;                  // InventoryPanel
-    public Transform contentParent;           // ScrollView/Viewport/Content
-    public InventorySlotUI slotPrefab;        // Prefab של סלוט
+    public GameObject panel;
+    public Transform contentParent;
+    public InventorySlotUI slotPrefab;
 
     [Header("Fixed Slots Settings")]
     public int slotCount = 100;
@@ -16,64 +16,57 @@ public class InventoryUIController : MonoBehaviour
     [Header("Runtime Data")]
     public PlayerInventory inventory;
     private ItemCategory? selectedCategory = null;
+    private GameState currentGameState;
 
     [Header("Puzzle Settings")]
-    public string puzzleItemId = "Item_Puzzle_Door01"; // ה-ID המדויק של הפריט
+    public string puzzleItemId = "Item_Puzzle_Door01";
     public GameObject puzzlePanel;
 
     [Header("Quests Settings")]
     public GameObject questPanel;
-    public TMP_Text questDescriptionText;     // ✅ זה היה חסר!
-
-    [Header("Equipment")]
-    public PlayerEquipment playerEquipment;
+    public TMP_Text questDescriptionText;
 
     private readonly List<InventorySlotUI> slotUIs = new();
 
+    private void OnEnable()
+    {
+        GameEvents.OnInventoryChanged += Refresh;
+        GameEvents.OnStateChanged += HandleStateChanged;
+        GameEvents.OnItemClicked += OnSlotClicked; // ה-UI מאזין לעצמו כדי לנהל פאנלים פנימיים
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnInventoryChanged -= Refresh;
+        GameEvents.OnStateChanged -= HandleStateChanged;
+        GameEvents.OnItemClicked -= OnSlotClicked;
+    }
+
     private void Start()
     {
-        if (inventory == null)
-            inventory = FindFirstObjectByType<PlayerInventory>();
-
-        if (playerEquipment == null)
-            playerEquipment = FindFirstObjectByType<PlayerEquipment>();
-
-        GameEvents.OnInventoryChanged += Refresh;
-
+        if (inventory == null) inventory = FindFirstObjectByType<PlayerInventory>();
         BuildFixedSlots();
-
         if (panel != null) panel.SetActive(false);
         Refresh();
     }
 
-    private void OnDestroy()
-    {
-        GameEvents.OnInventoryChanged -= Refresh;
-
-        foreach (var ui in slotUIs)
-        {
-            if (ui != null) ui.Clicked -= OnSlotClicked;
-        }
-    }
+    private void HandleStateChanged(GameState newState) => currentGameState = newState;
 
     public void SetCategory(int categoryIndex)
     {
-        if (categoryIndex == -1)
-            selectedCategory = null;
-        else
-            selectedCategory = (ItemCategory)categoryIndex;
-
+        selectedCategory = (categoryIndex == -1) ? null : (ItemCategory)categoryIndex;
         Refresh();
     }
 
     public void Toggle()
     {
-        if (GameStateManager.Instance.CurrentState != GameState.Playing &&
-            GameStateManager.Instance.CurrentState != GameState.Inventory) return;
+        if (currentGameState != GameState.Playing && currentGameState != GameState.Inventory) return;
 
         bool isActive = !panel.activeSelf;
         panel.SetActive(isActive);
-        GameStateManager.Instance.SetState(isActive ? GameState.Inventory : GameState.Playing);
+
+        // שליחת בקשה לשינוי מצב במקום גישה ישירה ל-Instance
+        GameEvents.RequestStateChange?.Invoke(isActive ? GameState.Inventory : GameState.Playing);
 
         if (isActive) Refresh();
     }
@@ -81,24 +74,14 @@ public class InventoryUIController : MonoBehaviour
     private void BuildFixedSlots()
     {
         slotUIs.Clear();
-
         for (int i = contentParent.childCount - 1; i >= 0; i--)
-        {
             DestroyImmediate(contentParent.GetChild(i).gameObject);
-        }
-
-        if (slotPrefab == null)
-        {
-            Debug.LogError("Slot Prefab is missing on InventoryUIController!");
-            return;
-        }
 
         for (int i = 0; i < slotCount; i++)
         {
             var ui = Instantiate(slotPrefab, contentParent);
             ui.Set(null, 0);
             ui.gameObject.SetActive(false);
-            ui.Clicked += OnSlotClicked;
             slotUIs.Add(ui);
         }
     }
@@ -107,11 +90,7 @@ public class InventoryUIController : MonoBehaviour
     {
         if (inventory == null) return;
 
-        for (int i = 0; i < slotUIs.Count; i++)
-        {
-            if (slotUIs[i] != null)
-                slotUIs[i].gameObject.SetActive(false);
-        }
+        foreach (var slot in slotUIs) slot.gameObject.SetActive(false);
 
         var filteredItems = inventory.Slots
             .Where(s => s.item != null && (!selectedCategory.HasValue || s.item.category == selectedCategory.Value))
@@ -119,108 +98,44 @@ public class InventoryUIController : MonoBehaviour
 
         for (int i = 0; i < filteredItems.Count && i < slotUIs.Count; i++)
         {
-            if (slotUIs[i] != null)
-            {
-                slotUIs[i].gameObject.SetActive(true);
-                slotUIs[i].Set(filteredItems[i].item, filteredItems[i].amount);
-            }
+            slotUIs[i].gameObject.SetActive(true);
+            slotUIs[i].Set(filteredItems[i].item, filteredItems[i].amount);
         }
     }
 
     private void OnSlotClicked(InventoryItemData item)
     {
-        if (item == null)
-        {
-            Debug.Log("CLICKED SLOT! item is NULL (empty slot)");
-            return;
-        }
+        if (item == null) return;
 
-        Debug.Log($"CLICKED SLOT! ItemId: {item.itemId} | Category: {item.category}");
-
-        // ✅ Weapon
-        if (item.category == ItemCategory.Weapon)
-        {
-            Debug.Log("THIS IS A WEAPON!");
-
-            if (playerEquipment != null)
-            {
-                if (playerEquipment.EquippedWeapon == item)
-                {
-                    Debug.Log("WEAPON ALREADY EQUIPPED -> UNEQUIP");
-                    playerEquipment.UnequipWeapon();
-                }
-                else
-                {
-                    Debug.Log("EQUIP / SWITCH WEAPON");
-                    playerEquipment.EquipWeapon(item);
-                }
-            }
-            else
-            {
-                Debug.LogWarning("playerEquipment is NULL");
-            }
-
-            return;
-        }
-
-        // ✅ Quest
+        // טיפול בפאנלים פנימיים של ה-UI
         if (item.category == ItemCategory.Quest)
         {
-            Debug.Log("THIS IS A QUEST!");
-
             if (questPanel != null)
             {
                 questPanel.SetActive(true);
                 questPanel.transform.SetAsLastSibling();
-
-                if (questDescriptionText != null)
-                    questDescriptionText.text = item.description;
+                if (questDescriptionText != null) questDescriptionText.text = item.description;
             }
-            else
-            {
-                Debug.LogWarning("questPanel is NULL (not assigned in inspector)");
-            }
-
-            return;
         }
-
-        // ✅ Puzzle
-        if (item.itemId == puzzleItemId)
+        else if (item.itemId == puzzleItemId)
         {
-            Debug.Log("THIS IS A PUZZLE ITEM!");
-
             if (puzzlePanel != null)
             {
                 puzzlePanel.SetActive(true);
                 puzzlePanel.transform.SetAsLastSibling();
             }
-            else
-            {
-                Debug.LogWarning("puzzlePanel is NULL (not assigned in inspector)");
-            }
-
-            return;
         }
-
-        Debug.Log("NOT QUEST, NOT PUZZLE, AND NOT WEAPON");
+        // שים לב: אין כאן טיפול בנשק! ה-PlayerEquipment יטפל בזה.
     }
+
     public void CloseSpecificPuzzle()
     {
-        if (puzzlePanel != null)
-        {
-            puzzlePanel.SetActive(false);
-
-            if (GameStateManager.Instance != null)
-                GameStateManager.Instance.SetState(GameState.Playing);
-        }
+        if (puzzlePanel != null) puzzlePanel.SetActive(false);
+        GameEvents.RequestStateChange?.Invoke(GameState.Playing);
     }
 
     public void CloseQuestPanel()
     {
-        if (questPanel != null)
-            questPanel.SetActive(false);
-
-        if (GameStateManager.Instance != null)
-            GameStateManager.Instance.SetState(GameState.Inventory);
+        if (questPanel != null) questPanel.SetActive(false);
     }
 }

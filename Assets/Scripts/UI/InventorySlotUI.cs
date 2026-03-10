@@ -9,7 +9,6 @@ public class InventorySlotUI : MonoBehaviour
     public TextMeshProUGUI amountText;
     public Button button;
 
-    public event Action<InventoryItemData> Clicked;
 
     private InventoryItemData item;
 
@@ -27,7 +26,8 @@ public class InventorySlotUI : MonoBehaviour
 
     private void OnButtonClicked()
     {
-        if (item != null) Clicked?.Invoke(item);
+        if (item != null)
+            GameEvents.OnItemClicked?.Invoke(item);
     }
 
     public void Set(InventoryItemData newItem, int amount)
