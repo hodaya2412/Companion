@@ -91,6 +91,8 @@ public class OrderPuzzleManager : MonoBehaviour
         GameStateManager.Instance.SetState(GameState.Choice);
         currentTimer = puzzleDuration;
         isTimerRunning = true;
+
+        GameEvents.OnPuzzleOpened?.Invoke(puzzleID);
     }
 
     public void ClosePuzzle()
