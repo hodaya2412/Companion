@@ -24,6 +24,8 @@ public static class GameEvents
 
     public static Func<GameState> RequestCurrentGameState;
     public static Func<string, bool> RequestFlagState;
-
     public static Action<string> OnPuzzleOpened;
+
+    public static Action<GameObject, float> OnEnemyHit;
+    public static Action<float> OnPlayerHit;
 }

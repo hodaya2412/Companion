@@ -25,14 +25,18 @@ public class InventoryUIController : MonoBehaviour
     public GameObject questPanel;
     public TMP_Text questDescriptionText;     // ✅ זה היה חסר!
 
+    [Header("Equipment")]
+    public PlayerEquipment playerEquipment;
+
     private readonly List<InventorySlotUI> slotUIs = new();
 
     private void Start()
     {
-        // ⚠️ PlayerInventory הוא ScriptableObject - עדיף לגרור באינספקטור.
-        // משאיר כמו שלך, אבל אם זה עושה בעיות תגידי לי ונחליף.
         if (inventory == null)
             inventory = FindFirstObjectByType<PlayerInventory>();
+
+        if (playerEquipment == null)
+            playerEquipment = FindFirstObjectByType<PlayerEquipment>();
 
         GameEvents.OnInventoryChanged += Refresh;
 
@@ -133,6 +137,32 @@ public class InventoryUIController : MonoBehaviour
 
         Debug.Log($"CLICKED SLOT! ItemId: {item.itemId} | Category: {item.category}");
 
+        // ✅ Weapon
+        if (item.category == ItemCategory.Weapon)
+        {
+            Debug.Log("THIS IS A WEAPON!");
+
+            if (playerEquipment != null)
+            {
+                if (playerEquipment.EquippedWeapon == item)
+                {
+                    Debug.Log("WEAPON ALREADY EQUIPPED -> UNEQUIP");
+                    playerEquipment.UnequipWeapon();
+                }
+                else
+                {
+                    Debug.Log("EQUIP / SWITCH WEAPON");
+                    playerEquipment.EquipWeapon(item);
+                }
+            }
+            else
+            {
+                Debug.LogWarning("playerEquipment is NULL");
+            }
+
+            return;
+        }
+
         // ✅ Quest
         if (item.category == ItemCategory.Quest)
         {
@@ -172,7 +202,7 @@ public class InventoryUIController : MonoBehaviour
             return;
         }
 
-        Debug.Log("NOT QUEST AND NOT PUZZLE (no matching rule)");
+        Debug.Log("NOT QUEST, NOT PUZZLE, AND NOT WEAPON");
     }
     public void CloseSpecificPuzzle()
     {
