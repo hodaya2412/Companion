@@ -91,6 +91,6 @@ MonoBehaviour:
     text: " If you\u2019re lucky\u2026 they\u2019ll underestimate you.  If you\u2019re
       smart\u2026 you\u2019ll let them. "
     portrait: {fileID: 0}
-  endEvents: []
   endActions:
   - {fileID: 11400000, guid: 05a395f0006c8ea4ba515394b5bf3e49, type: 2}
+  - {fileID: 11400000, guid: 496bc5954a493da42af7b184eb8c1442, type: 2}

@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95847929271290341bb73bbda3eeeffc, type: 3}
+  m_Name: Gorg_FoundBookEarly_Dialogue
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueAsset
+  dialogueId: 
+  lines:
+  - speaker: Goerge
+    text: Oh! You found my book! Thank you. Do you need help with something?
+    portrait: {fileID: 0}
+  - speaker: Ran
+    text: Yes, I'm looking for a golden key. Do you know where I might find it?
+    portrait: {fileID: 0}
+  - speaker: Goerge
+    text: Deep within the forest, there is a dragon. Rumor has it that he guards
+      a magical golden key there.
+    portrait: {fileID: 0}
+  - speaker: Goerge
+    text: "But be careful\u2026 every person who has gone there has never returned."
+    portrait: {fileID: 0}
+  endActions:
+  - {fileID: 11400000, guid: 5fa9aecefa0eb2d4799427df259522d0, type: 2}
+  - {fileID: 11400000, guid: 7e26470f924d76a4a868f4562e37981d, type: 2}
