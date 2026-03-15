@@ -329,7 +329,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProximityInteract
   worldItemId: AncientBook
-  requiredFlag: Forest_PuzzleSolved
+  requiredFlag: Forest_BookAccessible
   radius: 5
 --- !u!114 &45347820
 MonoBehaviour:
@@ -499,7 +499,19 @@ MonoBehaviour:
       m_Calls: []
   OnDied:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 479146378}
+        m_TargetAssemblyTypeName: EnemyGroupDefeatFlag, Assembly-CSharp
+        m_MethodName: OnEnemyDied
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!65 &78343995
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1297,7 +1309,6 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 64
-  playerEquipment: {fileID: 270215616}
   unarmedDamage: 10
   unarmedRange: 1.5
   weaponDamage: 25
@@ -2166,7 +2177,19 @@ MonoBehaviour:
       m_Calls: []
   OnDied:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 479146378}
+        m_TargetAssemblyTypeName: EnemyGroupDefeatFlag, Assembly-CSharp
+        m_MethodName: OnEnemyDied
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!65 &429557924
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2298,6 +2321,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 479146377}
+  - component: {fileID: 479146378}
   m_Layer: 0
   m_Name: BanditGroup
   m_TagString: Untagged
@@ -2328,6 +2352,21 @@ Transform:
   - {fileID: 247101682}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &479146378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 479146376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43d116bf3443c4842ad6f5488d40b0dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyGroupDefeatFlag
+  totalEnemies: 4
+  flagToSet: Forest_BookAccessible
+  setOnlyOnce: 1
 --- !u!1 &501105937
 GameObject:
   m_ObjectHideFlags: 0
@@ -2656,7 +2695,19 @@ MonoBehaviour:
       m_Calls: []
   OnDied:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 479146378}
+        m_TargetAssemblyTypeName: EnemyGroupDefeatFlag, Assembly-CSharp
+        m_MethodName: OnEnemyDied
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!65 &634785572
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4205,7 +4256,19 @@ MonoBehaviour:
       m_Calls: []
   OnDied:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 479146378}
+        m_TargetAssemblyTypeName: EnemyGroupDefeatFlag, Assembly-CSharp
+        m_MethodName: OnEnemyDied
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!65 &1076918627
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4517,6 +4580,7 @@ MonoBehaviour:
   - {fileID: 478311560}
   onWinActions:
   - {fileID: 11400000, guid: b0bc8a4602ef2b1429451c158ac55ec0, type: 2}
+  - {fileID: 11400000, guid: c889ed144bd9bf740be2a430a2d63b93, type: 2}
 --- !u!4 &1254643587
 Transform:
   m_ObjectHideFlags: 0
