@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -18,7 +16,6 @@ public class PlayerHealth : MonoBehaviour
     [Tooltip("אם את רוצה שהרגנרציה תעבוד רק מעל 0")]
     public bool regenOnlyIfAlive = true;
 
-
     private float lastDamageTime;
 
     private void Awake()
@@ -27,9 +24,30 @@ public class PlayerHealth : MonoBehaviour
         lastDamageTime = -999f;
     }
 
+    private void OnEnable()
+    {
+        GameEvents.OnPlayerHit += HandlePlayerHit;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnPlayerHit -= HandlePlayerHit;
+    }
+
+    private void Start()
+    {
+        GameEvents.OnHealthChanged?.Invoke(currentHealth, maxHealth);
+    }
+
     private void Update()
     {
         HandleRegen();
+    }
+
+    private void HandlePlayerHit(float damage)
+    {
+        Debug.Log("PLAYER RECEIVED HIT EVENT: " + damage);
+        TakeDamage(damage);
     }
 
     private void HandleRegen()
@@ -42,8 +60,7 @@ public class PlayerHealth : MonoBehaviour
             {
                 currentHealth += regenRate * Time.deltaTime;
                 currentHealth = Mathf.Min(currentHealth, maxHealth);
-
-              GameEvents.OnHealthChanged?.Invoke(currentHealth, maxHealth);
+                GameEvents.OnHealthChanged?.Invoke(currentHealth, maxHealth);
             }
         }
     }
@@ -54,6 +71,8 @@ public class PlayerHealth : MonoBehaviour
 
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+
+        Debug.Log($"Player took {damage} damage. Current HP: {currentHealth}/{maxHealth}");
 
         lastDamageTime = Time.time;
         GameEvents.OnHealthChanged?.Invoke(currentHealth, maxHealth);
