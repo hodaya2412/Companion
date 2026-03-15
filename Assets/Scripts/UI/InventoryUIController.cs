@@ -16,7 +16,9 @@ public class InventoryUIController : MonoBehaviour
     [Header("Runtime Data")]
     public PlayerInventory inventory;
     private ItemCategory? selectedCategory = null;
-    private GameState currentGameState;
+
+    private GameplayState currentGameplayState;
+    private UIState currentUIState;
 
     [Header("Puzzle Settings")]
     public string puzzleItemId = "Item_Puzzle_Door01";
@@ -31,26 +33,35 @@ public class InventoryUIController : MonoBehaviour
     private void OnEnable()
     {
         GameEvents.OnInventoryChanged += Refresh;
-        GameEvents.OnStateChanged += HandleStateChanged;
-        GameEvents.OnItemClicked += OnSlotClicked; // ה-UI מאזין לעצמו כדי לנהל פאנלים פנימיים
+        GameEvents.OnGameplayStateChanged += HandleGameplayStateChanged;
+        GameEvents.OnUIStateChanged += HandleUIStateChanged;
+        GameEvents.OnItemClicked += OnSlotClicked;
     }
 
     private void OnDisable()
     {
         GameEvents.OnInventoryChanged -= Refresh;
-        GameEvents.OnStateChanged -= HandleStateChanged;
+        GameEvents.OnGameplayStateChanged -= HandleGameplayStateChanged;
+        GameEvents.OnUIStateChanged -= HandleUIStateChanged;
         GameEvents.OnItemClicked -= OnSlotClicked;
     }
 
     private void Start()
     {
         if (inventory == null) inventory = FindFirstObjectByType<PlayerInventory>();
+
         BuildFixedSlots();
+
         if (panel != null) panel.SetActive(false);
+
+        currentGameplayState = GameEvents.RequestCurrentGameplayState?.Invoke() ?? GameplayState.Playing;
+        currentUIState = GameEvents.RequestCurrentUIState?.Invoke() ?? UIState.None;
+
         Refresh();
     }
 
-    private void HandleStateChanged(GameState newState) => currentGameState = newState;
+    private void HandleGameplayStateChanged(GameplayState newState) => currentGameplayState = newState;
+    private void HandleUIStateChanged(UIState newState) => currentUIState = newState;
 
     public void SetCategory(int categoryIndex)
     {
@@ -60,13 +71,21 @@ public class InventoryUIController : MonoBehaviour
 
     public void Toggle()
     {
-        if (currentGameState != GameState.Playing && currentGameState != GameState.Inventory) return;
+        bool gameplayAllowsInventory =
+            currentGameplayState == GameplayState.Playing ||
+            currentGameplayState == GameplayState.Combat;
+
+        bool uiAllowsInventory =
+            currentUIState == UIState.None ||
+            currentUIState == UIState.Inventory;
+
+        if (!gameplayAllowsInventory || !uiAllowsInventory)
+            return;
 
         bool isActive = !panel.activeSelf;
         panel.SetActive(isActive);
 
-        // שליחת בקשה לשינוי מצב במקום גישה ישירה ל-Instance
-        GameEvents.RequestStateChange?.Invoke(isActive ? GameState.Inventory : GameState.Playing);
+        GameEvents.RequestUIStateChange?.Invoke(isActive ? UIState.Inventory : UIState.None);
 
         if (isActive) Refresh();
     }
@@ -107,7 +126,6 @@ public class InventoryUIController : MonoBehaviour
     {
         if (item == null) return;
 
-        // טיפול בפאנלים פנימיים של ה-UI
         if (item.category == ItemCategory.Quest)
         {
             if (questPanel != null)
@@ -125,13 +143,12 @@ public class InventoryUIController : MonoBehaviour
                 puzzlePanel.transform.SetAsLastSibling();
             }
         }
-        // שים לב: אין כאן טיפול בנשק! ה-PlayerEquipment יטפל בזה.
     }
 
     public void CloseSpecificPuzzle()
     {
         if (puzzlePanel != null) puzzlePanel.SetActive(false);
-        GameEvents.RequestStateChange?.Invoke(GameState.Playing);
+        GameEvents.RequestUIStateChange?.Invoke(UIState.None);
     }
 
     public void CloseQuestPanel()

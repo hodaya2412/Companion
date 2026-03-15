@@ -10,12 +10,12 @@ public class DoorInteractable : MonoBehaviour
     private bool isOpen = false;
     private bool canOpenPuzzle = false;
 
-    void OnEnable()
+    private void OnEnable()
     {
         GameEvents.OnDialogueEvent += HandleDialogueEvent;
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         GameEvents.OnDialogueEvent -= HandleDialogueEvent;
     }
@@ -31,34 +31,44 @@ public class DoorInteractable : MonoBehaviour
         }
     }
 
-    void OnMouseDown()
+    private void OnMouseDown()
     {
-        if (GameStateManager.Instance.CurrentState != GameState.Playing)
-        {
-            return;
-        }
+        GameplayState gameplayState = GameEvents.RequestCurrentGameplayState?.Invoke() ?? GameplayState.Playing;
+        UIState uiState = GameEvents.RequestCurrentUIState?.Invoke() ?? UIState.None;
+
+        bool canInteract = gameplayState == GameplayState.Playing && uiState == UIState.None;
+        if (!canInteract) return;
 
         if (!canOpenPuzzle || isOpen) return;
 
         OpenPuzzle();
     }
 
-    void OpenPuzzle()
+    private void OpenPuzzle()
     {
         isOpen = true;
-        puzzlePanel.SetActive(true);
-        puzzlePanel.transform.SetAsLastSibling();
+
+        if (puzzlePanel != null)
+        {
+            puzzlePanel.SetActive(true);
+            puzzlePanel.transform.SetAsLastSibling();
+        }
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
+        GameEvents.RequestUIStateChange?.Invoke(UIState.Choice);
         onPuzzleOpened?.Invoke();
     }
 
     public void ClosePuzzle()
     {
         isOpen = false;
-        puzzlePanel.SetActive(false);
+
+        if (puzzlePanel != null)
+            puzzlePanel.SetActive(false);
+
+        GameEvents.RequestUIStateChange?.Invoke(UIState.None);
         onPuzzleClosed?.Invoke();
     }
 }

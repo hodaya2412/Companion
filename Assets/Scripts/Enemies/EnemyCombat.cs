@@ -14,18 +14,33 @@ public class EnemyCombat : MonoBehaviour
     public float maxAttackCooldown = 2f;
 
     private float nextAttackTime;
+    private GameplayState currentGameplayState;
+
+    private void OnEnable()
+    {
+        GameEvents.OnGameplayStateChanged += HandleGameplayStateChanged;
+        currentGameplayState = GameEvents.RequestCurrentGameplayState?.Invoke() ?? GameplayState.Playing;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnGameplayStateChanged -= HandleGameplayStateChanged;
+    }
 
     private void Start()
     {
         SetNextAttackTime();
     }
 
+    private void HandleGameplayStateChanged(GameplayState newState)
+    {
+        currentGameplayState = newState;
+    }
+
     private void Update()
     {
         if (playerTarget == null) return;
-        if (GameStateManager.Instance != null &&
-            GameStateManager.Instance.CurrentState != GameState.Playing)
-            return;
+        if (currentGameplayState != GameplayState.Combat) return;
 
         float distance = Vector3.Distance(transform.position, playerTarget.position);
 

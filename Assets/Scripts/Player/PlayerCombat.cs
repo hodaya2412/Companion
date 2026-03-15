@@ -21,8 +21,8 @@ public class PlayerCombat : MonoBehaviour
     private InputActions inputActions;
     private float lastAttackTime = -999f;
 
-    // משתנים מקומיים מסונכרנים
-    private GameState currentGameState;
+    private GameplayState currentGameplayState;
+    private UIState currentUIState;
     private bool hasWeaponEquipped;
 
     private void Awake()
@@ -36,19 +36,17 @@ public class PlayerCombat : MonoBehaviour
         inputActions.Player.Enable();
         inputActions.Player.Attack.performed += OnAttackPerformed;
 
-        // רישום לאירועים גלובליים
-        GameEvents.OnStateChanged += HandleStateChanged;
+        GameEvents.OnGameplayStateChanged += HandleGameplayStateChanged;
+        GameEvents.OnUIStateChanged += HandleUIStateChanged;
 
-        // סנכרון מול מערכת הציוד
         if (PlayerEquipment.Instance != null)
         {
             PlayerEquipment.Instance.OnWeaponEquipped += HandleWeaponChanged;
             hasWeaponEquipped = PlayerEquipment.Instance.HasWeaponEquipped();
         }
 
-        // עדכון מצב משחק ראשוני
-        if (GameEvents.RequestCurrentGameState != null)
-            currentGameState = GameEvents.RequestCurrentGameState();
+        currentGameplayState = GameEvents.RequestCurrentGameplayState?.Invoke() ?? GameplayState.Playing;
+        currentUIState = GameEvents.RequestCurrentUIState?.Invoke() ?? UIState.None;
     }
 
     private void OnDisable()
@@ -56,13 +54,15 @@ public class PlayerCombat : MonoBehaviour
         inputActions.Player.Attack.performed -= OnAttackPerformed;
         inputActions.Player.Disable();
 
-        GameEvents.OnStateChanged -= HandleStateChanged;
+        GameEvents.OnGameplayStateChanged -= HandleGameplayStateChanged;
+        GameEvents.OnUIStateChanged -= HandleUIStateChanged;
 
         if (PlayerEquipment.Instance != null)
             PlayerEquipment.Instance.OnWeaponEquipped -= HandleWeaponChanged;
     }
 
-    private void HandleStateChanged(GameState newState) => currentGameState = newState;
+    private void HandleGameplayStateChanged(GameplayState newState) => currentGameplayState = newState;
+    private void HandleUIStateChanged(UIState newState) => currentUIState = newState;
     private void HandleWeaponChanged(InventoryItemData weapon) => hasWeaponEquipped = (weapon != null);
 
     private void OnAttackPerformed(InputAction.CallbackContext context)
@@ -72,15 +72,21 @@ public class PlayerCombat : MonoBehaviour
 
     private void TryAttack()
     {
-        // בדיקת תקינות מצב משחק
-        if (currentGameState != GameState.Playing) return;
+        bool gameplayAllowsAttack =
+            currentGameplayState == GameplayState.Playing ||
+            currentGameplayState == GameplayState.Combat;
 
-        // Cooldown
+        bool uiBlocksAttack =
+            currentUIState == UIState.Dialogue ||
+            currentUIState == UIState.Map ||
+            currentUIState == UIState.Choice;
+
+        if (!gameplayAllowsAttack || uiBlocksAttack) return;
+
         if (Time.time < lastAttackTime + attackCooldown) return;
 
         lastAttackTime = Time.time;
 
-        // קביעת נתונים לפי המשתנה המקומי המסונכרן
         float damage = hasWeaponEquipped ? weaponDamage : unarmedDamage;
         float range = hasWeaponEquipped ? weaponRange : unarmedRange;
 
@@ -89,7 +95,6 @@ public class PlayerCombat : MonoBehaviour
 
     private void PerformAttackOverlap(float damage, float range)
     {
-        // חישוב מיקום ה-Box לפני השחקן
         Vector3 center = attackPoint.position + transform.forward * range * 0.5f;
         Vector3 halfExtents = new Vector3(0.7f, 1f, range * 0.5f);
 
@@ -102,7 +107,6 @@ public class PlayerCombat : MonoBehaviour
 
         foreach (Collider hit in hits)
         {
-            // שליחת אירוע נזק - ה-EnemyHealth יקבל אותו
             GameEvents.OnEnemyHit?.Invoke(hit.gameObject, damage);
         }
     }

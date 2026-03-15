@@ -22,6 +22,8 @@ public class EnemyGroupDefeatFlag : MonoBehaviour
             if (GameStateManager.Instance != null)
             {
                 GameStateManager.Instance.SetFlag(flagToSet, true);
+                GameEvents.RequestGameplayStateChange?.Invoke(GameplayState.Playing);
+
                 Debug.Log($"[EnemyGroupDefeatFlag] Flag set: {flagToSet} = true");
                 alreadySet = true;
             }

@@ -4,41 +4,62 @@ using UnityEngine.SceneManagement;
 public class MapUIController : MonoBehaviour
 {
     public GameObject mapPanel;
-    private GameState currentGameState;
 
-    void OnEnable()
+    private GameplayState currentGameplayState;
+    private UIState currentUIState;
+
+    private void Awake()
+    {
+        currentGameplayState = GameEvents.RequestCurrentGameplayState?.Invoke() ?? GameplayState.Playing;
+        currentUIState = GameEvents.RequestCurrentUIState?.Invoke() ?? UIState.None;
+    }
+
+    private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
-        // האזנה לעדכוני מצב משחק
-        GameEvents.OnStateChanged += HandleStateChanged;
+        GameEvents.OnGameplayStateChanged += HandleGameplayStateChanged;
+        GameEvents.OnUIStateChanged += HandleUIStateChanged;
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
-        GameEvents.OnStateChanged -= HandleStateChanged;
+        GameEvents.OnGameplayStateChanged -= HandleGameplayStateChanged;
+        GameEvents.OnUIStateChanged -= HandleUIStateChanged;
     }
 
-    private void HandleStateChanged(GameState newState) => currentGameState = newState;
-
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    private void HandleGameplayStateChanged(GameplayState newState)
     {
-        CloseMap();
+        currentGameplayState = newState;
+
+        if (newState == GameplayState.Combat && mapPanel != null && mapPanel.activeSelf)
+            CloseMapSilently();
+    }
+
+    private void HandleUIStateChanged(UIState newState)
+    {
+        currentUIState = newState;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        CloseMapSilently();
     }
 
     public void ToggleMap()
     {
         if (mapPanel == null) return;
 
-        // הגנה: אל תפתח מפה אם אנחנו בדיאלוג או במצב אחר שלא מאפשר זאת
-        if (currentGameState != GameState.Playing && currentGameState != GameState.Map) return;
+        bool gameplayAllowsMap = currentGameplayState == GameplayState.Playing;
+        bool uiAllowsMap = currentUIState == UIState.None || currentUIState == UIState.Map;
+
+        if (!gameplayAllowsMap || !uiAllowsMap)
+            return;
 
         bool shouldBeActive = !mapPanel.activeSelf;
         mapPanel.SetActive(shouldBeActive);
 
-        // שימוש ב-Events במקום ב-Instance
-        GameState nextState = shouldBeActive ? GameState.Map : GameState.Playing;
-        GameEvents.RequestStateChange?.Invoke(nextState);
+        GameEvents.RequestUIStateChange?.Invoke(shouldBeActive ? UIState.Map : UIState.None);
     }
 
     public void CloseMap()
@@ -46,6 +67,12 @@ public class MapUIController : MonoBehaviour
         if (mapPanel == null) return;
 
         mapPanel.SetActive(false);
-        GameEvents.RequestStateChange?.Invoke(GameState.Playing);
+        GameEvents.RequestUIStateChange?.Invoke(UIState.None);
+    }
+
+    private void CloseMapSilently()
+    {
+        if (mapPanel == null) return;
+        mapPanel.SetActive(false);
     }
 }

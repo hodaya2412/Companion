@@ -72,7 +72,7 @@ public class DialogueManager : MonoBehaviour
         index = 0;
 
         GameEvents.OnDialogueStarted?.Invoke();
-        GameStateManager.Instance.SetState(GameState.Dialogue);
+        GameEvents.RequestUIStateChange?.Invoke(UIState.Dialogue);
 
         if (panel != null)
             panel.SetActive(true);
@@ -98,7 +98,7 @@ public class DialogueManager : MonoBehaviour
         }
 
         GameEvents.OnDialogueEnded?.Invoke();
-        GameStateManager.Instance.SetState(GameState.Playing);
+        GameEvents.RequestUIStateChange?.Invoke(UIState.None);
 
         current = null;
         index = 0;

@@ -8,12 +8,13 @@ public class PlayerMovement : MonoBehaviour
     public float speed = 10f;
     public Transform cam;
 
-    [Header("Input System")]
     private InputActions inputAction;
-
     private Rigidbody rb;
     private bool canMove = true;
     private Vector3 moveInput;
+
+    private GameplayState currentGameplayState;
+    private UIState currentUIState;
 
     void Awake()
     {
@@ -34,9 +35,15 @@ public class PlayerMovement : MonoBehaviour
             inputAction.Player.Move.canceled += OnMove;
         }
 
-        GameEvents.OnStateChanged += HandleStateChanged;
+        GameEvents.OnGameplayStateChanged += HandleGameplayStateChanged;
+        GameEvents.OnUIStateChanged += HandleUIStateChanged;
         GameEvents.OnDialogueStarted += HandleDialogueStarted;
         GameEvents.OnDialogueEnded += HandleDialogueEnded;
+
+        currentGameplayState = GameEvents.RequestCurrentGameplayState?.Invoke() ?? GameplayState.Playing;
+        currentUIState = GameEvents.RequestCurrentUIState?.Invoke() ?? UIState.None;
+
+        RefreshMovementState();
     }
 
     void OnDisable()
@@ -48,24 +55,34 @@ public class PlayerMovement : MonoBehaviour
             inputAction.Player.Disable();
         }
 
-        GameEvents.OnStateChanged -= HandleStateChanged;
+        GameEvents.OnGameplayStateChanged -= HandleGameplayStateChanged;
+        GameEvents.OnUIStateChanged -= HandleUIStateChanged;
         GameEvents.OnDialogueStarted -= HandleDialogueStarted;
         GameEvents.OnDialogueEnded -= HandleDialogueEnded;
     }
 
-    private void HandleStateChanged(GameState state)
+    private void HandleGameplayStateChanged(GameplayState state)
     {
-        SetMovementEnabled(state == GameState.Playing);
+        currentGameplayState = state;
+        RefreshMovementState();
+    }
+
+    private void HandleUIStateChanged(UIState state)
+    {
+        currentUIState = state;
+        RefreshMovementState();
     }
 
     private void HandleDialogueStarted()
     {
-        SetMovementEnabled(false);
+        currentUIState = UIState.Dialogue;
+        RefreshMovementState();
     }
 
     private void HandleDialogueEnded()
     {
-        SetMovementEnabled(true);
+        currentUIState = UIState.None;
+        RefreshMovementState();
     }
 
     void OnMove(InputAction.CallbackContext ctx)
@@ -73,10 +90,19 @@ public class PlayerMovement : MonoBehaviour
         moveInput = ctx.ReadValue<Vector3>();
     }
 
-    public void SetMovementEnabled(bool enabled)
+    private void RefreshMovementState()
     {
-        GameState state = GameEvents.RequestCurrentGameState?.Invoke() ?? GameState.Playing;
-        canMove = (enabled && state == GameState.Playing) || state == GameState.BeingGuided;
+        bool gameplayAllowsMove =
+            currentGameplayState == GameplayState.Playing ||
+            currentGameplayState == GameplayState.Combat ||
+            currentGameplayState == GameplayState.BeingGuided;
+
+        bool uiBlocksMove =
+            currentUIState == UIState.Dialogue ||
+            currentUIState == UIState.Map ||
+            currentUIState == UIState.Choice;
+
+        canMove = gameplayAllowsMove && !uiBlocksMove;
 
         if (!canMove)
         {

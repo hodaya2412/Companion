@@ -49,8 +49,11 @@ public class NPCInteractable : MonoBehaviour
     {
         if (player == null) return;
 
-        GameState currentState = GameEvents.RequestCurrentGameState?.Invoke() ?? GameState.Playing;
-        if (currentState != GameState.Playing) return;
+        GameplayState gameplayState = GameEvents.RequestCurrentGameplayState?.Invoke() ?? GameplayState.Playing;
+        UIState uiState = GameEvents.RequestCurrentUIState?.Invoke() ?? UIState.None;
+
+        bool canInteract = gameplayState == GameplayState.Playing && uiState == UIState.None;
+        if (!canInteract) return;
 
         float dist = Vector3.Distance(transform.position, player.position);
         bool isClose = dist <= interactRange;
@@ -70,8 +73,12 @@ public class NPCInteractable : MonoBehaviour
 
         if (visualArrow != null)
         {
-            GameState currentState = GameEvents.RequestCurrentGameState?.Invoke() ?? GameState.Playing;
-            bool shouldShow = isClose && currentState == GameState.Playing;
+            GameplayState gameplayState = GameEvents.RequestCurrentGameplayState?.Invoke() ?? GameplayState.Playing;
+            UIState uiState = GameEvents.RequestCurrentUIState?.Invoke() ?? UIState.None;
+
+            bool shouldShow = isClose &&
+                              gameplayState == GameplayState.Playing &&
+                              uiState == UIState.None;
 
             if (visualArrow.activeSelf != shouldShow)
                 visualArrow.SetActive(shouldShow);

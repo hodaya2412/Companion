@@ -96,5 +96,7 @@ public class PlayerHealth : MonoBehaviour
     private void Die()
     {
         Debug.Log("Player Died");
+
+        GameEvents.RequestGameplayStateChange?.Invoke(GameplayState.Playing);
     }
 }

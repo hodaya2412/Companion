@@ -13,18 +13,17 @@ public class OrderPuzzleManager : MonoBehaviour
     public GameObject puzzlePanel;
     public Button checkButton;
     public Button closeButton;
-    public TMP_Text timerText; // הטיימר בתוך החידה
-    public TMP_Text worldCooldownText; // טקסט חדש: להראות לשחקן כמה זמן לחכות (אופציונלי)
+    public TMP_Text timerText;
+    public TMP_Text worldCooldownText;
 
     [Header("Puzzle Timing")]
     public float puzzleDuration = 60f;
-    public float baseCooldown = 120f; // 2 דקות בסיס
-    public float penaltyPerFailure = 30f; // תוספת של 30 שניות על כל טעות
+    public float baseCooldown = 120f;
+    public float penaltyPerFailure = 30f;
 
     private float currentTimer;
     private bool isTimerRunning;
 
-    // משתנים סטטיים כדי שישמרו בין פתיחות של הפאנל
     private static float nextAllowedAttemptTime = 0f;
     private static float currentPenaltyTotal = 0f;
 
@@ -35,8 +34,12 @@ public class OrderPuzzleManager : MonoBehaviour
     private void OnEnable()
     {
         GameEvents.OnPuzzleStoneClicked += HandlePuzzleTrigger;
-        if (checkButton != null) checkButton.onClick.AddListener(CheckSolution);
-        if (closeButton != null) closeButton.onClick.AddListener(ClosePuzzle);
+
+        if (checkButton != null)
+            checkButton.onClick.AddListener(CheckSolution);
+
+        if (closeButton != null)
+            closeButton.onClick.AddListener(ClosePuzzle);
     }
 
     private void OnDisable()
@@ -48,15 +51,13 @@ public class OrderPuzzleManager : MonoBehaviour
 
     private void Update()
     {
-        // 1. ניהול הטיימר בתוך החידה
         if (isTimerRunning)
         {
             currentTimer -= Time.deltaTime;
-            if (timerText != null) timerText.text = "Time Left: " + Mathf.Ceil(currentTimer).ToString();
+            if (timerText != null) timerText.text = "Time Left: " + Mathf.Ceil(currentTimer);
             if (currentTimer <= 0) FailPuzzle();
         }
 
-        // 2. עדכון זמן ההמתנה בעולם (אם השחקן ב-Cooldown)
         if (Time.time < nextAllowedAttemptTime && worldCooldownText != null)
         {
             float waitTime = nextAllowedAttemptTime - Time.time;
@@ -71,24 +72,23 @@ public class OrderPuzzleManager : MonoBehaviour
 
     private void HandlePuzzleTrigger(string triggeredID)
     {
-        if (triggeredID == puzzleID)
+        if (triggeredID != puzzleID) return;
+        if (GameStateManager.Instance.GetFlag(solvedFlag)) return;
+
+        if (Time.time < nextAllowedAttemptTime)
         {
-            if (GameStateManager.Instance.GetFlag(solvedFlag)) return;
-
-            if (Time.time < nextAllowedAttemptTime)
-            {
-                Debug.Log("Still in cooldown!");
-                return;
-            }
-
-            OpenPuzzle();
+            Debug.Log("Still in cooldown!");
+            return;
         }
+
+        OpenPuzzle();
     }
 
     public void OpenPuzzle()
     {
         puzzlePanel.SetActive(true);
-        GameStateManager.Instance.SetState(GameState.Choice);
+        GameEvents.RequestUIStateChange?.Invoke(UIState.Choice);
+
         currentTimer = puzzleDuration;
         isTimerRunning = true;
 
@@ -99,7 +99,7 @@ public class OrderPuzzleManager : MonoBehaviour
     {
         isTimerRunning = false;
         puzzlePanel.SetActive(false);
-        GameStateManager.Instance.SetState(GameState.Playing);
+        GameEvents.RequestUIStateChange?.Invoke(UIState.None);
     }
 
     private void CheckSolution()
@@ -117,7 +117,7 @@ public class OrderPuzzleManager : MonoBehaviour
         if (isCorrect)
         {
             isTimerRunning = false;
-            currentPenaltyTotal = 0; // איפוס הקנסות בהצלחה
+            currentPenaltyTotal = 0;
             ExecuteWin();
         }
         else
@@ -130,21 +130,26 @@ public class OrderPuzzleManager : MonoBehaviour
     {
         isTimerRunning = false;
 
-        // חישוב הקנס: זמן בסיס + (מספר טעויות * 30 שניות)
         float totalWait = baseCooldown + currentPenaltyTotal;
         nextAllowedAttemptTime = Time.time + totalWait;
-
-        // הוספת 30 שניות לקנס של הפעם הבאה
         currentPenaltyTotal += penaltyPerFailure;
 
-        ClosePuzzle();
+        puzzlePanel.SetActive(false);
+        GameEvents.RequestUIStateChange?.Invoke(UIState.None);
+
+        GameEvents.RequestGameplayStateChange?.Invoke(GameplayState.Combat);
         GameEvents.OnCombatTriggered?.Invoke();
     }
 
     private void ExecuteWin()
     {
+        currentPenaltyTotal = 0;
+
         foreach (var action in onWinActions)
             if (action != null) action.Execute();
+
+        GameEvents.RequestGameplayStateChange?.Invoke(GameplayState.Playing);
+
         ClosePuzzle();
     }
 }

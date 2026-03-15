@@ -17,12 +17,11 @@ public class CompanionGuideController : MonoBehaviour
     private DialogueAsset currentArrivalDialogue;
     private bool playedArrivalDialogue;
 
-    // 🔹 המפה של ID → Transform + Dialogue
     [Header("Scene Targets")]
     public List<GuideTargetMapping> targets = new List<GuideTargetMapping>();
     private Dictionary<GuideTargetID, GuideTargetMapping> targetDict;
 
-    void Awake()
+    private void Awake()
     {
         if (agent == null)
             agent = GetComponent<NavMeshAgent>();
@@ -31,11 +30,9 @@ public class CompanionGuideController : MonoBehaviour
         agent.autoBraking = true;
         agent.enabled = false;
 
-        // ✅ הגדרות למניעת מעבר דרך NPC
         agent.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
-        agent.radius = 0.5f; // תתאים לפי גודל ה‑Agent שלך
+        agent.radius = 0.5f;
 
-        // בניית Dictionary
         targetDict = new Dictionary<GuideTargetID, GuideTargetMapping>();
         foreach (var t in targets)
         {
@@ -44,17 +41,17 @@ public class CompanionGuideController : MonoBehaviour
         }
     }
 
-    void OnEnable()
+    private void OnEnable()
     {
         GameEvents.OnGuideRequested += StartGuiding;
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         GameEvents.OnGuideRequested -= StartGuiding;
     }
 
-    void Update()
+    private void Update()
     {
         if (!guiding) return;
 
@@ -78,8 +75,8 @@ public class CompanionGuideController : MonoBehaviour
             {
                 playedArrivalDialogue = true;
 
-                // ✅ שינוי מצב המשחק לדיאלוג Arrival
-                GameStateManager.Instance.SetState(GameState.Dialogue);
+                // עוברים ל-UI של דיאלוג
+                GameEvents.RequestUIStateChange?.Invoke(UIState.Dialogue);
 
                 // מתחילים את דיאלוג ההגעה
                 DialogueManager.Instance.StartDialogue(currentArrivalDialogue);
@@ -88,6 +85,10 @@ public class CompanionGuideController : MonoBehaviour
             guiding = false;
             waitingAtTarget = false;
             agent.enabled = false;
+
+            // חוזרים למצב עולם רגיל
+            GameEvents.RequestGameplayStateChange?.Invoke(GameplayState.Playing);
+
             GameEvents.OnCompanionFollowEnabled?.Invoke(true);
         }
     }
@@ -100,11 +101,13 @@ public class CompanionGuideController : MonoBehaviour
             return;
         }
 
-        // ✅ משתמשים בדיאלוג הייחודי של היעד
         currentArrivalDialogue = mapping.arrivalDialogue;
         playedArrivalDialogue = false;
 
         GameEvents.OnCompanionFollowEnabled?.Invoke(false);
+
+        // מצב עולם: BeingGuided
+        GameEvents.RequestGameplayStateChange?.Invoke(GameplayState.BeingGuided);
 
         agent.enabled = true;
         agent.isStopped = false;
@@ -115,28 +118,29 @@ public class CompanionGuideController : MonoBehaviour
         agent.SetDestination(mapping.target.position);
     }
 
-    bool HasArrived()
+    private bool HasArrived()
     {
         if (!agent.enabled) return false;
-        if (!agent.isOnNavMesh) return false; // ✅ תוספת
+        if (!agent.isOnNavMesh) return false;
         if (agent.pathPending) return false;
+
         return agent.remainingDistance <= agent.stoppingDistance + 0.05f;
     }
 
-    void StopAgent()
+    private void StopAgent()
     {
         if (!agent.enabled) return;
+
         agent.isStopped = true;
         agent.ResetPath();
         agent.velocity = Vector3.zero;
     }
 }
 
-// 🔹 Struct ליצירת המפה ב‑Inspector עם דיאלוג Arrival ייחודי
 [System.Serializable]
 public class GuideTargetMapping
 {
     public GuideTargetID id;
     public Transform target;
-    public DialogueAsset arrivalDialogue; // דיאלוג ייחודי ליעד
+    public DialogueAsset arrivalDialogue;
 }

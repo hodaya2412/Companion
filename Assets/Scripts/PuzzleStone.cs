@@ -2,19 +2,24 @@ using UnityEngine;
 
 public class PuzzleStone : MonoBehaviour
 {
-  
-        public string puzzleID = "ForestStones";
-        public string solvedFlag = "Forest_PuzzleSolved"; // הדגל שבודק אם כבר פתרנו
+    public string puzzleID = "ForestStones";
+    public string solvedFlag = "Forest_PuzzleSolved";
 
-        private void OnMouseDown()
+    private void OnMouseDown()
+    {
+        if (GameStateManager.Instance != null && GameStateManager.Instance.GetFlag(solvedFlag))
+            return;
+
+        GameplayState gameplayState = GameEvents.RequestCurrentGameplayState?.Invoke() ?? GameplayState.Playing;
+        UIState uiState = GameEvents.RequestCurrentUIState?.Invoke() ?? UIState.None;
+
+        bool canOpenPuzzle =
+            (gameplayState == GameplayState.Playing || gameplayState == GameplayState.Combat) &&
+            uiState == UIState.None;
+
+        if (canOpenPuzzle)
         {
-            // 1. בדיקה אם כבר פתרנו - אם כן, החידה לא נפתחת שוב
-            if (GameStateManager.Instance.GetFlag(solvedFlag)) return;
-
-            // 2. פתיחת החידה דרך האירוע
-            if (GameStateManager.Instance.CurrentState == GameState.Playing)
-            {
-                GameEvents.OnPuzzleStoneClicked?.Invoke(puzzleID);
-            }
+            GameEvents.OnPuzzleStoneClicked?.Invoke(puzzleID);
         }
+    }
 }

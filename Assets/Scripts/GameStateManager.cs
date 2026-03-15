@@ -2,13 +2,19 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public enum GameState
+public enum GameplayState
 {
     Playing,
+    Combat,
+    BeingGuided
+}
+
+public enum UIState
+{
+    None,
     Dialogue,
     Inventory,
     Map,
-    BeingGuided,
     Choice
 }
 
@@ -16,13 +22,13 @@ public class GameStateManager : MonoBehaviour
 {
     public static GameStateManager Instance { get; private set; }
 
-    public GameState CurrentState { get; private set; } = GameState.Playing;
+    public GameplayState CurrentGameplayState { get; private set; } = GameplayState.Playing;
+    public UIState CurrentUIState { get; private set; } = UIState.None;
 
     private readonly HashSet<string> gameFlags = new HashSet<string>();
 
     private void Awake()
     {
-        // Singleton Pattern
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -30,28 +36,29 @@ public class GameStateManager : MonoBehaviour
         }
 
         Instance = this;
-        // מונע מהמנהל להימחק במעבר בין סצנות אם תרצה לשמור על Flags
-        // DontDestroyOnLoad(gameObject); 
-
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void OnEnable()
     {
-        // רישום לאירועים ובקשות
-        GameEvents.RequestCurrentGameState += GetCurrentState;
-        GameEvents.RequestFlagState += GetFlag;
+        GameEvents.RequestCurrentGameplayState += GetCurrentGameplayState;
+        GameEvents.RequestCurrentUIState += GetCurrentUIState;
 
-        // הוספנו: האזנה לבקשת שינוי מצב מאירועים חיצוניים
-        GameEvents.RequestStateChange += SetState;
+        GameEvents.RequestGameplayStateChange += SetGameplayState;
+        GameEvents.RequestUIStateChange += SetUIState;
+
+        GameEvents.RequestFlagState += GetFlag;
     }
 
     private void OnDisable()
     {
-        // ניקוי רישומים למניעת דליפות זיכרון
-        GameEvents.RequestCurrentGameState -= GetCurrentState;
+        GameEvents.RequestCurrentGameplayState -= GetCurrentGameplayState;
+        GameEvents.RequestCurrentUIState -= GetCurrentUIState;
+
+        GameEvents.RequestGameplayStateChange -= SetGameplayState;
+        GameEvents.RequestUIStateChange -= SetUIState;
+
         GameEvents.RequestFlagState -= GetFlag;
-        GameEvents.RequestStateChange -= SetState;
     }
 
     private void OnDestroy()
@@ -65,26 +72,29 @@ public class GameStateManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // איפוס מצב בכל טעינת סצנה חדשה
-        SetState(GameState.Playing);
+        SetUIState(UIState.None);
+        SetGameplayState(GameplayState.Playing);
     }
 
-    /// <summary>
-    /// משנה את מצב המשחק ומפיץ אירוע לכל מי שמקשיב
-    /// </summary>
-    public void SetState(GameState newState)
+    public void SetGameplayState(GameplayState newState)
     {
-        if (CurrentState == newState) return;
+        if (CurrentGameplayState == newState) return;
 
-        CurrentState = newState;
+        CurrentGameplayState = newState;
+        GameEvents.OnGameplayStateChanged?.Invoke(CurrentGameplayState);
 
-        // שליחת עדכון לכל מי שמאזין (כמו InventoryUI או PlayerController)
-        GameEvents.OnStateChanged?.Invoke(CurrentState);
-
-        Debug.Log($"[GameStateManager] State changed to: {CurrentState}");
+        Debug.Log($"[GameStateManager] GameplayState changed to: {CurrentGameplayState}");
     }
 
-    #region Flag Management
+    public void SetUIState(UIState newState)
+    {
+        if (CurrentUIState == newState) return;
+
+        CurrentUIState = newState;
+        GameEvents.OnUIStateChanged?.Invoke(CurrentUIState);
+
+        Debug.Log($"[GameStateManager] UIState changed to: {CurrentUIState}");
+    }
 
     public bool GetFlag(string key)
     {
@@ -93,10 +103,8 @@ public class GameStateManager : MonoBehaviour
 
     public void SetFlag(string key, bool value = true)
     {
-        if (value)
-            gameFlags.Add(key);
-        else
-            gameFlags.Remove(key);
+        if (value) gameFlags.Add(key);
+        else gameFlags.Remove(key);
 
         GameEvents.OnFlagChanged?.Invoke(key, value);
         Debug.Log($"[GameStateManager] Flag '{key}' set to {value}");
@@ -105,9 +113,7 @@ public class GameStateManager : MonoBehaviour
     public void ResetFlag(string key)
     {
         if (gameFlags.Remove(key))
-        {
             GameEvents.OnFlagChanged?.Invoke(key, false);
-        }
     }
 
     public bool CheckFlag(string key, bool expectedValue = true)
@@ -115,10 +121,6 @@ public class GameStateManager : MonoBehaviour
         return GetFlag(key) == expectedValue;
     }
 
-    #endregion
-
-    private GameState GetCurrentState()
-    {
-        return CurrentState;
-    }
+    private GameplayState GetCurrentGameplayState() => CurrentGameplayState;
+    private UIState GetCurrentUIState() => CurrentUIState;
 }

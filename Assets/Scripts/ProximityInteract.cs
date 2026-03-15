@@ -11,13 +11,10 @@ public class ProximityInteract : MonoBehaviour
     public float radius = 4f;
 
     private Transform player;
-
-    // רפרנס למחלקה שיוניטי יצרה (שני את השם למה שמופיע אצלך בקובץ)
     private InputActions inputActions;
 
     private void Awake()
     {
-        // יצירת מופע חדש של המקשים
         inputActions = new InputActions();
 
         var p = GameObject.FindGameObjectWithTag("Player");
@@ -26,15 +23,12 @@ public class ProximityInteract : MonoBehaviour
 
     private void OnEnable()
     {
-        // הפעלת מפת האינוונטורי ורישום לפעולת ה-PickUp
-        // ודאי שהשמות Inventory ו-PickUp זהים למה שכתבת ב-Action Map
         inputActions.Inventory.Enable();
         inputActions.Inventory.PickUp.performed += OnInteractPerformed;
     }
 
     private void OnDisable()
     {
-        // כיבוי והסרת רישום למניעת שגיאות
         inputActions.Inventory.PickUp.performed -= OnInteractPerformed;
         inputActions.Inventory.Disable();
     }
@@ -44,8 +38,6 @@ public class ProximityInteract : MonoBehaviour
         if (player == null) return;
 
         float distance = Vector3.Distance(transform.position, player.position);
-
-        // דיבאג לבדיקה
         Debug.Log($"[Direct Input] Pressed E. Distance to {worldItemId}: {distance}");
 
         if (distance <= radius)
@@ -69,6 +61,8 @@ public class ProximityInteract : MonoBehaviour
         else
         {
             Debug.Log("<color=red>[ALERT]</color> Puzzle NOT solved! Combat Triggered.");
+
+            GameEvents.RequestGameplayStateChange?.Invoke(GameplayState.Combat);
             GameEvents.OnCombatTriggered?.Invoke();
         }
     }
