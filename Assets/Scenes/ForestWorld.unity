@@ -457,7 +457,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BanditCaveAgent
   cavePoint: {fileID: 247101682}
   playerTarget: {fileID: 270215612}
-  listenedPuzzleId: ForestStones
   stopDistanceFromPlayer: 2
 --- !u!195 &78343993
 NavMeshAgent:
@@ -1350,6 +1349,8 @@ MonoBehaviour:
   regenDelay: 4
   regenRate: 3
   regenOnlyIfAlive: 1
+  castleSceneName: Castle_Intro
+  deathDelay: 0.5
 --- !u!1 &290688303
 GameObject:
   m_ObjectHideFlags: 0
@@ -2171,7 +2172,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BanditCaveAgent
   cavePoint: {fileID: 1664861408}
   playerTarget: {fileID: 270215612}
-  listenedPuzzleId: ForestStones
   stopDistanceFromPlayer: 2
 --- !u!195 &429557922
 NavMeshAgent:
@@ -2707,7 +2707,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BanditCaveAgent
   cavePoint: {fileID: 409793383}
   playerTarget: {fileID: 270215612}
-  listenedPuzzleId: ForestStones
   stopDistanceFromPlayer: 2
 --- !u!195 &634785570
 NavMeshAgent:
@@ -4286,7 +4285,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BanditCaveAgent
   cavePoint: {fileID: 1712799230}
   playerTarget: {fileID: 270215612}
-  listenedPuzzleId: ForestStones
   stopDistanceFromPlayer: 2
 --- !u!195 &1076918625
 NavMeshAgent:
@@ -6165,6 +6163,72 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1941538564
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1941538567}
+  - component: {fileID: 1941538566}
+  - component: {fileID: 1941538565}
+  m_Layer: 0
+  m_Name: BanditCombatArea
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1941538565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1941538564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cec34afba18a98d4594e7acbd7d86447, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BanditCombatArea
+--- !u!135 &1941538566
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1941538564}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 90
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &1941538567
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1941538564}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 273.5, y: -4.48, z: 86.76214}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1951899315
 GameObject:
   m_ObjectHideFlags: 0
@@ -7277,3 +7341,4 @@ SceneRoots:
   - {fileID: 1997391078}
   - {fileID: 4830116}
   - {fileID: 5958491285650383915}
+  - {fileID: 1941538567}

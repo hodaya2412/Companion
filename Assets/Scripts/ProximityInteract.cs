@@ -62,8 +62,12 @@ public class ProximityInteract : MonoBehaviour
         {
             Debug.Log("<color=red>[ALERT]</color> Puzzle NOT solved! Combat Triggered.");
 
-            GameEvents.RequestGameplayStateChange?.Invoke(GameplayState.Combat);
-            GameEvents.OnCombatTriggered?.Invoke();
+            if (GameStateManager.Instance != null &&
+                GameStateManager.Instance.CurrentGameplayState != GameplayState.Combat)
+            {
+                GameEvents.RequestGameplayStateChange?.Invoke(GameplayState.Combat);
+                GameEvents.OnCombatTriggered?.Invoke();
+            }
         }
     }
 }

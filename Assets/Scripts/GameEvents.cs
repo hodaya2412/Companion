@@ -26,6 +26,8 @@ public static class GameEvents
     public static Action<string, bool> OnFlagChanged;
     public static Action<string> OnPuzzleStoneClicked;
     public static Action OnCombatTriggered;
+
+    public static Action OnCombatReset;
     public static Action<string> OnItemPickedUp;
     public static Action OnMirrorPlacedInForest;
 
@@ -33,7 +35,7 @@ public static class GameEvents
     public static Action OnDialogueEnded;
 
     public static Func<string, bool> RequestFlagState;
-    public static Action<string> OnPuzzleOpened;
+    //public static Action<string> OnPuzzleOpened;
 
     public static Action<GameObject, float> OnEnemyHit;
     public static Action<float> OnPlayerHit;

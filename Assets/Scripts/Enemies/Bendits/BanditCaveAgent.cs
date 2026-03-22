@@ -8,9 +8,6 @@ public class BanditCaveAgent : MonoBehaviour
     [SerializeField] private Transform cavePoint;
     [SerializeField] private Transform playerTarget;
 
-    [Header("Puzzle Filter")]
-    [SerializeField] private string listenedPuzzleId = "ForestStones";
-
     [Header("Movement")]
     [SerializeField] private float stopDistanceFromPlayer = 2f;
 
@@ -25,13 +22,13 @@ public class BanditCaveAgent : MonoBehaviour
     private void OnEnable()
     {
         GameEvents.OnCombatTriggered += GoToPlayer;
-        GameEvents.OnPuzzleOpened += HandlePuzzleOpened;
+        GameEvents.OnCombatReset += ReturnToCave;
     }
 
     private void OnDisable()
     {
         GameEvents.OnCombatTriggered -= GoToPlayer;
-        GameEvents.OnPuzzleOpened -= HandlePuzzleOpened;
+        GameEvents.OnCombatReset -= ReturnToCave;
     }
 
     private void Start()
@@ -45,12 +42,6 @@ public class BanditCaveAgent : MonoBehaviour
         {
             agent.SetDestination(playerTarget.position);
         }
-    }
-
-    private void HandlePuzzleOpened(string puzzleId)
-    {
-        if (puzzleId != listenedPuzzleId) return;
-        ReturnToCave();
     }
 
     public void GoToPlayer()

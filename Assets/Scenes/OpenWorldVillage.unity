@@ -1209,6 +1209,8 @@ MonoBehaviour:
   regenDelay: 4
   regenRate: 3
   regenOnlyIfAlive: 1
+  castleSceneName: Castle_Intro
+  deathDelay: 0.5
 --- !u!208 &270215617
 NavMeshObstacle:
   m_ObjectHideFlags: 0

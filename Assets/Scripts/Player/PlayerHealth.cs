@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -7,16 +9,18 @@ public class PlayerHealth : MonoBehaviour
     public float currentHealth = 100f;
 
     [Header("Regen")]
-    [Tooltip("כמה שניות אחרי פגיעה מתחילים רגנרציה")]
     public float regenDelay = 4f;
 
-    [Tooltip("כמה חיים לשנייה מתחדש")]
     public float regenRate = 3f;
 
-    [Tooltip("אם את רוצה שהרגנרציה תעבוד רק מעל 0")]
     public bool regenOnlyIfAlive = true;
 
+    [Header("Death / Respawn")]
+    [SerializeField] private string castleSceneName = "Castle_Intro";
+    [SerializeField] private float deathDelay = 0.5f;
+
     private float lastDamageTime;
+    private bool isDead = false;
 
     private void Awake()
     {
@@ -46,6 +50,8 @@ public class PlayerHealth : MonoBehaviour
 
     private void HandlePlayerHit(float damage)
     {
+        if (isDead) return;
+
         Debug.Log("PLAYER RECEIVED HIT EVENT: " + damage);
         TakeDamage(damage);
     }
@@ -53,6 +59,7 @@ public class PlayerHealth : MonoBehaviour
     private void HandleRegen()
     {
         if (regenOnlyIfAlive && currentHealth <= 0f) return;
+        if (isDead) return;
 
         if (Time.time >= lastDamageTime + regenDelay)
         {
@@ -67,6 +74,7 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        if (isDead) return;
         if (damage <= 0f) return;
 
         currentHealth -= damage;
@@ -93,10 +101,45 @@ public class PlayerHealth : MonoBehaviour
         GameEvents.OnHealthChanged?.Invoke(currentHealth, maxHealth);
     }
 
+    public void RestoreFullHealth()
+    {
+        isDead = false;
+        currentHealth = maxHealth;
+        lastDamageTime = -999f;
+        GameEvents.OnHealthChanged?.Invoke(currentHealth, maxHealth);
+    }
+
     private void Die()
     {
+        if (isDead) return;
+
+        isDead = true;
+        currentHealth = 0f;
+        GameEvents.OnHealthChanged?.Invoke(currentHealth, maxHealth);
+
         Debug.Log("Player Died");
 
+        StartCoroutine(DeathRoutine());
+    }
+
+    private IEnumerator DeathRoutine()
+    {
+        GameEvents.RequestUIStateChange?.Invoke(UIState.None);
+
+        yield return new WaitForSeconds(deathDelay);
+
+        if (SceneFader.Instance != null)
+        {
+            yield return SceneFader.Instance.FadeOutAndLoad(castleSceneName);
+        }
+        else
+        {
+            SceneManager.LoadScene(castleSceneName);
+        }
+
+        // רק אחרי טעינת הסצנה:
         GameEvents.RequestGameplayStateChange?.Invoke(GameplayState.Playing);
+        GameEvents.OnCombatReset?.Invoke();
+        RestoreFullHealth();
     }
 }

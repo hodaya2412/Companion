@@ -1010,6 +1010,8 @@ MonoBehaviour:
   regenDelay: 4
   regenRate: 3
   regenOnlyIfAlive: 1
+  castleSceneName: Castle_Intro
+  deathDelay: 0.5
 --- !u!1 &317554263
 GameObject:
   m_ObjectHideFlags: 0

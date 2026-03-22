@@ -24,8 +24,8 @@ public class OrderPuzzleManager : MonoBehaviour
     private float currentTimer;
     private bool isTimerRunning;
 
-    private static float nextAllowedAttemptTime = 0f;
-    private static float currentPenaltyTotal = 0f;
+    private float nextAllowedAttemptTime = 0f;
+    private float currentPenaltyTotal = 0f;
 
     [Header("Puzzle Logic")]
     public List<RectTransform> puzzleStonesInOrder;
@@ -45,6 +45,7 @@ public class OrderPuzzleManager : MonoBehaviour
     private void OnDisable()
     {
         GameEvents.OnPuzzleStoneClicked -= HandlePuzzleTrigger;
+
         if (checkButton != null) checkButton.onClick.RemoveListener(CheckSolution);
         if (closeButton != null) closeButton.onClick.RemoveListener(ClosePuzzle);
     }
@@ -54,8 +55,12 @@ public class OrderPuzzleManager : MonoBehaviour
         if (isTimerRunning)
         {
             currentTimer -= Time.deltaTime;
-            if (timerText != null) timerText.text = "Time Left: " + Mathf.Ceil(currentTimer);
-            if (currentTimer <= 0) FailPuzzle();
+
+            if (timerText != null)
+                timerText.text = "Time Left: " + Mathf.Ceil(currentTimer);
+
+            if (currentTimer <= 0)
+                FailPuzzle();
         }
 
         if (Time.time < nextAllowedAttemptTime && worldCooldownText != null)
@@ -73,11 +78,18 @@ public class OrderPuzzleManager : MonoBehaviour
     private void HandlePuzzleTrigger(string triggeredID)
     {
         if (triggeredID != puzzleID) return;
+        if (GameStateManager.Instance == null) return;
         if (GameStateManager.Instance.GetFlag(solvedFlag)) return;
+
+        if (GameStateManager.Instance.CurrentGameplayState == GameplayState.Combat)
+        {
+            Debug.Log("[OrderPuzzleManager] Cannot open puzzle during combat.");
+            return;
+        }
 
         if (Time.time < nextAllowedAttemptTime)
         {
-            Debug.Log("Still in cooldown!");
+            Debug.Log("[OrderPuzzleManager] Still in cooldown!");
             return;
         }
 
@@ -86,25 +98,36 @@ public class OrderPuzzleManager : MonoBehaviour
 
     public void OpenPuzzle()
     {
+        if (GameStateManager.Instance != null &&
+            GameStateManager.Instance.CurrentGameplayState == GameplayState.Combat)
+        {
+            Debug.Log("[OrderPuzzleManager] Puzzle open blocked because combat is active.");
+            return;
+        }
+
+        if (puzzlePanel == null) return;
+
         puzzlePanel.SetActive(true);
         GameEvents.RequestUIStateChange?.Invoke(UIState.Choice);
 
         currentTimer = puzzleDuration;
         isTimerRunning = true;
-
-        GameEvents.OnPuzzleOpened?.Invoke(puzzleID);
     }
 
     public void ClosePuzzle()
     {
         isTimerRunning = false;
-        puzzlePanel.SetActive(false);
+
+        if (puzzlePanel != null)
+            puzzlePanel.SetActive(false);
+
         GameEvents.RequestUIStateChange?.Invoke(UIState.None);
     }
 
     private void CheckSolution()
     {
         bool isCorrect = true;
+
         for (int i = 0; i < puzzleStonesInOrder.Count - 1; i++)
         {
             if (puzzleStonesInOrder[i + 1].anchoredPosition.y <= puzzleStonesInOrder[i].anchoredPosition.y)
@@ -117,7 +140,7 @@ public class OrderPuzzleManager : MonoBehaviour
         if (isCorrect)
         {
             isTimerRunning = false;
-            currentPenaltyTotal = 0;
+            currentPenaltyTotal = 0f;
             ExecuteWin();
         }
         else
@@ -134,22 +157,25 @@ public class OrderPuzzleManager : MonoBehaviour
         nextAllowedAttemptTime = Time.time + totalWait;
         currentPenaltyTotal += penaltyPerFailure;
 
-        puzzlePanel.SetActive(false);
-        GameEvents.RequestUIStateChange?.Invoke(UIState.None);
+        if (puzzlePanel != null)
+            puzzlePanel.SetActive(false);
 
+        GameEvents.RequestUIStateChange?.Invoke(UIState.None);
         GameEvents.RequestGameplayStateChange?.Invoke(GameplayState.Combat);
         GameEvents.OnCombatTriggered?.Invoke();
     }
 
     private void ExecuteWin()
     {
-        currentPenaltyTotal = 0;
+        currentPenaltyTotal = 0f;
 
         foreach (var action in onWinActions)
-            if (action != null) action.Execute();
+        {
+            if (action != null)
+                action.Execute();
+        }
 
         GameEvents.RequestGameplayStateChange?.Invoke(GameplayState.Playing);
-
         ClosePuzzle();
     }
 }
