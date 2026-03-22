@@ -362,6 +362,7 @@ GameObject:
   - component: {fileID: 78343994}
   - component: {fileID: 78343995}
   - component: {fileID: 78343996}
+  - component: {fileID: 78343997}
   m_Layer: 6
   m_Name: Bandit3
   m_TagString: Untagged
@@ -548,8 +549,30 @@ MonoBehaviour:
   playerTarget: {fileID: 270215612}
   attackRange: 2
   attackDamage: 10
-  minAttackCooldown: 1.2
-  maxAttackCooldown: 2
+  minAttackCooldown: 2.5
+  maxAttackCooldown: 1.7
+--- !u!114 &78343997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 78343989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c11aa207976c7946886cf02fcc29212, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyBrain
+  movement: {fileID: 78343992}
+  combat: {fileID: 78343996}
+  health: {fileID: 78343994}
+  waitBeforeAttackMin: 0.6
+  waitBeforeAttackMax: 1.3
+  holdDistance: 4.5
+  holdTolerance: 1
+  holdUpdateInterval: 0.5
+  holdSideStepDistance: 2
+  loseAttackSlotDistance: 8
 --- !u!1001 &106027783
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2077,6 +2100,7 @@ GameObject:
   - component: {fileID: 429557923}
   - component: {fileID: 429557924}
   - component: {fileID: 429557925}
+  - component: {fileID: 429557926}
   m_Layer: 6
   m_Name: Bandit2
   m_TagString: Untagged
@@ -2263,8 +2287,30 @@ MonoBehaviour:
   playerTarget: {fileID: 270215612}
   attackRange: 2
   attackDamage: 10
-  minAttackCooldown: 1.2
-  maxAttackCooldown: 2
+  minAttackCooldown: 1.6
+  maxAttackCooldown: 0.9
+--- !u!114 &429557926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 429557918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c11aa207976c7946886cf02fcc29212, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyBrain
+  movement: {fileID: 429557921}
+  combat: {fileID: 429557925}
+  health: {fileID: 429557923}
+  waitBeforeAttackMin: 0.3
+  waitBeforeAttackMax: 1
+  holdDistance: 4.5
+  holdTolerance: 1
+  holdUpdateInterval: 0.5
+  holdSideStepDistance: 2
+  loseAttackSlotDistance: 8
 --- !u!1 &478311559
 GameObject:
   m_ObjectHideFlags: 0
@@ -2612,6 +2658,7 @@ GameObject:
   - component: {fileID: 634785571}
   - component: {fileID: 634785572}
   - component: {fileID: 634785573}
+  - component: {fileID: 634785574}
   m_Layer: 6
   m_Name: Bandit1
   m_TagString: Untagged
@@ -2798,8 +2845,30 @@ MonoBehaviour:
   playerTarget: {fileID: 270215612}
   attackRange: 2
   attackDamage: 10
-  minAttackCooldown: 1.2
-  maxAttackCooldown: 2
+  minAttackCooldown: 2.2
+  maxAttackCooldown: 1.4
+--- !u!114 &634785574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 634785566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c11aa207976c7946886cf02fcc29212, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyBrain
+  movement: {fileID: 634785569}
+  combat: {fileID: 634785573}
+  health: {fileID: 634785571}
+  waitBeforeAttackMin: 0.2
+  waitBeforeAttackMax: 0.8
+  holdDistance: 4.5
+  holdTolerance: 1
+  holdUpdateInterval: 0.5
+  holdSideStepDistance: 2
+  loseAttackSlotDistance: 8
 --- !u!1 &634985782
 GameObject:
   m_ObjectHideFlags: 0
@@ -4175,6 +4244,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 982492688}
   m_CullTransparentMesh: 1
+--- !u!1 &1075810819
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1075810821}
+  - component: {fileID: 1075810820}
+  m_Layer: 0
+  m_Name: EnemyAttackCoordinator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1075810820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1075810819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37e2329916b5bb9478e9881f2ae0c9dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackCoordinator
+  maxConcurrentAttackers: 2
+--- !u!4 &1075810821
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1075810819}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 228.92235, y: -5.41, z: 182.32396}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1076918621
 GameObject:
   m_ObjectHideFlags: 0
@@ -4190,6 +4304,7 @@ GameObject:
   - component: {fileID: 1076918626}
   - component: {fileID: 1076918627}
   - component: {fileID: 1076918628}
+  - component: {fileID: 1076918629}
   m_Layer: 6
   m_Name: BanditLeader
   m_TagString: Untagged
@@ -4378,6 +4493,28 @@ MonoBehaviour:
   attackDamage: 15
   minAttackCooldown: 1
   maxAttackCooldown: 1.8
+--- !u!114 &1076918629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1076918621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c11aa207976c7946886cf02fcc29212, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyBrain
+  movement: {fileID: 1076918624}
+  combat: {fileID: 1076918628}
+  health: {fileID: 1076918626}
+  waitBeforeAttackMin: 0.4
+  waitBeforeAttackMax: 1.1
+  holdDistance: 4.5
+  holdTolerance: 1
+  holdUpdateInterval: 0.5
+  holdSideStepDistance: 2
+  loseAttackSlotDistance: 8
 --- !u!1 &1151814993
 GameObject:
   m_ObjectHideFlags: 0
@@ -7342,3 +7479,4 @@ SceneRoots:
   - {fileID: 4830116}
   - {fileID: 5958491285650383915}
   - {fileID: 1941538567}
+  - {fileID: 1075810821}

@@ -37,18 +37,22 @@ public class EnemyCombat : MonoBehaviour
         currentGameplayState = newState;
     }
 
-    private void Update()
+    public bool CanAttack()
     {
-        if (playerTarget == null) return;
-        if (currentGameplayState != GameplayState.Combat) return;
+        if (playerTarget == null) return false;
+        if (currentGameplayState != GameplayState.Combat) return false;
+        if (Time.time < nextAttackTime) return false;
 
         float distance = Vector3.Distance(transform.position, playerTarget.position);
+        return distance <= attackRange;
+    }
 
-        if (distance <= attackRange && Time.time >= nextAttackTime)
-        {
-            AttackPlayer();
-            SetNextAttackTime();
-        }
+    public void TryAttack()
+    {
+        if (!CanAttack()) return;
+
+        AttackPlayer();
+        SetNextAttackTime();
     }
 
     private void AttackPlayer()

@@ -13,22 +13,15 @@ public class BanditCaveAgent : MonoBehaviour
 
     private NavMeshAgent agent;
     private bool isChasingPlayer;
+    private bool isReturningToCave;
+
+    public Transform PlayerTarget => playerTarget;
+    public Transform CavePoint => cavePoint;
+    public bool IsReturningToCave => isReturningToCave;
 
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
-    }
-
-    private void OnEnable()
-    {
-        GameEvents.OnCombatTriggered += GoToPlayer;
-        GameEvents.OnCombatReset += ReturnToCave;
-    }
-
-    private void OnDisable()
-    {
-        GameEvents.OnCombatTriggered -= GoToPlayer;
-        GameEvents.OnCombatReset -= ReturnToCave;
     }
 
     private void Start()
@@ -49,6 +42,8 @@ public class BanditCaveAgent : MonoBehaviour
         if (playerTarget == null) return;
 
         isChasingPlayer = true;
+        isReturningToCave = false;
+
         agent.isStopped = false;
         agent.stoppingDistance = stopDistanceFromPlayer;
         agent.SetDestination(playerTarget.position);
@@ -59,8 +54,47 @@ public class BanditCaveAgent : MonoBehaviour
         if (cavePoint == null) return;
 
         isChasingPlayer = false;
+        isReturningToCave = true;
+
         agent.isStopped = false;
         agent.stoppingDistance = 0f;
         agent.SetDestination(cavePoint.position);
+    }
+
+    public void StopMoving()
+    {
+        isChasingPlayer = false;
+        isReturningToCave = false;
+
+        agent.isStopped = true;
+        agent.ResetPath();
+    }
+
+    public bool IsPlayerInRange(float range)
+    {
+        if (playerTarget == null) return false;
+        return Vector3.Distance(transform.position, playerTarget.position) <= range;
+    }
+
+    public bool HasReachedCave(float threshold = 0.5f)
+    {
+        if (cavePoint == null) return false;
+        return Vector3.Distance(transform.position, cavePoint.position) <= threshold;
+    }
+
+    public Vector3 GetPlayerPosition()
+    {
+        if (playerTarget != null)
+            return playerTarget.position;
+
+        return transform.position;
+    }
+
+    public void MoveToPosition(Vector3 targetPosition)
+    {
+        if (agent == null || !agent.enabled) return;
+
+        agent.isStopped = false;
+        agent.SetDestination(targetPosition);
     }
 }
