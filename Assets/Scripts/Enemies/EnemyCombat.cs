@@ -6,7 +6,7 @@ public class EnemyCombat : MonoBehaviour
     public Transform playerTarget;
 
     [Header("Attack Settings")]
-    public float attackRange = 2f;
+    public float attackRange = 2.7f;
     public float attackDamage = 10f;
 
     [Header("Cooldown Settings")]

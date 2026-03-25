@@ -435,7 +435,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.24313726, g: 0.827451, b: 0.8117647, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -573,6 +573,10 @@ MonoBehaviour:
   holdUpdateInterval: 0.5
   holdSideStepDistance: 2
   loseAttackSlotDistance: 8
+  typeData: {fileID: 11400000, guid: bb89a1faa09500a4ba025b4e287f90f0, type: 2}
+  chaseUpdateInterval: 0.5
+  attackPositionReachDistance: 0.75
+  playerAttackAllowance: 1
 --- !u!1001 &106027783
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1178,6 +1182,7 @@ GameObject:
   - component: {fileID: 270215616}
   - component: {fileID: 270215617}
   - component: {fileID: 270215618}
+  - component: {fileID: 270215619}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1374,6 +1379,22 @@ MonoBehaviour:
   regenOnlyIfAlive: 1
   castleSceneName: Castle_Intro
   deathDelay: 0.5
+--- !u!208 &270215619
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 270215610}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.1}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.21100001, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &290688303
 GameObject:
   m_ObjectHideFlags: 0
@@ -2173,7 +2194,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.24168731, g: 0.82641506, b: 0.8098469, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -2311,6 +2332,10 @@ MonoBehaviour:
   holdUpdateInterval: 0.5
   holdSideStepDistance: 2
   loseAttackSlotDistance: 8
+  typeData: {fileID: 11400000, guid: bb89a1faa09500a4ba025b4e287f90f0, type: 2}
+  chaseUpdateInterval: 0.5
+  attackPositionReachDistance: 0.75
+  playerAttackAllowance: 1
 --- !u!1 &478311559
 GameObject:
   m_ObjectHideFlags: 0
@@ -2869,6 +2894,10 @@ MonoBehaviour:
   holdUpdateInterval: 0.5
   holdSideStepDistance: 2
   loseAttackSlotDistance: 8
+  typeData: {fileID: 11400000, guid: 1d26f19aa6306394985453023efabe6c, type: 2}
+  chaseUpdateInterval: 0.5
+  attackPositionReachDistance: 0.75
+  playerAttackAllowance: 1
 --- !u!1 &634985782
 GameObject:
   m_ObjectHideFlags: 0
@@ -3204,7 +3233,7 @@ GameObject:
   - component: {fileID: 723165571}
   - component: {fileID: 723165574}
   - component: {fileID: 723165573}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Companion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3228,6 +3257,10 @@ MonoBehaviour:
   comfortableDistance: 1.5
   maxDistance: 2.5
   maxSpeed: 8
+  combatBackOffset: 2.2
+  combatSideOffset: 1.5
+  combatMoveSpeed: 6
+  combatArrivalDistance: 0.2
 --- !u!212 &723165569
 SpriteRenderer:
   serializedVersion: 2
@@ -4274,6 +4307,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackCoordinator
   maxConcurrentAttackers: 2
+  frontOffset: 1.4
+  sideOffset: 1.8
+  rearOffset: 1.8
 --- !u!4 &1075810821
 Transform:
   m_ObjectHideFlags: 0
@@ -4515,6 +4551,10 @@ MonoBehaviour:
   holdUpdateInterval: 0.5
   holdSideStepDistance: 2
   loseAttackSlotDistance: 8
+  typeData: {fileID: 11400000, guid: 675fd86bf42a7eb4fbfc47a9b650b963, type: 2}
+  chaseUpdateInterval: 0.5
+  attackPositionReachDistance: 0.75
+  playerAttackAllowance: 1
 --- !u!1 &1151814993
 GameObject:
   m_ObjectHideFlags: 0

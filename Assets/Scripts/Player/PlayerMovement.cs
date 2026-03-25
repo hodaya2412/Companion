@@ -129,6 +129,9 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 moveDir = (camRight * x + camForward * z).normalized;
 
+        if (moveDir.sqrMagnitude > 0.001f)
+            transform.forward = moveDir;
+
         rb.MovePosition(rb.position + moveDir * speed * Time.fixedDeltaTime);
     }
 }

@@ -29,14 +29,6 @@ public class BanditCaveAgent : MonoBehaviour
         ReturnToCave();
     }
 
-    private void Update()
-    {
-        if (isChasingPlayer && playerTarget != null)
-        {
-            agent.SetDestination(playerTarget.position);
-        }
-    }
-
     public void GoToPlayer()
     {
         if (playerTarget == null) return;
@@ -90,11 +82,25 @@ public class BanditCaveAgent : MonoBehaviour
         return transform.position;
     }
 
-    public void MoveToPosition(Vector3 targetPosition)
+    public void MoveToPosition(Vector3 targetPosition, float stoppingDistance = 0.6f)
     {
         if (agent == null || !agent.enabled) return;
 
+        isChasingPlayer = false;
+        isReturningToCave = false;
+
         agent.isStopped = false;
+        agent.stoppingDistance = stoppingDistance;
         agent.SetDestination(targetPosition);
+    }
+
+    public float DistanceToPosition(Vector3 targetPosition)
+    {
+        return Vector3.Distance(transform.position, targetPosition);
+    }
+
+    public bool HasReachedPosition(Vector3 targetPosition, float threshold = 0.6f)
+    {
+        return DistanceToPosition(targetPosition) <= threshold;
     }
 }

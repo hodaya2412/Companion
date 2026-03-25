@@ -9,7 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f2eb12b9e380984d822ceb522df38d5, type: 3}
-  m_Name: PlayerInventory
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerInventory
-  slots: []
+  m_Script: {fileID: 11500000, guid: b175c7ace3be99d4eb64148d9cda5ee1, type: 3}
+  m_Name: Bandit_Balanced
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyTypeData
+  damage: 10
+  attackRange: 2
+  attackCooldown: 1
+  moveSpeed: 3.5
+  aggression: 1
+  flankDesire: 0.5

@@ -29,11 +29,24 @@ public class EnemyBrain : MonoBehaviour
     [Header("Slot Logic")]
     [SerializeField] private float loseAttackSlotDistance = 8f;
 
+    [Header("Type")]
+    [SerializeField] private EnemyTypeData typeData;
+
+    [Header("Chasing")]
+    [SerializeField] private float chaseUpdateInterval = 0.5f;
+    [SerializeField] private float attackPositionReachDistance = 0.75f;
+    [SerializeField] private float playerAttackAllowance = 1.0f;
+
     private EnemyState currentState = EnemyState.ReturningToCave;
     private float waitTimer;
     private float holdTimer;
+    private float chaseTimer;
+
+    private Vector3 currentChaseTarget;
+
     private GameplayState currentGameplayState;
     private bool hasAttackSlot;
+    private AttackRole currentAttackRole = AttackRole.None;
 
     private void Awake()
     {
@@ -124,9 +137,7 @@ public class EnemyBrain : MonoBehaviour
             movement.ReturnToCave();
 
         if (movement.HasReachedCave())
-        {
             movement.StopMoving();
-        }
     }
 
     private void UpdateHolding()
@@ -139,17 +150,37 @@ public class EnemyBrain : MonoBehaviour
         if (holdTimer <= 0f)
         {
             holdTimer = holdUpdateInterval;
+
             MoveAroundPlayerAtHoldDistance();
+            TryBecomeActive();
         }
+    }
 
-        bool canBecomeActive = EnemyAttackCoordinator.Instance == null ||
-                               EnemyAttackCoordinator.Instance.TryReserveAttackSlot(this);
-
-        if (canBecomeActive)
+    private void TryBecomeActive()
+    {
+        if (EnemyAttackCoordinator.Instance == null)
         {
-            hasAttackSlot = true;
-            SetState(EnemyState.Chasing);
+            ActivateChasing();
+            return;
         }
+
+        if (EnemyAttackCoordinator.Instance.TryReserveAttackSlot(this))
+        {
+            ActivateChasing();
+        }
+    }
+
+    private void ActivateChasing()
+    {
+        hasAttackSlot = true;
+        chaseTimer = 0f;
+
+        if (EnemyAttackCoordinator.Instance != null)
+            currentChaseTarget = EnemyAttackCoordinator.Instance.GetAttackPosition(this);
+        else
+            currentChaseTarget = movement.GetPlayerPosition();
+
+        SetState(EnemyState.Chasing);
     }
 
     private void UpdateChasing()
@@ -157,7 +188,6 @@ public class EnemyBrain : MonoBehaviour
         if (movement == null || combat == null) return;
         if (currentGameplayState != GameplayState.Combat) return;
 
-        // אם יש slot אבל התרחקנו יותר מדי - נשחרר אותו
         if (hasAttackSlot && IsTooFarToKeepSlot())
         {
             ReleaseAttackSlotIfNeeded();
@@ -165,16 +195,33 @@ public class EnemyBrain : MonoBehaviour
             return;
         }
 
-        // אם אין slot - אסור לרדוף, חוזרים ל-Holding
         if (!hasAttackSlot)
         {
             SetState(EnemyState.Holding);
             return;
         }
 
-        movement.GoToPlayer();
+        chaseTimer -= Time.deltaTime;
 
-        if (movement.IsPlayerInRange(combat.attackRange))
+        if (chaseTimer <= 0f)
+        {
+            chaseTimer = chaseUpdateInterval;
+
+            if (EnemyAttackCoordinator.Instance != null)
+                currentChaseTarget = EnemyAttackCoordinator.Instance.GetAttackPosition(this);
+            else
+                currentChaseTarget = movement.GetPlayerPosition();
+        }
+
+        movement.MoveToPosition(currentChaseTarget, 1.0f);
+
+        bool reachedAssignedPosition =
+            movement.HasReachedPosition(currentChaseTarget, 1.0f);
+
+        bool closeEnoughToAttackPlayer =
+            movement.IsPlayerInRange(combat.attackRange + playerAttackAllowance);
+
+        if (reachedAssignedPosition && closeEnoughToAttackPlayer)
         {
             waitTimer = Random.Range(waitBeforeAttackMin, waitBeforeAttackMax);
             SetState(EnemyState.Waiting);
@@ -186,7 +233,6 @@ public class EnemyBrain : MonoBehaviour
         if (movement == null || combat == null) return;
         if (currentGameplayState != GameplayState.Combat) return;
 
-        // אם איבדנו את ה-slot או התרחקנו ממש - מפנים מקום
         if (hasAttackSlot && IsTooFarToKeepSlot())
         {
             ReleaseAttackSlotIfNeeded();
@@ -200,21 +246,24 @@ public class EnemyBrain : MonoBehaviour
             return;
         }
 
-        movement.StopMoving();
         waitTimer -= Time.deltaTime;
 
-        // אם השחקנית כבר לא בטווח תקיפה - ממשיכים לרדוף,
-        // אבל עדיין שומרים את ה-slot
-        if (!movement.IsPlayerInRange(combat.attackRange))
+        bool reachedAssignedPosition =
+            movement.HasReachedPosition(currentChaseTarget, attackPositionReachDistance);
+
+        bool closeEnoughToAttackPlayer =
+            movement.IsPlayerInRange(combat.attackRange + playerAttackAllowance);
+
+        if (!reachedAssignedPosition || !closeEnoughToAttackPlayer)
         {
             SetState(EnemyState.Chasing);
             return;
         }
 
+        movement.StopMoving();
+
         if (waitTimer <= 0f)
-        {
             SetState(EnemyState.Attacking);
-        }
     }
 
     private void UpdateAttacking()
@@ -222,7 +271,6 @@ public class EnemyBrain : MonoBehaviour
         if (movement == null || combat == null) return;
         if (currentGameplayState != GameplayState.Combat) return;
 
-        // אם התרחקנו ממש - משחררים slot
         if (hasAttackSlot && IsTooFarToKeepSlot())
         {
             ReleaseAttackSlotIfNeeded();
@@ -236,8 +284,10 @@ public class EnemyBrain : MonoBehaviour
             return;
         }
 
-        // אם כבר לא בטווח תקיפה - ממשיכים לרדוף עם אותו slot
-        if (!movement.IsPlayerInRange(combat.attackRange))
+        bool closeEnoughToAttackPlayer =
+            movement.IsPlayerInRange(combat.attackRange + playerAttackAllowance);
+
+        if (!closeEnoughToAttackPlayer)
         {
             SetState(EnemyState.Chasing);
             return;
@@ -245,8 +295,6 @@ public class EnemyBrain : MonoBehaviour
 
         combat.TryAttack();
 
-        // אחרי התקפה האויב נשאר "התוקף הפעיל"
-        // ולא משחרר slot מיד
         waitTimer = Random.Range(waitBeforeAttackMin, waitBeforeAttackMax);
         SetState(EnemyState.Waiting);
     }
@@ -260,19 +308,13 @@ public class EnemyBrain : MonoBehaviour
         toEnemy.y = 0f;
 
         if (toEnemy.sqrMagnitude < 0.01f)
-        {
             toEnemy = transform.right;
-        }
 
         float distance = toEnemy.magnitude;
         Vector3 dir = toEnemy.normalized;
         Vector3 targetPos;
 
-        if (distance > holdDistance + holdTolerance)
-        {
-            targetPos = playerPos + dir * holdDistance;
-        }
-        else if (distance < holdDistance - holdTolerance)
+        if (distance > holdDistance + holdTolerance || distance < holdDistance - holdTolerance)
         {
             targetPos = playerPos + dir * holdDistance;
         }
@@ -283,7 +325,7 @@ public class EnemyBrain : MonoBehaviour
             targetPos = myPos + sideDir * randomSide * holdSideStepDistance;
         }
 
-        movement.MoveToPosition(targetPos);
+        movement.MoveToPosition(targetPos, 0.8f);
     }
 
     private bool IsTooFarToKeepSlot()
@@ -298,11 +340,10 @@ public class EnemyBrain : MonoBehaviour
         if (!hasAttackSlot) return;
 
         if (EnemyAttackCoordinator.Instance != null)
-        {
             EnemyAttackCoordinator.Instance.ReleaseAttackSlot(this);
-        }
 
         hasAttackSlot = false;
+        currentAttackRole = AttackRole.None;
     }
 
     private void SetState(EnemyState newState)
@@ -310,8 +351,32 @@ public class EnemyBrain : MonoBehaviour
         currentState = newState;
 
         if (newState == EnemyState.Holding)
-        {
             holdTimer = 0f;
-        }
+    }
+
+    public float GetFlankDesire()
+    {
+        if (typeData != null)
+            return typeData.flankDesire;
+
+        return 0.5f;
+    }
+
+    public bool PrefersFlank()
+    {
+        if (typeData != null)
+            return typeData.preferFlank;
+
+        return false;
+    }
+
+    public void SetAttackRole(AttackRole role)
+    {
+        currentAttackRole = role;
+    }
+
+    public AttackRole GetAttackRole()
+    {
+        return currentAttackRole;
     }
 }
