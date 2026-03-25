@@ -2824,6 +2824,10 @@ MonoBehaviour:
   comfortableDistance: 1.5
   maxDistance: 2.5
   maxSpeed: 8
+  combatBackOffset: 2.5
+  combatSideOffset: 2
+  combatMoveSpeed: 6
+  combatArrivalDistance: 0.2
 --- !u!212 &723165569
 SpriteRenderer:
   serializedVersion: 2
