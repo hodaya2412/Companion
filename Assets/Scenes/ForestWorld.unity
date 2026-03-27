@@ -365,7 +365,7 @@ GameObject:
   - component: {fileID: 78343997}
   m_Layer: 6
   m_Name: Bandit3
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -495,6 +495,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
   maxHealth: 50
   currentHealth: 50
+  enemyID: Bandit_Cave_4
   OnHealthChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2124,7 +2125,7 @@ GameObject:
   - component: {fileID: 429557926}
   m_Layer: 6
   m_Name: Bandit2
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2254,6 +2255,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
   maxHealth: 50
   currentHealth: 50
+  enemyID: Bandit_Cave_3
   OnHealthChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2686,7 +2688,7 @@ GameObject:
   - component: {fileID: 634785574}
   m_Layer: 6
   m_Name: Bandit1
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2816,6 +2818,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
   maxHealth: 50
   currentHealth: 50
+  enemyID: Bandit_Cave_2
   OnHealthChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2952,6 +2955,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PuzzleStone
   puzzleID: ForestStones
   solvedFlag: Forest_PuzzleSolved
+  banditsDefeatedFlag: Forest_BanditsDefeated
 --- !u!212 &634985785
 SpriteRenderer:
   serializedVersion: 2
@@ -4066,6 +4070,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PuzzleStone
   puzzleID: ForestStones
   solvedFlag: Forest_PuzzleSolved
+  banditsDefeatedFlag: Forest_BanditsDefeated
 --- !u!212 &978468059
 SpriteRenderer:
   serializedVersion: 2
@@ -4343,7 +4348,7 @@ GameObject:
   - component: {fileID: 1076918629}
   m_Layer: 6
   m_Name: BanditLeader
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4473,6 +4478,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
   maxHealth: 80
   currentHealth: 80
+  enemyID: Bandit_Cave_1
   OnHealthChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -4726,6 +4732,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PuzzleStone
   puzzleID: ForestStones
   solvedFlag: Forest_PuzzleSolved
+  banditsDefeatedFlag: Forest_BanditsDefeated
 --- !u!212 &1156137456
 SpriteRenderer:
   serializedVersion: 2

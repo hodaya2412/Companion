@@ -59,6 +59,8 @@ public class EnemyAttackCoordinator : MonoBehaviour
 
         activeAttackers.Add(enemy);
         enemyRoles[enemy] = role;
+
+        // עכשיו הפונקציה הזו קיימת ב-Brain
         enemy.SetAttackRole(role);
 
         return true;
@@ -85,6 +87,7 @@ public class EnemyAttackCoordinator : MonoBehaviour
         bool rightTaken = enemyRoles.ContainsValue(AttackRole.RightFlank);
         bool rearTaken = enemyRoles.ContainsValue(AttackRole.RearFlank);
 
+        // עכשיו הפונקציה הזו קיימת ב-Brain ומושכת נתונים מ-TypeData
         if (enemy.PrefersFlank())
         {
             if (!rearTaken) return AttackRole.RearFlank;
@@ -118,7 +121,6 @@ public class EnemyAttackCoordinator : MonoBehaviour
     private Vector3 CalculateAttackPosition(AttackRole role)
     {
         Vector3 playerPos = player.position;
-
         Vector3 playerForward = player.forward;
         playerForward.y = 0f;
 
