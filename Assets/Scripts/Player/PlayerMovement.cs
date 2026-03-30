@@ -4,9 +4,14 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
 {
-    [Header("Movement")]
+    [Header("Movement Settings")]
     public float speed = 10f;
     public Transform cam;
+
+    [Header("Visuals")]
+    [Tooltip("גררי לכאן את האובייקט הילד שמכיל את ה-Sprite")]
+    public Transform characterVisuals;
+    private bool facingRight = true;
 
     private InputActions inputAction;
     private Rigidbody rb;
@@ -40,6 +45,7 @@ public class PlayerMovement : MonoBehaviour
         GameEvents.OnDialogueStarted += HandleDialogueStarted;
         GameEvents.OnDialogueEnded += HandleDialogueEnded;
 
+        // עדכון מצב ראשוני
         currentGameplayState = GameEvents.RequestCurrentGameplayState?.Invoke() ?? GameplayState.Playing;
         currentUIState = GameEvents.RequestCurrentUIState?.Invoke() ?? UIState.None;
 
@@ -107,7 +113,7 @@ public class PlayerMovement : MonoBehaviour
         if (!canMove)
         {
             moveInput = Vector3.zero;
-            rb.linearVelocity = Vector3.zero;
+            if (rb != null) rb.linearVelocity = Vector3.zero;
         }
     }
 
@@ -115,23 +121,47 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!canMove) return;
 
-        float x = moveInput.x;
-        float z = moveInput.z;
-
+        // חישוב כיוון המצלמה
         Vector3 camForward = cam ? cam.forward : Vector3.forward;
         Vector3 camRight = cam ? cam.right : Vector3.right;
-
         camForward.y = 0f;
         camRight.y = 0f;
-
         camForward.Normalize();
         camRight.Normalize();
 
-        Vector3 moveDir = (camRight * x + camForward * z).normalized;
+        // כיוון תנועה סופי
+        Vector3 moveDir = (camRight * moveInput.x + camForward * moveInput.z).normalized;
 
-        if (moveDir.sqrMagnitude > 0.001f)
-            transform.forward = moveDir;
-
+        // תנועה פיזית
         rb.MovePosition(rb.position + moveDir * speed * Time.fixedDeltaTime);
+
+        // טיפול בויזואליות (Flip)
+        ApplyVisualFlip(moveInput.x);
+    }
+
+    private void ApplyVisualFlip(float horizontalInput)
+    {
+        if (characterVisuals == null) return;
+
+        // אם השחקן זז ימינה/שמאלה - נעדכן את הכיוון שלו
+        if (horizontalInput > 0.1f && !facingRight)
+        {
+            Flip();
+        }
+        else if (horizontalInput < -0.1f && facingRight)
+        {
+            Flip();
+        }
+    }
+
+    private void Flip()
+    {
+        facingRight = !facingRight;
+
+        // אנחנו מסובבים רק את ה-Visuals ב-180 מעלות סביב ציר ה-Y
+        // זה גורם ל-Sprite להתהפך אבל האובייקט הראשי נשאר ישר
+        Vector3 newRotation = characterVisuals.localEulerAngles;
+        newRotation.y += 180f;
+        characterVisuals.localEulerAngles = newRotation;
     }
 }

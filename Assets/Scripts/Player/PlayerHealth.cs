@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
@@ -16,8 +16,9 @@ public class PlayerHealth : MonoBehaviour
     public bool regenOnlyIfAlive = true;
 
     [Header("Death / Respawn")]
-    [SerializeField] private string castleSceneName = "Castle_Intro";
+    //[SerializeField] private string castleSceneName = "Castle_Intro";
     [SerializeField] private float deathDelay = 0.5f;
+    [SerializeField] private Transform respawnPoint;
 
     private float lastDamageTime;
     private bool isDead = false;
@@ -128,18 +129,32 @@ public class PlayerHealth : MonoBehaviour
 
         yield return new WaitForSeconds(deathDelay);
 
+        // ğŸ¬ Fade Out
         if (SceneFader.Instance != null)
+            yield return SceneFader.Instance.FadeOut();
+
+        // ğŸ“ Teleport (××—×¨×™ ×©×”××¡×š ×©×—×•×¨!)
+        if (respawnPoint != null)
         {
-            yield return SceneFader.Instance.FadeOutAndLoad(castleSceneName);
+            transform.position = respawnPoint.position;
+            transform.rotation = respawnPoint.rotation;
         }
         else
         {
-            SceneManager.LoadScene(castleSceneName);
+            Debug.LogWarning("Respawn point not set!");
         }
 
-        // ø÷ àçøé èòéğú äñöğä:
+        // â¤ï¸ Restore HP
+        RestoreFullHealth();
+
+        // ğŸ”„ Gameplay reset
         GameEvents.RequestGameplayStateChange?.Invoke(GameplayState.Playing);
         GameEvents.OnCombatReset?.Invoke();
-        RestoreFullHealth();
+
+        yield return new WaitForSeconds(0.2f); 
+
+        // ğŸ¬ Fade In
+        if (SceneFader.Instance != null)
+            yield return SceneFader.Instance.FadeIn();
     }
 }

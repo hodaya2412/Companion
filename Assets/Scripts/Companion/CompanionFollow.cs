@@ -27,6 +27,7 @@ public class CompanionFollow : MonoBehaviour
         GameEvents.OnCompanionFollowEnabled += SetFollowEnabled;
         GameEvents.OnGameplayStateChanged += HandleGameplayStateChanged;
 
+
         currentGameplayState = GameEvents.RequestCurrentGameplayState?.Invoke() ?? GameplayState.Playing;
     }
 
@@ -34,6 +35,7 @@ public class CompanionFollow : MonoBehaviour
     {
         GameEvents.OnCompanionFollowEnabled -= SetFollowEnabled;
         GameEvents.OnGameplayStateChanged -= HandleGameplayStateChanged;
+
     }
 
     private void SetFollowEnabled(bool enabled)

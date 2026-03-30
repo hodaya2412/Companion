@@ -3,7 +3,7 @@ using UnityEngine;
 public class DialogueOnStart : MonoBehaviour
 {
     public DialogueAsset dialogue;
-    public float delay = 0.2f;
+    public float delay = 0.3f;
 
     void Start()
     {

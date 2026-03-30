@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.SceneManagement;
@@ -101,5 +101,20 @@ public class SceneFader : MonoBehaviour
     public void LoadScene(string sceneName)
     {
         StartCoroutine(FadeOutAndLoad(sceneName));
+    }
+
+    public IEnumerator FadeOut()
+    {
+        if (canvasGroup == null) yield break;
+
+        canvasGroup.blocksRaycasts = true;
+
+        while (canvasGroup.alpha < 1f)
+        {
+            canvasGroup.alpha += Time.deltaTime * fadeSpeed;
+            yield return null;
+        }
+
+        canvasGroup.alpha = 1f;
     }
 }

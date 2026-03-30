@@ -121,24 +121,56 @@ public class EnemyWaitingState : IEnemyState
     }
 }
 
-// --- מצב תקיפה ---
 public class EnemyAttackingState : IEnemyState
 {
     private EnemyBrain brain;
+    private bool isRetreating = false;
+    private float retreatTimer = 0f;
+    private const float RETREAT_DURATION = 0.5f; // כמה זמן הוא יברח אחורה
+
     public EnemyAttackingState(EnemyBrain brain) => this.brain = brain;
+
+    public override void Enter()
+    {
+        isRetreating = false;
+
+        // 1. מבצעים את התקיפה מיד בכניסה למצב
+        if (brain.movement.IsPlayerInRange(brain.combat.attackRange + brain.playerAttackAllowance))
+        {
+            brain.combat.TryAttack();
+            StartRetreat();
+        }
+        else
+        {
+            // אם הוא יצא מטווח רגע לפני, פשוט חוזרים לרדוף
+            brain.ChangeState(brain.ChasingState);
+        }
+    }
+
+    private void StartRetreat()
+    {
+        isRetreating = true;
+        retreatTimer = RETREAT_DURATION;
+
+        // חישוב נקודת נסיגה
+        Vector3 playerPos = brain.movement.GetPlayerPosition();
+        Vector3 retreatDir = (brain.transform.position - playerPos).normalized;
+        Vector3 retreatTarget = brain.transform.position + retreatDir * 3f;
+
+        // פקודה לזוז לנקודה
+        brain.movement.MoveToPosition(retreatTarget, 0.1f);
+    }
 
     public override void Execute()
     {
-        // אם השחקן ברח בזמן שיצאנו להתקפה
-        if (!brain.movement.IsPlayerInRange(brain.combat.attackRange + brain.playerAttackAllowance))
+        if (isRetreating)
         {
-            brain.ChangeState(brain.ChasingState);
-            return;
+            retreatTimer -= Time.deltaTime;
+            if (retreatTimer <= 0f)
+            {
+                // רק אחרי שסיים לסגת, עוברים להמתנה
+                brain.ChangeState(brain.WaitingState);
+            }
         }
-
-        brain.combat.TryAttack();
-
-        // אחרי התקפה תמיד חוזרים להמתין (Waiting יגריל טיימר חדש ב-Enter)
-        brain.ChangeState(brain.WaitingState);
     }
 }

@@ -40,4 +40,5 @@ public static class GameEvents
     public static Action<GameObject, float> OnEnemyHit;
     public static Action<float> OnPlayerHit;
     public static Action<float, float> OnHealthChanged;
+
 }

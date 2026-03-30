@@ -8,6 +8,11 @@ public class BanditCaveAgent : MonoBehaviour
     [SerializeField] private Transform cavePoint;
     [SerializeField] private Transform playerTarget;
 
+    [Header("2.5D Visuals")]
+    [Tooltip("גררי לכאן את האובייקט הילד שמכיל את ה-Sprite של האויב")]
+    [SerializeField] private Transform characterVisuals;
+    private bool facingRight = true;
+
     [Header("Movement")]
     [SerializeField] private float stopDistanceFromPlayer = 2f;
 
@@ -22,11 +27,48 @@ public class BanditCaveAgent : MonoBehaviour
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+
+        // הגדרה קריטית: מונעים מה-NavMesh לסובב את האויב ב-3D
+        if (agent != null)
+        {
+            agent.updateRotation = false;
+            agent.updateUpAxis = false;
+        }
     }
 
     private void Start()
     {
         ReturnToCave();
+    }
+
+    private void Update()
+    {
+        // מעדכנים את הכיוון הויזואלי בכל פריים לפי המהירות של הסוכן
+        HandleVisualFlip();
+    }
+
+    private void HandleVisualFlip()
+    {
+        if (characterVisuals == null || agent == null) return;
+
+        // בודקים אם האויב זז ימינה או שמאלה לפי המהירות שלו ב-NavMesh
+        float velocityX = agent.velocity.x;
+
+        if (velocityX > 0.1f && !facingRight)
+        {
+            Flip();
+        }
+        else if (velocityX < -0.1f && facingRight)
+        {
+            Flip();
+        }
+    }
+
+    private void Flip()
+    {
+        facingRight = !facingRight;
+        // הופכים רק את הויזואליה ב-180 מעלות
+        characterVisuals.localRotation *= Quaternion.Euler(0, 180, 0);
     }
 
     public void GoToPlayer()
