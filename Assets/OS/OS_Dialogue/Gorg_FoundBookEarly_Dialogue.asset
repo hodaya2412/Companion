@@ -15,20 +15,44 @@ MonoBehaviour:
   dialogueId: 
   lines:
   - speaker: Goerge
-    text: Oh! You found my book! Thank you. Do you need help with something?
+    text: "Well I\u2019ll be damned... That\u2019s my book"
     portrait: {fileID: 0}
   - speaker: Ran
-    text: Yes, I'm looking for a golden key. Do you know where I might find it?
+    text: Found it in a cave.
     portrait: {fileID: 0}
   - speaker: Goerge
-    text: Deep within the forest, there is a dragon. Rumor has it that he guards
-      a magical golden key there.
+    text: "Yeah, that\u2019s where my problems usually end up."
     portrait: {fileID: 0}
-  - speaker: Goerge
-    text: "But be careful\u2026 every person who has gone there has never returned."
+  - speaker: Ran
+    text: "I\u2019m actually looking for a Golden Key."
+    portrait: {fileID: 0}
+  - speaker: George
+    text: "Of course you are. It\u2019s on a dragon\u2019s neck."
+    portrait: {fileID: 0}
+  - speaker: Ren
+    text: A dragon....?
+    portrait: {fileID: 0}
+  - speaker: George
+    text: "Burned cities for fun. They couldn\u2019t kill it  so they locked it behind
+      a magic barrier, i'll give you this sword it breaks the barrier."
+    portrait: {fileID: 0}
+  - speaker: Ren
+    text: Why give it to me?
+    portrait: {fileID: 0}
+  - speaker: George
+    text: 'You brought my book back without being asked.
+
+      That counts.'
+    portrait: {fileID: 0}
+  - speaker: Ren
+    text: Thanks...
+    portrait: {fileID: 0}
+  - speaker: George
+    text: "Don\u2019t.\nYou still have to meet the dragon."
     portrait: {fileID: 0}
   endActions:
   - {fileID: 11400000, guid: 5fa9aecefa0eb2d4799427df259522d0, type: 2}
   - {fileID: 11400000, guid: 7e26470f924d76a4a868f4562e37981d, type: 2}
   - {fileID: 11400000, guid: d1ce1f4fe733db44dbe1b51ef6f4d66b, type: 2}
   - {fileID: 11400000, guid: b4ca94a88f5792c4fbbfe6b45216dfb7, type: 2}
+  - {fileID: 11400000, guid: 15fb7658e7e22b341aae76e1de2bfc58, type: 2}
