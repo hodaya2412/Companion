@@ -991,6 +991,9 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 0
+  attackableLayer:
+    serializedVersion: 2
+    m_Bits: 0
   unarmedDamage: 10
   unarmedRange: 1.5
   weaponDamage: 25

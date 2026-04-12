@@ -30,3 +30,5 @@ MonoBehaviour:
   endActions:
   - {fileID: 11400000, guid: 5fa9aecefa0eb2d4799427df259522d0, type: 2}
   - {fileID: 11400000, guid: 7e26470f924d76a4a868f4562e37981d, type: 2}
+  - {fileID: 11400000, guid: d1ce1f4fe733db44dbe1b51ef6f4d66b, type: 2}
+  - {fileID: 11400000, guid: b4ca94a88f5792c4fbbfe6b45216dfb7, type: 2}

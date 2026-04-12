@@ -1,11 +1,15 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections.Generic;
 
 public class PlayerCombat : MonoBehaviour
 {
     [Header("References")]
     public Transform attackPoint;
     public LayerMask enemyLayer;
+
+    [Header("Attackable Objects")]
+    public LayerMask attackableLayer;
 
     [Header("Unarmed Attack")]
     public float unarmedDamage = 10f;
@@ -63,10 +67,16 @@ public class PlayerCombat : MonoBehaviour
 
     private void HandleGameplayStateChanged(GameplayState newState) => currentGameplayState = newState;
     private void HandleUIStateChanged(UIState newState) => currentUIState = newState;
-    private void HandleWeaponChanged(InventoryItemData weapon) => hasWeaponEquipped = (weapon != null);
+
+    private void HandleWeaponChanged(InventoryItemData weapon)
+    {
+        hasWeaponEquipped = (weapon != null);
+        Debug.Log($"[PlayerCombat] Weapon changed. Equipped = {hasWeaponEquipped}, weapon = {(weapon != null ? weapon.itemId : "NULL")}");
+    }
 
     private void OnAttackPerformed(InputAction.CallbackContext context)
     {
+        Debug.Log("[PlayerCombat] Attack input received");
         TryAttack();
     }
 
@@ -81,14 +91,32 @@ public class PlayerCombat : MonoBehaviour
             currentUIState == UIState.Map ||
             currentUIState == UIState.Choice;
 
-        if (!gameplayAllowsAttack || uiBlocksAttack) return;
+        Debug.Log($"[PlayerCombat] TryAttack | gameplay={currentGameplayState} | ui={currentUIState} | hasWeapon={hasWeaponEquipped}");
 
-        if (Time.time < lastAttackTime + attackCooldown) return;
+        if (!gameplayAllowsAttack)
+        {
+            Debug.Log("[PlayerCombat] Attack blocked: gameplay state");
+            return;
+        }
+
+        if (uiBlocksAttack)
+        {
+            Debug.Log("[PlayerCombat] Attack blocked: UI state");
+            return;
+        }
+
+        if (Time.time < lastAttackTime + attackCooldown)
+        {
+            Debug.Log("[PlayerCombat] Attack blocked: cooldown");
+            return;
+        }
 
         lastAttackTime = Time.time;
 
         float damage = hasWeaponEquipped ? weaponDamage : unarmedDamage;
         float range = hasWeaponEquipped ? weaponRange : unarmedRange;
+
+        Debug.Log($"[PlayerCombat] Performing attack | damage={damage} | range={range}");
 
         PerformAttackOverlap(damage, range);
     }
@@ -98,16 +126,50 @@ public class PlayerCombat : MonoBehaviour
         Vector3 center = attackPoint.position + transform.forward * range * 0.5f;
         Vector3 halfExtents = new Vector3(0.7f, 1f, range * 0.5f);
 
-        Collider[] hits = Physics.OverlapBox(
-            center,
-            halfExtents,
-            transform.rotation,
-            enemyLayer
-        );
+        Debug.Log($"[PlayerCombat] Overlap center={center}, halfExtents={halfExtents}");
 
-        foreach (Collider hit in hits)
+        Collider[] enemyHits = Physics.OverlapBox(center, halfExtents, transform.rotation, enemyLayer);
+        Debug.Log($"[PlayerCombat] enemyHits count = {enemyHits.Length}");
+
+        foreach (Collider hit in enemyHits)
         {
             GameEvents.OnEnemyHit?.Invoke(hit.gameObject, damage);
+        }
+
+        Collider[] attackableHits = Physics.OverlapBox(center, halfExtents, transform.rotation, attackableLayer);
+        Debug.Log($"[PlayerCombat] attackableHits count = {attackableHits.Length}");
+
+        PlayerAttackData attackData = new PlayerAttackData(
+            gameObject,
+            damage,
+            hasWeaponEquipped,
+            PlayerEquipment.Instance != null ? PlayerEquipment.Instance.EquippedWeapon : null
+        );
+
+        HashSet<IPlayerAttackReceiver> alreadyHitReceivers = new HashSet<IPlayerAttackReceiver>();
+
+        foreach (Collider hit in attackableHits)
+        {
+            Debug.Log($"[PlayerCombat] Hit collider: {hit.name} | Layer: {LayerMask.LayerToName(hit.gameObject.layer)}");
+
+            IPlayerAttackReceiver receiver = hit.GetComponent<IPlayerAttackReceiver>();
+
+            if (receiver == null)
+                receiver = hit.GetComponentInParent<IPlayerAttackReceiver>();
+
+            if (receiver == null)
+                receiver = hit.GetComponentInChildren<IPlayerAttackReceiver>();
+
+            if (receiver != null && !alreadyHitReceivers.Contains(receiver))
+            {
+                alreadyHitReceivers.Add(receiver);
+                Debug.Log($"[PlayerCombat] Found receiver on: {((MonoBehaviour)receiver).name}");
+                receiver.ReceivePlayerAttack(attackData);
+            }
+            else if (receiver == null)
+            {
+                Debug.Log($"[PlayerCombat] No receiver found for: {hit.name}");
+            }
         }
     }
 
