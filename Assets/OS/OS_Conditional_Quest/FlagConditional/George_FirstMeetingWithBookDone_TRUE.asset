@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c25f4ef4070c7994886f8f3e376db0f0, type: 3}
-  m_Name: George_FirstMeetingWithBookDone_Condition
+  m_Name: George_FirstMeetingWithBookDone_TRUE
   m_EditorClassIdentifier: Assembly-CSharp::FlagConditionSO
   flagName: George_FirstMeetingWithBookDone
   requiredValue: 1

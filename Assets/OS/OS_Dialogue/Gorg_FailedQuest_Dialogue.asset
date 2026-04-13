@@ -16,8 +16,7 @@ MonoBehaviour:
   lines:
   - speaker: Goerge
     text: "Oh no\u2026 you weren\u2019t able to bring the book back? I hoped you
-      could help me.\""
+      could help me."
     portrait: {fileID: 0}
-  endEvents: []
   endActions:
   - {fileID: 11400000, guid: f74a5732b47d5804bae18287207787bb, type: 2}

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: George_AfterFirstMeetingWithBook
   m_EditorClassIdentifier: Assembly-CSharp::ConditionalDialogueAsset
   dialogue: {fileID: 11400000, guid: d11657aa160d79a47a9e53c83bc92006, type: 2}
-  questConditions: []
+  questConditions:
+  - {fileID: 11400000, guid: a3dcc4ac284bffb49969343c7459f694, type: 2}
   flagConditions:
-  - {fileID: 11400000, guid: 2e3b2be286de3474fa372b9fb75db73e, type: 2}
+  - {fileID: 11400000, guid: e1a4bf132a1dd254183e9af2429086ef, type: 2}

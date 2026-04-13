@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c25f4ef4070c7994886f8f3e376db0f0, type: 3}
   m_Name: Condition_FoundBook
   m_EditorClassIdentifier: Assembly-CSharp::FlagConditionSO
-  flagName: George_FirstMeetingWithBookDone
-  requiredValue: 0
+  flagName: FoundBook
+  requiredValue: 1
