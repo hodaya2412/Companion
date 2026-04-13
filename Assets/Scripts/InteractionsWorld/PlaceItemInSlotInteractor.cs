@@ -16,6 +16,16 @@ public class PlaceItemInSlotInteractor : MonoBehaviour
     private bool inRange;
     private bool alreadyPlaced;
 
+    private void OnEnable()
+    {
+        GameEvents.OnItemClicked += HandleItemClicked;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnItemClicked -= HandleItemClicked;
+    }
+
     private void Start()
     {
         if (!string.IsNullOrEmpty(placedFlag) &&
@@ -38,15 +48,18 @@ public class PlaceItemInSlotInteractor : MonoBehaviour
             inRange = false;
     }
 
-    private void Update()
+    private void HandleItemClicked(InventoryItemData clickedItem)
     {
         if (!inRange || alreadyPlaced)
             return;
 
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            TryPlaceItem();
-        }
+        if (clickedItem == null || requiredItem == null)
+            return;
+
+        if (clickedItem.itemId != requiredItem.itemId)
+            return;
+
+        TryPlaceItem();
     }
 
     private void TryPlaceItem()
