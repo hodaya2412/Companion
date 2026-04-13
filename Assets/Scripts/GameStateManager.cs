@@ -15,7 +15,8 @@ public enum UIState
     Dialogue,
     Inventory,
     Map,
-    Choice
+    Choice,
+    Help
 }
 
 public class GameStateManager : MonoBehaviour
