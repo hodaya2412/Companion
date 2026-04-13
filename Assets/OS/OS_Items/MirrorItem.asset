@@ -15,7 +15,7 @@ MonoBehaviour:
   itemId: mirror
   displayName: Mirror
   description: An old mirror that seems to fit an ancient slot in the forest.
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: ed1074391f139544d941ae0870937dc0, type: 3}
   category: 0
   stackable: 0
   maxStack: 99

@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: PlayerInventory
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInventory
   slots:
-  - item: {fileID: 11400000, guid: 6f04251b436dd9e4098f0e6fd8ac4d07, type: 2}
+  - item: {fileID: 11400000, guid: ad0d2f173a0889944bf354e441eb106f, type: 2}
+    amount: 1
+  - item: {fileID: 11400000, guid: 38cd868805cc2464eb044f01f181ef5e, type: 2}
     amount: 1
