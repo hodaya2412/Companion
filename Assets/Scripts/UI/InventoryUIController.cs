@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Linq;
 using TMPro;
 
-public class InventoryUIController : MonoBehaviour
+public class InventoryUIController : MonoBehaviour, IPuzzlePanelOwner
 {
     [Header("UI References")]
     public GameObject panel;
@@ -22,7 +22,8 @@ public class InventoryUIController : MonoBehaviour
 
     [Header("Puzzle Settings")]
     public string puzzleItemId = "Item_Puzzle_Door01";
-    public GameObject puzzlePanel;
+    public PuzzlePanelController puzzlePanelController;
+
 
     [Header("Quests Settings")]
     public GameObject questPanel;
@@ -137,22 +138,27 @@ public class InventoryUIController : MonoBehaviour
         }
         else if (item.itemId == puzzleItemId)
         {
-            if (puzzlePanel != null)
-            {
-                puzzlePanel.SetActive(true);
-                puzzlePanel.transform.SetAsLastSibling();
-            }
+            if (puzzlePanelController != null)
+                puzzlePanelController.Open(this);
         }
     }
 
     public void CloseSpecificPuzzle()
     {
-        if (puzzlePanel != null) puzzlePanel.SetActive(false);
-        GameEvents.RequestUIStateChange?.Invoke(UIState.None);
+        if (puzzlePanelController != null)
+            puzzlePanelController.RequestClose();
     }
 
     public void CloseQuestPanel()
     {
         if (questPanel != null) questPanel.SetActive(false);
+    }
+
+    public void OnPuzzlePanelClosed()
+    {
+        if (panel != null && panel.activeSelf)
+            GameEvents.RequestUIStateChange?.Invoke(UIState.Inventory);
+        else
+            GameEvents.RequestUIStateChange?.Invoke(UIState.None);
     }
 }

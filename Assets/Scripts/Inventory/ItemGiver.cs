@@ -16,6 +16,7 @@ public class ItemGiver : MonoBehaviour
     public List<ItemGrant> grants = new();
 
     private bool alreadyGiven;
+    public bool AlreadyGiven => alreadyGiven;
 
     public void Give()
     {

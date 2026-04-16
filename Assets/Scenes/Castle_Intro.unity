@@ -2078,7 +2078,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e2ce0ea1e8681478747d0eb64a3f34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorInteractable
-  puzzlePanel: {fileID: 967796088}
+  puzzlePanelController: {fileID: 967796092}
   onPuzzleOpened:
     m_PersistentCalls:
       m_Calls:
@@ -2121,6 +2121,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+  itemGiver: {fileID: 458738211}
 --- !u!114 &458738211
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3153,6 +3154,19 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8082788662491508953, guid: ed9bcc4b62ee3af4a91911bfaf33a9d1, type: 3}
   m_PrefabInstance: {fileID: 6745438853395987383}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &967796092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 967796088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ebd4e89048ef624597b6a6d2dc5bff9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PuzzlePanelController
+  panel: {fileID: 967796088}
 --- !u!1 &1086463941
 GameObject:
   m_ObjectHideFlags: 0
@@ -5569,6 +5583,10 @@ PrefabInstance:
       propertyPath: questDescriptionText
       value: 
       objectReference: {fileID: 1920975335}
+    - target: {fileID: 1465879416862358956, guid: ed9bcc4b62ee3af4a91911bfaf33a9d1, type: 3}
+      propertyPath: puzzlePanelController
+      value: 
+      objectReference: {fileID: 967796092}
     - target: {fileID: 1500064149332672141, guid: ed9bcc4b62ee3af4a91911bfaf33a9d1, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -5608,6 +5626,26 @@ PrefabInstance:
     - target: {fileID: 3892812910378525665, guid: ed9bcc4b62ee3af4a91911bfaf33a9d1, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4439739883356803059, guid: ed9bcc4b62ee3af4a91911bfaf33a9d1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4439739883356803059, guid: ed9bcc4b62ee3af4a91911bfaf33a9d1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 967796092}
+    - target: {fileID: 4439739883356803059, guid: ed9bcc4b62ee3af4a91911bfaf33a9d1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: RequestClose
+      objectReference: {fileID: 0}
+    - target: {fileID: 4439739883356803059, guid: ed9bcc4b62ee3af4a91911bfaf33a9d1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PuzzlePanelController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4439739883356803059, guid: ed9bcc4b62ee3af4a91911bfaf33a9d1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5061359149918302838, guid: ed9bcc4b62ee3af4a91911bfaf33a9d1, type: 3}
       propertyPath: m_AnchorMax.x
@@ -5756,7 +5794,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 466905218828339446, guid: ed9bcc4b62ee3af4a91911bfaf33a9d1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1990865698}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8082788662491508953, guid: ed9bcc4b62ee3af4a91911bfaf33a9d1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 967796092}
   m_SourcePrefab: {fileID: 100100000, guid: ed9bcc4b62ee3af4a91911bfaf33a9d1, type: 3}
 --- !u!1001 &6799384887169944901
 PrefabInstance:

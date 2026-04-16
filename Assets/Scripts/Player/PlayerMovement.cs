@@ -104,9 +104,10 @@ public class PlayerMovement : MonoBehaviour
             currentGameplayState == GameplayState.BeingGuided;
 
         bool uiBlocksMove =
-            currentUIState == UIState.Dialogue ||
-            currentUIState == UIState.Map ||
-            currentUIState == UIState.Choice;
+    currentUIState == UIState.Dialogue ||
+    currentUIState == UIState.Map ||
+    currentUIState == UIState.Choice ||
+    currentUIState == UIState.Inventory;
 
         canMove = gameplayAllowsMove && !uiBlocksMove;
 

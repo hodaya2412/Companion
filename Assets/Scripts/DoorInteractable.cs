@@ -1,11 +1,12 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class DoorInteractable : MonoBehaviour
+public class DoorInteractable : MonoBehaviour, IPuzzlePanelOwner
 {
-    public GameObject puzzlePanel;
+    public PuzzlePanelController puzzlePanelController;
     public UnityEvent onPuzzleOpened;
     public UnityEvent onPuzzleClosed;
+    public ItemGiver itemGiver;
 
     private bool isOpen = false;
     private bool canOpenPuzzle = false;
@@ -41,6 +42,9 @@ public class DoorInteractable : MonoBehaviour
 
         if (!canOpenPuzzle || isOpen) return;
 
+        if (itemGiver != null && itemGiver.giveOnlyOnce && itemGiver.AlreadyGiven)
+            return;
+
         OpenPuzzle();
     }
 
@@ -48,27 +52,21 @@ public class DoorInteractable : MonoBehaviour
     {
         isOpen = true;
 
-        if (puzzlePanel != null)
-        {
-            puzzlePanel.SetActive(true);
-            puzzlePanel.transform.SetAsLastSibling();
-        }
+        if (puzzlePanelController != null)
+            puzzlePanelController.Open(this);
 
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-
-        GameEvents.RequestUIStateChange?.Invoke(UIState.Choice);
         onPuzzleOpened?.Invoke();
     }
 
     public void ClosePuzzle()
     {
+        if (puzzlePanelController != null)
+            puzzlePanelController.RequestClose();
+    }
+
+    public void OnPuzzlePanelClosed()
+    {
         isOpen = false;
-
-        if (puzzlePanel != null)
-            puzzlePanel.SetActive(false);
-
-        GameEvents.RequestUIStateChange?.Invoke(UIState.None);
         onPuzzleClosed?.Invoke();
     }
 }
