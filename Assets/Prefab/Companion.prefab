@@ -15,7 +15,8 @@ GameObject:
   - component: {fileID: 3580640435352790135}
   - component: {fileID: 2470741826849906401}
   - component: {fileID: 8069373801090467043}
-  m_Layer: 0
+  - component: {fileID: 146368808368188551}
+  m_Layer: 7
   m_Name: Companion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110,9 +111,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   rb: {fileID: 3580640435352790135}
+  animator: {fileID: 0}
+  spriteRenderer: {fileID: 0}
   comfortableDistance: 1.5
   maxDistance: 2.5
   maxSpeed: 8
+  combatBackOffset: 2.5
+  combatSideOffset: 2
+  combatMoveSpeed: 6
+  combatArrivalDistance: 0.2
 --- !u!65 &6207845776801013977
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -196,9 +203,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CompanionGuideController
   agent: {fileID: 2470741826849906401}
-  firstDoorStop: {fileID: 0}
   player: {fileID: 0}
   stopDistance: 1.2
   waitForPlayerRadius: 2
-  arrivalDialogue: {fileID: 11400000, guid: 43a81691931e37a429fd38ed4f738f4a, type: 2}
-  guideToFirstDoorAction: {fileID: 11400000, guid: 8bc6de004f70e0648b1208b0c188fa10, type: 2}
+  targets:
+  - id: 4
+    target: {fileID: 0}
+    arrivalDialogue: {fileID: 11400000, guid: 865e0626223429d4a8b95936daf848e1, type: 2}
+--- !u!95 &146368808368188551
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6925320428574843544}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c0d5abd62e630a44db80088ad93f3ba6, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

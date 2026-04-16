@@ -55,6 +55,11 @@ public class CompanionGuideController : MonoBehaviour
     {
         if (!guiding) return;
 
+        if (agent.enabled && agent.hasPath)
+        {
+            // אנחנו שולחים את המהירות של ה-Agent לפונקציית האנימציה בסקריפט השני
+            GetComponent<CompanionFollow>().UpdateSpriteAnimation(agent.velocity.normalized);
+        }
         if (!waitingAtTarget)
         {
             if (HasArrived())

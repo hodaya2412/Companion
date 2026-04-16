@@ -1881,17 +1881,33 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3031897620138946666, guid: 2c2eab25121185d4ba707d5094721675, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -654499048, guid: a6854a231327abc4399a48126d786795, type: 3}
     - target: {fileID: 5963083690852674821, guid: 2c2eab25121185d4ba707d5094721675, type: 3}
       propertyPath: player
       value: 
       objectReference: {fileID: 270215612}
+    - target: {fileID: 5963083690852674821, guid: 2c2eab25121185d4ba707d5094721675, type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 394203174}
+    - target: {fileID: 5963083690852674821, guid: 2c2eab25121185d4ba707d5094721675, type: 3}
+      propertyPath: spriteRenderer
+      value: 
+      objectReference: {fileID: 394203175}
     - target: {fileID: 6925320428574843544, guid: 2c2eab25121185d4ba707d5094721675, type: 3}
       propertyPath: m_Name
       value: Companion
       objectReference: {fileID: 0}
-    - target: {fileID: 6925320428574843544, guid: 2c2eab25121185d4ba707d5094721675, type: 3}
-      propertyPath: m_Layer
-      value: 7
+    - target: {fileID: 7708867397880664136, guid: 2c2eab25121185d4ba707d5094721675, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.09604088
+      objectReference: {fileID: 0}
+    - target: {fileID: 7708867397880664136, guid: 2c2eab25121185d4ba707d5094721675, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.1036819
       objectReference: {fileID: 0}
     - target: {fileID: 7708867397880664136, guid: 2c2eab25121185d4ba707d5094721675, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1938,30 +1954,24 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 270215612}
     - target: {fileID: 8069373801090467043, guid: 2c2eab25121185d4ba707d5094721675, type: 3}
-      propertyPath: firstDoorStop
-      value: 
-      objectReference: {fileID: 96169110}
-    - target: {fileID: 8069373801090467043, guid: 2c2eab25121185d4ba707d5094721675, type: 3}
-      propertyPath: targets.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8069373801090467043, guid: 2c2eab25121185d4ba707d5094721675, type: 3}
-      propertyPath: targets.Array.data[0].id
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8069373801090467043, guid: 2c2eab25121185d4ba707d5094721675, type: 3}
       propertyPath: targets.Array.data[0].target
       value: 
       objectReference: {fileID: 96169110}
-    - target: {fileID: 8069373801090467043, guid: 2c2eab25121185d4ba707d5094721675, type: 3}
-      propertyPath: targets.Array.data[0].arrivalDialogue
-      value: 
-      objectReference: {fileID: 11400000, guid: 865e0626223429d4a8b95936daf848e1, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2c2eab25121185d4ba707d5094721675, type: 3}
+--- !u!95 &394203174 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 146368808368188551, guid: 2c2eab25121185d4ba707d5094721675, type: 3}
+  m_PrefabInstance: {fileID: 394203173}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &394203175 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 3031897620138946666, guid: 2c2eab25121185d4ba707d5094721675, type: 3}
+  m_PrefabInstance: {fileID: 394203173}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -2826,6 +2836,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 270215612}
   rb: {fileID: 723165571}
+  animator: {fileID: 0}
+  spriteRenderer: {fileID: 0}
   comfortableDistance: 1.5
   maxDistance: 2.5
   maxSpeed: 8
