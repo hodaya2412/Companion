@@ -15,7 +15,7 @@ MonoBehaviour:
   itemId: Item_Puzzle_Door01
   displayName: Puzzle
   description: 
-  icon: {fileID: 21300000, guid: db427fab3e94daf4caa704d9314a77a1, type: 3}
+  icon: {fileID: 2003593874, guid: 0a1dca0f42e261c44b572ff4305c6789, type: 3}
   category: 0
   stackable: 0
   maxStack: 99

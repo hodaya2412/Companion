@@ -16,7 +16,7 @@ MonoBehaviour:
   displayName: George's Mission
   description: George asked me to retrieve the Book stolen by the bandits in the
     deep forest.
-  icon: {fileID: 21300000, guid: fe025e83f69d0b54f8a4fe3c7c128fd7, type: 3}
+  icon: {fileID: 1454592643, guid: fd2dea16a186e6545b8564edabf4d2d7, type: 3}
   category: 3
   stackable: 0
   maxStack: 99

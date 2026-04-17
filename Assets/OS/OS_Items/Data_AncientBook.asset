@@ -15,7 +15,7 @@ MonoBehaviour:
   itemId: AncientBook
   displayName: AncientBook
   description: 
-  icon: {fileID: 21300000, guid: ae496f5dad56ea645b72d374a0376368, type: 3}
+  icon: {fileID: -1949805200, guid: 648a25ef3a9424742b378ea6ce46e80c, type: 3}
   category: 3
   stackable: 0
   maxStack: 99
