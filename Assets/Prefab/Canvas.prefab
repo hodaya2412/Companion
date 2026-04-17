@@ -685,7 +685,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 212, y: 73}
+  m_AnchoredPosition: {x: 255, y: 88}
   m_SizeDelta: {x: 255.5471, y: 101.1862}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8366206012186025722
@@ -1569,7 +1569,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapUIRootActivator
   mapUIRoot: {fileID: 2596122192809619301}
-  enableMapAction: {fileID: 11400000, guid: f41c705210afa7d4aa36dd4f1c731e90, type: 2}
 --- !u!114 &1465879416862358956
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1588,7 +1587,9 @@ MonoBehaviour:
   slotCount: 100
   inventory: {fileID: 0}
   puzzleItemId: Item_Puzzle_Door01
-  puzzlePanel: {fileID: 8082788662491508953}
+  puzzlePanelController: {fileID: 0}
+  questPanel: {fileID: 0}
+  questDescriptionText: {fileID: 0}
 --- !u!1 &7151484065528044480
 GameObject:
   m_ObjectHideFlags: 0
@@ -1824,7 +1825,9 @@ MonoBehaviour:
   slotCount: 100
   inventory: {fileID: 11400000, guid: 8e61edf2758249c47b97a189a9869538, type: 2}
   puzzleItemId: Item_Puzzle_Door01
-  puzzlePanel: {fileID: 8082788662491508953}
+  puzzlePanelController: {fileID: 0}
+  questPanel: {fileID: 0}
+  questDescriptionText: {fileID: 0}
 --- !u!223 &4618462823929070076
 Canvas:
   m_ObjectHideFlags: 0
