@@ -16,20 +16,19 @@ MonoBehaviour:
   lines:
   - speaker: Nero
     text: "You\u2019re heading into a bandit camp\u2026 unarmed?\nHow noble."
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: f8a1689f8013ceb4ea775dddb0b52c76, type: 3}
   - speaker: Ran
     text: "I don\u2019t even have a weapon."
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: b885994ca6d252f4fa9f8995e5bea62d, type: 3}
   - speaker: Nero
     text: I noticed.
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: f8a1689f8013ceb4ea775dddb0b52c76, type: 3}
   - speaker: Nero
     text: "You shouldn\u2019t walk into danger empty-handed.\nLook there . That blade.\nIt\u2019s
       not pretty, but it will keep you alive."
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: 6fa6236dad64b084295dd63938e64f14, type: 3}
   - speaker: Nero
     text: "Take it, Ran.\nI\u2019d rather not watch you fall so soon"
-    portrait: {fileID: 0}
-  endEvents: []
+    portrait: {fileID: 21300000, guid: d12092fb6c8bbc947af01658c87d6c2b, type: 3}
   endActions:
   - {fileID: 11400000, guid: 3a9079507e850714fac30fe86bf946e1, type: 2}

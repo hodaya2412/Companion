@@ -15,8 +15,8 @@ MonoBehaviour:
   dialogueId: Door_Arrival
   lines:
   - speaker: Companion
-    text: You should click on the door
-    portrait: {fileID: 0}
+    text: "An ancient card lies hidden upon the door\u2026 it will guide our path"
+    portrait: {fileID: 21300000, guid: 83c97f7e666612b4994ee68cad23a9dc, type: 3}
   endActions:
   - {fileID: 11400000, guid: f519868d189857148a5f84436624b9b4, type: 2}
   - {fileID: 11400000, guid: 64346bcde9891024083774703b70c607, type: 2}

@@ -187,6 +187,7 @@ GameObject:
   - component: {fileID: 45347818}
   - component: {fileID: 45347820}
   - component: {fileID: 45347819}
+  - component: {fileID: 45347821}
   m_Layer: 0
   m_Name: Book
   m_TagString: Untagged
@@ -264,7 +265,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0ede5b53b8da54d42a091bba0b79bfcc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -283,8 +284,8 @@ Transform:
   m_GameObject: {fileID: 45347813}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 268.75, y: -4.48, z: 86.76214}
-  m_LocalScale: {x: 1.4, y: 1.52, z: 1}
+  m_LocalPosition: {x: 270.41, y: -4.18, z: 86.76214}
+  m_LocalScale: {x: 0.3408, y: 0.34197766, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -347,6 +348,21 @@ MonoBehaviour:
   itemData: {fileID: 11400000, guid: 38cd868805cc2464eb044f01f181ef5e, type: 2}
   inventory: {fileID: 11400000, guid: 8e61edf2758249c47b97a189a9869538, type: 2}
   collectedFlag: GeorgeBookCollected
+--- !u!114 &45347821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 45347813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4166e792fe3da0940a7736a6804d4efa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FloatingItem
+  floatAmplitude: 0.3
+  floatSpeed: 1.5
+  rotationSpeed: 15
 --- !u!1001 &64245459
 PrefabInstance:
   m_ObjectHideFlags: 0

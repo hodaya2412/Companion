@@ -16,22 +16,19 @@ MonoBehaviour:
   lines:
   - speaker: Nero
     text: "So\u2026 you finally found it."
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: ba6e957403ccfae419a57fe53b099a2a, type: 3}
   - speaker: Ran
     text: You know this book?
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: fac10aea3c7ad4f47ad6a5085edd602f, type: 3}
   - speaker: Nero
     text: "I know what it can become\u2026 for the right person."
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: 6fa6236dad64b084295dd63938e64f14, type: 3}
   - speaker: Ran
     text: And what is that supposed to mean?
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: b885994ca6d252f4fa9f8995e5bea62d, type: 3}
   - speaker: Nero
-    text: "That depends on whether you\u2019re curious\u2026 or careful."
-    portrait: {fileID: 0}
-  - speaker: Nero
-    text: Most people carry answers in their hands and never dare to look.
-    portrait: {fileID: 0}
-  endEvents: []
+    text: It's a spell book, we can use it! let's open the book and see if there
+      is a spell that could help us!
+    portrait: {fileID: 21300000, guid: 83c97f7e666612b4994ee68cad23a9dc, type: 3}
   endActions:
   - {fileID: 11400000, guid: 2343ec435073f9b49b4891bc42cad55b, type: 2}

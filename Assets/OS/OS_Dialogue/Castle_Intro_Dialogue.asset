@@ -16,48 +16,45 @@ MonoBehaviour:
   lines:
   - speaker: Player
     text: "Where am I\u2026?"
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: 35d3ece786d1fa14cb0fb0d04aa4b843, type: 3}
   - speaker: Companion
     text: "You\u2019re awake. Good.\nI was worried you might not."
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: 91fc86adf05a8744582df002cc114e18, type: 3}
   - speaker: Player
     text: "Who\u2026 who are you?"
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: 35d3ece786d1fa14cb0fb0d04aa4b843, type: 3}
   - speaker: Companion
     text: 'Just someone like you.
 
       Stuck here, trying to get out.'
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: d12092fb6c8bbc947af01658c87d6c2b, type: 3}
   - speaker: Player
     text: "Stuck? I don\u2019t understand."
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: 35d3ece786d1fa14cb0fb0d04aa4b843, type: 3}
   - speaker: Companion
     text: "This tower\u2026 it traps people.\nEvery floor hides a challenge, every
       door a secret.\nI can help you\u2026 if you follow me."
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: 6fa6236dad64b084295dd63938e64f14, type: 3}
   - speaker: Player
     text: Why should I follow you?
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: b10e9de5186e7cd4fb88aca2528caeba, type: 3}
   - speaker: Companion
     text: "Because wandering alone gets you nowhere.\nThe doors\u2026 the keys\u2026
       you\u2019ll need me."
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: 6fa6236dad64b084295dd63938e64f14, type: 3}
   - speaker: Player
     text: "And what if I don\u2019t want to?"
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: b10e9de5186e7cd4fb88aca2528caeba, type: 3}
   - speaker: Companion
     text: "You don\u2019t have to\u2026 yet.\nBut walking alone is dangerous.\nLet
       me guide you."
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: 6fa6236dad64b084295dd63938e64f14, type: 3}
   - speaker: Player
     text: "Alright\u2026 I\u2019ll follow you"
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: fac10aea3c7ad4f47ad6a5085edd602f, type: 3}
   - speaker: Companion
     text: "Good.\nThe first door is waiting.\nLet\u2019s move."
-    portrait: {fileID: 0}
-  - speaker: Companion
-    text: "Good.\nThe first door is waiting.\nLet\u2019s move."
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: ba6e957403ccfae419a57fe53b099a2a, type: 3}
   endActions:
   - {fileID: 11400000, guid: 8bc6de004f70e0648b1208b0c188fa10, type: 2}
   - {fileID: 11400000, guid: 7a779b998583c1043bc0e8c1b62c5cb3, type: 2}

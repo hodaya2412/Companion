@@ -17,80 +17,80 @@ MonoBehaviour:
   - speaker: Ran
     text: "Excuse me, sir\u2026 do you know anything about a golden key?\nIt\u2019s
       supposed to be connected to the castle."
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: fac10aea3c7ad4f47ad6a5085edd602f, type: 3}
   - speaker: George
     text: "Heh. A golden key?\nKid, in this world, anything shiny is either stolen\u2026
       or cursed. Which one are you hoping for?"
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: d34783ae0c34f8e43ab3a7d14dcda8f4, type: 3}
   - speaker: Ran
     text: "I\u2019m serious. I need it."
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: 35d3ece786d1fa14cb0fb0d04aa4b843, type: 3}
   - speaker: George
     text: "You look serious.\nThat\u2019s your first mistake."
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: d34783ae0c34f8e43ab3a7d14dcda8f4, type: 3}
   - speaker: George
     text: "Yeah\u2026 I\u2019ve heard of your key.\nBig thing. Heavy. Gold like a
       king\u2019s lie.\nBut it\u2019s not lying around waiting for children with
       brave faces."
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: d34783ae0c34f8e43ab3a7d14dcda8f4, type: 3}
   - speaker: Ran
     text: So you do know where it is?
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: 291ae8d5c5a7512459f5b5e13e0be914, type: 3}
   - speaker: George
     text: "I know where it might be.\nThat\u2019s different.\nTruth is a slippery
       thing \u2014 like me after my third bottle."
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: d34783ae0c34f8e43ab3a7d14dcda8f4, type: 3}
   - speaker: George
     text: "The key is in bad hands.\nHands that don\u2019t wash.\nBandits. They\u2019ve
       been sniffing around the old quarry past the dead oak."
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: d34783ae0c34f8e43ab3a7d14dcda8f4, type: 3}
   - speaker: Ran
     text: Then tell me how to get it.
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: fac10aea3c7ad4f47ad6a5085edd602f, type: 3}
   - speaker: George
     text: " Oh, I will. But nothing\u2019s free, little hero. They took something
       from me too. A book."
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: d34783ae0c34f8e43ab3a7d14dcda8f4, type: 3}
   - speaker: Ran
     text: A book?
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: 35d3ece786d1fa14cb0fb0d04aa4b843, type: 3}
   - speaker: George
     text: " Not just a book. My book.  Old leather cover. Worn corners. Smells like
       dust and regret. It\u2019s the only thing I\u2019ve got left that remembers
       who I used to be."
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: d34783ae0c34f8e43ab3a7d14dcda8f4, type: 3}
   - speaker: Ran
     text: You want me to bring it back?
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: fac10aea3c7ad4f47ad6a5085edd602f, type: 3}
   - speaker: George
     text: "You catch on fast for someone your size.  Bring me the book. And I\u2019ll
       tell you exactly where they\u2019re hiding the key\u2026 and how not to die
       trying."
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: d34783ae0c34f8e43ab3a7d14dcda8f4, type: 3}
   - speaker: Ren
     text: Deal.
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: fac10aea3c7ad4f47ad6a5085edd602f, type: 3}
   - speaker: George
     text: 'Careful with that word, boy.
 
       Deals shape a man more than battles
       do.'
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: d34783ae0c34f8e43ab3a7d14dcda8f4, type: 3}
   - speaker: Ran
     text: "I\u2019ll bring it back."
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: fac10aea3c7ad4f47ad6a5085edd602f, type: 3}
   - speaker: George
     text: "We\u2019ll see."
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: d34783ae0c34f8e43ab3a7d14dcda8f4, type: 3}
   - speaker: George
     text: 'The bandits camp in the quarry east of the broken bridge. They keep their
       loot in a locked crate inside a collapsed storage shack. Your book should be
       there. '
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: d34783ae0c34f8e43ab3a7d14dcda8f4, type: 3}
   - speaker: George
     text: " If you\u2019re lucky\u2026 they\u2019ll underestimate you.  If you\u2019re
       smart\u2026 you\u2019ll let them. "
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: d34783ae0c34f8e43ab3a7d14dcda8f4, type: 3}
   endActions:
   - {fileID: 11400000, guid: 05a395f0006c8ea4ba515394b5bf3e49, type: 2}
   - {fileID: 11400000, guid: 496bc5954a493da42af7b184eb8c1442, type: 2}
