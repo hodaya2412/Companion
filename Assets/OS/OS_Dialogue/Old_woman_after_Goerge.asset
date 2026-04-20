@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95847929271290341bb73bbda3eeeffc, type: 3}
   m_Name: Old_woman_after_Goerge
   m_EditorClassIdentifier: Assembly-CSharp::DialogueAsset
+  dialogueId: 
   lines:
   - speaker: Maria
     text: Be careful on your way!
-    portrait: {fileID: 0}
-  endEvents: []
+    portrait: {fileID: 21300000, guid: 98995e056fccfdc44858f6a0e27433e2, type: 3}
   endActions: []

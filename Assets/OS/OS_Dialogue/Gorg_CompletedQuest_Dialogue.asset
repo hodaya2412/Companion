@@ -16,6 +16,11 @@ MonoBehaviour:
   lines:
   - speaker: George
     text: "Thank you so much for returning the book! You\u2019ve really helped me"
+    portrait: {fileID: 21300000, guid: 59c12fe8d2adbaf4fb6e191199aba2d9, type: 3}
+  - speaker: George
+    text: "A deal is a deal. The key you seek lies upon a dragon\u2019s neck, bound
+      within a powerful barrier.\nI\u2019ve granted you a small gift\u2026 it should
+      help you break through."
     portrait: {fileID: 21300000, guid: d34783ae0c34f8e43ab3a7d14dcda8f4, type: 3}
   endActions:
   - {fileID: 11400000, guid: 5fa9aecefa0eb2d4799427df259522d0, type: 2}

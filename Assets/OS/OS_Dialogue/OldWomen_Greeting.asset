@@ -12,41 +12,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95847929271290341bb73bbda3eeeffc, type: 3}
   m_Name: OldWomen_Greeting
   m_EditorClassIdentifier: Assembly-CSharp::DialogueAsset
+  dialogueId: 
   lines:
   - speaker: Maria
     text: "Oh, hello there, dear! Come closer, don't be shy. You look like you\u2019ve
       traveled a very long way... and those clothes, they certainly aren't from around
       here, are they?"
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: 98995e056fccfdc44858f6a0e27433e2, type: 3}
   - speaker: Maria
     text: Don't you worry, you're safe here. Our little village always has room for
       a weary soul. What brings a young lad like you to such a quiet corner of the
       world?
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: 98995e056fccfdc44858f6a0e27433e2, type: 3}
   - speaker: Ren
     text: Thank you. To be honest, I'm looking for something... a large, glowing
       golden key. Have you seen anything like that nearby?
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: fac10aea3c7ad4f47ad6a5085edd602f, type: 3}
   - speaker: Maria
     text: A golden key? Oh, my sweet child, I'm afraid the only things glowing around
       here are the fireflies by the lake. A key like that sounds like something out
       of a bedtime story.
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: 98995e056fccfdc44858f6a0e27433e2, type: 3}
   - speaker: Maria
     text: "But wait... if there\u2019s anyone who remembers stories of strange, shining
       things, it would be Old George."
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: 98995e056fccfdc44858f6a0e27433e2, type: 3}
   - speaker: Ren
     text: Old George? Where can I find him?
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: fac10aea3c7ad4f47ad6a5085edd602f, type: 3}
   - speaker: Maria
     text: "He\u2019s usually at the Village Market. Just follow this main path straight
       ahead, you can't miss it. Don't be startled by the smell of ale or his sharp
       tongue\u2014that's just his way of saying hello."
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: 98995e056fccfdc44858f6a0e27433e2, type: 3}
   - speaker: Maria
     text: Go on then, dear. Tell him Maria sent you, perhaps he'll be a bit more
       polite. Take care of yourself, you hear?
-    portrait: {fileID: 0}
-  endEvents: []
+    portrait: {fileID: 21300000, guid: 98995e056fccfdc44858f6a0e27433e2, type: 3}
   endActions: []

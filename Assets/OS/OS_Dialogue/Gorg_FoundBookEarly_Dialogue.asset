@@ -22,7 +22,7 @@ MonoBehaviour:
     portrait: {fileID: 21300000, guid: fac10aea3c7ad4f47ad6a5085edd602f, type: 3}
   - speaker: Goerge
     text: "Yeah, that\u2019s where my problems usually end up."
-    portrait: {fileID: 21300000, guid: d34783ae0c34f8e43ab3a7d14dcda8f4, type: 3}
+    portrait: {fileID: 21300000, guid: b645c392f48b61140a06d56869784554, type: 3}
   - speaker: Ran
     text: "I\u2019m actually looking for a Golden Key."
     portrait: {fileID: 21300000, guid: 291ae8d5c5a7512459f5b5e13e0be914, type: 3}

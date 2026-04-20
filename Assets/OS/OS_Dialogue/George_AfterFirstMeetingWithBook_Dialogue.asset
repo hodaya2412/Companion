@@ -21,6 +21,6 @@ MonoBehaviour:
     text: Yeah.
     portrait: {fileID: 21300000, guid: fac10aea3c7ad4f47ad6a5085edd602f, type: 3}
   - speaker: George
-    text: Try not to die this time.
+    text: Try not to die little one.
     portrait: {fileID: 21300000, guid: d34783ae0c34f8e43ab3a7d14dcda8f4, type: 3}
   endActions: []

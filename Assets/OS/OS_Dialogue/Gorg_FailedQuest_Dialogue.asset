@@ -17,6 +17,6 @@ MonoBehaviour:
   - speaker: Goerge
     text: "Oh no\u2026 you weren\u2019t able to bring the book back? I hoped you
       could help me."
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: 26fb930544322bb46bf08610ce5f6215, type: 3}
   endActions:
   - {fileID: 11400000, guid: f74a5732b47d5804bae18287207787bb, type: 2}
