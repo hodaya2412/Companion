@@ -21,6 +21,30 @@ public class PlayerMovement : MonoBehaviour
     private GameplayState currentGameplayState;
     private UIState currentUIState;
 
+    [Header("Animation")]
+    public Animator animator;
+
+
+    private void UpdateAnimator()
+    {
+        if (animator == null) return;
+
+        // עדכון פרמטרי התנועה
+        animator.SetFloat("MoveX", moveInput.x);
+        animator.SetFloat("MoveY", moveInput.z); // בדרך כלל Z מייצג קדימה/אחורה ב-3D/2.5D
+
+        // חישוב מהירות (Magnitude)
+        float speedVal = new Vector2(moveInput.x, moveInput.z).magnitude;
+        animator.SetFloat("Speed", speedVal);
+
+        // עדכון מצב החרב לפי הסקריפט של הציוד
+        if (PlayerEquipment.Instance != null)
+        {
+            bool isArmed = PlayerEquipment.Instance.HasWeaponEquipped();
+            animator.SetBool("IsArmed", isArmed);
+        }
+    }
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -29,6 +53,8 @@ public class PlayerMovement : MonoBehaviour
             cam = Camera.main.transform;
 
         inputAction = new InputActions();
+        UpdateAnimator();
+
     }
 
     void OnEnable()
@@ -117,6 +143,11 @@ public class PlayerMovement : MonoBehaviour
             if (rb != null) rb.linearVelocity = Vector3.zero;
         }
     }
+    void Update()
+    {
+
+        UpdateAnimator();
+    }
 
     void FixedUpdate()
     {
@@ -132,12 +163,13 @@ public class PlayerMovement : MonoBehaviour
 
         // כיוון תנועה סופי
         Vector3 moveDir = (camRight * moveInput.x + camForward * moveInput.z).normalized;
+      
 
         // תנועה פיזית
         rb.MovePosition(rb.position + moveDir * speed * Time.fixedDeltaTime);
 
         // טיפול בויזואליות (Flip)
-        ApplyVisualFlip(moveInput.x);
+        //ApplyVisualFlip(moveInput.x);
     }
 
     private void ApplyVisualFlip(float horizontalInput)
