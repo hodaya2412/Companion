@@ -119,7 +119,21 @@ public class PlayerMovement : MonoBehaviour
 
     void OnMove(InputAction.CallbackContext ctx)
     {
-        moveInput = ctx.ReadValue<Vector3>();
+        Vector3 input = ctx.ReadValue<Vector3>();
+
+        // נותן עדיפות לכיוון האחרון / ציר אחד בלבד
+        if (Mathf.Abs(input.x) > Mathf.Abs(input.z))
+        {
+            moveInput = new Vector3(Mathf.Sign(input.x), 0, 0);
+        }
+        else if (Mathf.Abs(input.z) > 0)
+        {
+            moveInput = new Vector3(0, 0, Mathf.Sign(input.z));
+        }
+        else
+        {
+            moveInput = Vector3.zero;
+        }
     }
 
     private void RefreshMovementState()
