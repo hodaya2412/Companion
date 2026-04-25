@@ -20,3 +20,4 @@ MonoBehaviour:
   stackable: 0
   maxStack: 99
   puzzlePanel: {fileID: 0}
+  weaponAnimationType: 2

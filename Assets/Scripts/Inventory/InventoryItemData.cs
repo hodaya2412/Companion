@@ -23,4 +23,7 @@ public class InventoryItemData : ScriptableObject
 
     [Header("Puzzle / UI (optional)")]
     public GameObject puzzlePanel; // גוררים לפה את ה-Panel של החידה (אם זה פריט חידה)
+
+    [Header("Weapon Animation")]
+    public WeaponAnimationType weaponAnimationType = WeaponAnimationType.None;
 }

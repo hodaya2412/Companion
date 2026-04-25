@@ -42,7 +42,14 @@ public class PlayerMovement : MonoBehaviour
         {
             bool isArmed = PlayerEquipment.Instance.HasWeaponEquipped();
             animator.SetBool("IsArmed", isArmed);
+            InventoryItemData weapon = PlayerEquipment.Instance.EquippedWeapon;
+
+            int weaponType = weapon != null ? (int)weapon.weaponAnimationType : 0;
+            Debug.Log($"Weapon: {(weapon != null ? weapon.itemId : "NULL")} | AnimationType: {weaponType}");
+
+            animator.SetInteger("WeaponType", weaponType);
         }
+
     }
 
     void Awake()
