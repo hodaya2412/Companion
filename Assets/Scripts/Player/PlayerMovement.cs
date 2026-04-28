@@ -192,30 +192,4 @@ public class PlayerMovement : MonoBehaviour
         // טיפול בויזואליות (Flip)
         //ApplyVisualFlip(moveInput.x);
     }
-
-    private void ApplyVisualFlip(float horizontalInput)
-    {
-        if (characterVisuals == null) return;
-
-        // אם השחקן זז ימינה/שמאלה - נעדכן את הכיוון שלו
-        if (horizontalInput > 0.1f && !facingRight)
-        {
-            Flip();
-        }
-        else if (horizontalInput < -0.1f && facingRight)
-        {
-            Flip();
-        }
-    }
-
-    private void Flip()
-    {
-        facingRight = !facingRight;
-
-        // אנחנו מסובבים רק את ה-Visuals ב-180 מעלות סביב ציר ה-Y
-        // זה גורם ל-Sprite להתהפך אבל האובייקט הראשי נשאר ישר
-        Vector3 newRotation = characterVisuals.localEulerAngles;
-        newRotation.y += 180f;
-        characterVisuals.localEulerAngles = newRotation;
-    }
 }

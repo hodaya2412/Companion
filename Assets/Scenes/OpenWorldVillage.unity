@@ -1234,7 +1234,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42db3c1519abb3a43ad80dd35be7cb66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 6
+  speed: 10
   cam: {fileID: 330585546}
   characterVisuals: {fileID: 1624396074}
   animator: {fileID: 1624396076}
@@ -2002,6 +2002,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2470741826849906401, guid: 2c2eab25121185d4ba707d5094721675, type: 3}
+      propertyPath: m_Speed
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 3031897620138946666, guid: 2c2eab25121185d4ba707d5094721675, type: 3}
       propertyPath: m_Sprite
       value: 
