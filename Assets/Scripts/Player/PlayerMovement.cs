@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Visuals")]
     [Tooltip("גררי לכאן את האובייקט הילד שמכיל את ה-Sprite")]
     public Transform characterVisuals;
-    private bool facingRight = true;
+  
 
     private InputActions inputAction;
     private Rigidbody rb;

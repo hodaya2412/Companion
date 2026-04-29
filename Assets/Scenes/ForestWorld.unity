@@ -267,6 +267,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2176720462095903703, guid: ad22f56e0d27e9043a9987ae927861a6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 26811689}
+    - targetCorrespondingSourceObject: {fileID: 2176720462095903703, guid: ad22f56e0d27e9043a9987ae927861a6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 26811691}
   m_SourcePrefab: {fileID: 100100000, guid: ad22f56e0d27e9043a9987ae927861a6, type: 3}
 --- !u!4 &26811687 stripped
 Transform:
@@ -314,6 +317,23 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.21, y: 2.1, z: 5.87}
   m_Center: {x: -0.15, y: 0.8, z: 0}
+--- !u!114 &26811691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 26811688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e532819ae923bc4fbc880279ebfb8ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialEventTrigger
+  stepToDisplay: {fileID: 11400000, guid: 13d9c0af435090b47a3a19c2c2786b6c, type: 2}
+  triggerByProximity: 1
+  playOnlyOnce: 1
+  uniqueId: 
+  playerTag: Player
 --- !u!1001 &33890630
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -403,6 +423,8 @@ GameObject:
   - component: {fileID: 45347820}
   - component: {fileID: 45347819}
   - component: {fileID: 45347821}
+  - component: {fileID: 45347822}
+  - component: {fileID: 45347823}
   m_Layer: 0
   m_Name: Book
   m_TagString: Untagged
@@ -429,7 +451,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 5.44, y: 5.65, z: 0.46}
+  m_Size: {x: 9.38, y: 9.38, z: -3.48}
   m_Center: {x: 0.02, y: -0.39, z: 0}
 --- !u!212 &45347816
 SpriteRenderer:
@@ -578,6 +600,44 @@ MonoBehaviour:
   floatAmplitude: 0.3
   floatSpeed: 1.5
   rotationSpeed: 15
+--- !u!114 &45347822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 45347813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e532819ae923bc4fbc880279ebfb8ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialEventTrigger
+  stepToDisplay: {fileID: 11400000, guid: 13d9c0af435090b47a3a19c2c2786b6c, type: 2}
+  triggerByProximity: 1
+  playOnlyOnce: 1
+  uniqueId: 
+  playerTag: Player
+--- !u!65 &45347823
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 45347813}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 8.26, y: 10.2, z: 2.63}
+  m_Center: {x: 0.000061035156, y: 0, z: 0}
 --- !u!1001 &65713387
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10203,6 +10263,7 @@ GameObject:
   - component: {fileID: 1997391074}
   - component: {fileID: 1997391073}
   - component: {fileID: 1997391079}
+  - component: {fileID: 1997391080}
   m_Layer: 0
   m_Name: MirrorPickup
   m_TagString: Untagged
@@ -10229,8 +10290,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 5, y: 2.39, z: 58.69}
+  m_Center: {x: 0.51, y: 0, z: 0}
 --- !u!114 &1997391074
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10355,6 +10416,23 @@ MonoBehaviour:
   worldItemId: forest_mirror_pickup
   requiredFlag: 
   radius: 3
+--- !u!114 &1997391080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1997391072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e532819ae923bc4fbc880279ebfb8ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialEventTrigger
+  stepToDisplay: {fileID: 11400000, guid: 13d9c0af435090b47a3a19c2c2786b6c, type: 2}
+  triggerByProximity: 1
+  playOnlyOnce: 1
+  uniqueId: 
+  playerTag: Player
 --- !u!1 &2003145054
 GameObject:
   m_ObjectHideFlags: 0
