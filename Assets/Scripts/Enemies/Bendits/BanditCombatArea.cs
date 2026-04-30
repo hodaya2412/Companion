@@ -2,17 +2,22 @@ using UnityEngine;
 
 public class BanditCombatArea : MonoBehaviour
 {
-    private void OnTriggerExit(Collider other)
+    [SerializeField] private string playerTag = "Player";
+    [SerializeField] private string puzzleSolvedFlag = "Forest_PuzzleSolved";
+
+    private bool hasTriggeredCombat = false;
+
+    private void OnTriggerEnter(Collider other)
     {
-        if (!other.CompareTag("Player")) return;
-        if (GameStateManager.Instance == null) return;
+        if (hasTriggeredCombat) return;
+        if (!other.CompareTag(playerTag)) return;
 
-        if (GameStateManager.Instance.CurrentGameplayState != GameplayState.Combat)
-            return;
+        bool puzzleSolved = GameEvents.RequestFlagState?.Invoke(puzzleSolvedFlag) ?? false;
+        if (puzzleSolved) return;
 
-        Debug.Log("[BanditCombatArea] Player left combat area. Resetting combat.");
+        hasTriggeredCombat = true;
 
-        GameEvents.RequestGameplayStateChange?.Invoke(GameplayState.Playing);
-        GameEvents.OnCombatReset?.Invoke();
+        GameEvents.RequestGameplayStateChange?.Invoke(GameplayState.Combat);
+        GameEvents.OnCombatTriggered?.Invoke();
     }
 }

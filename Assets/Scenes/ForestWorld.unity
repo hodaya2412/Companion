@@ -9898,6 +9898,7 @@ GameObject:
   - component: {fileID: 1941538567}
   - component: {fileID: 1941538566}
   - component: {fileID: 1941538565}
+  - component: {fileID: 1941538568}
   m_Layer: 0
   m_Name: BanditCombatArea
   m_TagString: Untagged
@@ -9917,6 +9918,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cec34afba18a98d4594e7acbd7d86447, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BanditCombatArea
+  playerTag: Player
+  puzzleSolvedFlag: Forest_PuzzleSolved
 --- !u!135 &1941538566
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -9934,7 +9937,7 @@ SphereCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Radius: 90
   m_Center: {x: 0, y: 0, z: 0}
@@ -9953,6 +9956,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 539463529}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1941538568
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1941538564}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 30.9, y: 12.33, z: 61.17}
+  m_Center: {x: 45.9, y: 0.3, z: -27.9}
 --- !u!1 &1951899315
 GameObject:
   m_ObjectHideFlags: 0
