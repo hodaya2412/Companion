@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [Serializable]
 public class ItemGrant
@@ -14,7 +15,7 @@ public class ItemGiver : MonoBehaviour
     public PlayerInventory inventory;
     public bool giveOnlyOnce = true;
     public List<ItemGrant> grants = new();
-
+    public UnityEvent OnItemsGiven;
     private bool alreadyGiven;
     public bool AlreadyGiven => alreadyGiven;
 
@@ -39,6 +40,10 @@ public class ItemGiver : MonoBehaviour
         }
 
         if (gaveAnything)
+        {
             alreadyGiven = true;
+            // כאן אנחנו מפעילים את האירוע!
+            OnItemsGiven?.Invoke();
+        }
     }
 }

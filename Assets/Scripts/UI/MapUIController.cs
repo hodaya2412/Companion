@@ -58,7 +58,10 @@ public class MapUIController : MonoBehaviour
 
         bool shouldBeActive = !mapPanel.activeSelf;
         mapPanel.SetActive(shouldBeActive);
-
+        if (shouldBeActive)
+        {
+            GetComponentInChildren<MapAttentionSeeker>()?.StopGlow();
+        }
         GameEvents.RequestUIStateChange?.Invoke(shouldBeActive ? UIState.Map : UIState.None);
     }
 
