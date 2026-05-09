@@ -3120,7 +3120,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: -2.37}
+  m_Size: {x: 1, y: 1, z: 2.37}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &329841424
 GameObject:
@@ -23463,6 +23463,10 @@ PrefabInstance:
       propertyPath: m_Color.a
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 513881347021975756, guid: ed9bcc4b62ee3af4a91911bfaf33a9d1, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 695382096413780981, guid: ed9bcc4b62ee3af4a91911bfaf33a9d1, type: 3}
       propertyPath: m_text
       value: "In a small place, not so different from here. \nWhere warmth feels
@@ -23698,6 +23702,10 @@ PrefabInstance:
     - target: {fileID: 2347661818585658634, guid: ed9bcc4b62ee3af4a91911bfaf33a9d1, type: 3}
       propertyPath: m_Color.a
       value: 0.31764707
+      objectReference: {fileID: 0}
+    - target: {fileID: 2347661818585658634, guid: ed9bcc4b62ee3af4a91911bfaf33a9d1, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2352537243637289958, guid: ed9bcc4b62ee3af4a91911bfaf33a9d1, type: 3}
       propertyPath: m_fontStyle
@@ -24106,6 +24114,10 @@ PrefabInstance:
     - target: {fileID: 8305770690207642965, guid: ed9bcc4b62ee3af4a91911bfaf33a9d1, type: 3}
       propertyPath: m_Color.a
       value: 0.84705883
+      objectReference: {fileID: 0}
+    - target: {fileID: 8305770690207642965, guid: ed9bcc4b62ee3af4a91911bfaf33a9d1, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8345361332764799098, guid: ed9bcc4b62ee3af4a91911bfaf33a9d1, type: 3}
       propertyPath: m_Transition
