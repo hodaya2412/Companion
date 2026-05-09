@@ -26,6 +26,7 @@ public class InventorySlotUI : MonoBehaviour
 
     private void OnButtonClicked()
     {
+        Debug.Log("ITEM CLICK WORKS");
         if (item != null)
             GameEvents.OnItemClicked?.Invoke(item);
     }
