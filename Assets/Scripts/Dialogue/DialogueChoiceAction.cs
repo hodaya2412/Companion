@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Dialogue Actions/Dialogue Choice")]
-public class DialogueChoiceAction : DialogueAction
+public class DialogueChoiceAction : DialogueAction 
 {
     [Header("Choice UI Texts")]
     public string positiveText = "Yes";

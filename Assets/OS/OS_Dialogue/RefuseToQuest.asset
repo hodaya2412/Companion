@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95847929271290341bb73bbda3eeeffc, type: 3}
+  m_Name: RefuseToQuest
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueAsset
+  dialogueId: 
+  lines:
+  - speaker: Nero
+    text: If that's the book I think it is, it holds an ancient powe a force unseen
+      in this world for eons. It could give us the edge we so desperately need.
+    portrait: {fileID: 0}
+  - speaker: Nero
+    text: 'Perhaps we should find this book ourselves? If we secure it first, we
+      are the ones who set the terms. '
+    portrait: {fileID: 0}
+  endActions: []
