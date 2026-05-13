@@ -9153,6 +9153,7 @@ GameObject:
   - component: {fileID: 1624396074}
   - component: {fileID: 1624396075}
   - component: {fileID: 1624396076}
+  - component: {fileID: 1624396077}
   m_Layer: 0
   m_Name: Viausl
   m_TagString: Untagged
@@ -9256,6 +9257,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1624396077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1624396073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0811c52932ebae841801144269ae4bf9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AnimationEventForwarder
 --- !u!1 &1633627104 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: a2ee9b6d815cb2945b26b14b7d0dabb2, type: 3}

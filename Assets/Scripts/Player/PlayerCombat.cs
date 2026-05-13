@@ -22,6 +22,8 @@ public class PlayerCombat : MonoBehaviour
     [Header("General Combat")]
     public float attackCooldown = 0.5f;
 
+    private Animator animator; // הוסף את זה 
+
     private InputActions inputActions;
     private float lastAttackTime = -999f;
 
@@ -33,6 +35,7 @@ public class PlayerCombat : MonoBehaviour
     {
         inputActions = new InputActions();
         if (attackPoint == null) attackPoint = transform;
+        animator = GetComponentInChildren<Animator>();
     }
 
     private void OnEnable()
@@ -110,8 +113,19 @@ public class PlayerCombat : MonoBehaviour
             Debug.Log("[PlayerCombat] Attack blocked: cooldown");
             return;
         }
+        if (!hasWeaponEquipped)//להוריד את זה שיהיה לנו אנימצית תקיפה בלי נשק!!
+        {
+            Debug.Log("[PlayerCombat] No weapon equipped - attack canceled to prevent freeze.");
+            return;
+        }
 
         lastAttackTime = Time.time;
+        if (animator != null)
+        {
+            // בתוך הפונקציה שבה את עושה animator.SetTrigger("Attack")
+            animator.SetBool("IsAttacking", true);
+            animator.SetTrigger("Attack");
+        }
 
         float damage = hasWeaponEquipped ? weaponDamage : unarmedDamage;
         float range = hasWeaponEquipped ? weaponRange : unarmedRange;
@@ -184,5 +198,15 @@ public class PlayerCombat : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.matrix = Matrix4x4.TRS(center, transform.rotation, Vector3.one);
         Gizmos.DrawWireCube(Vector3.zero, halfExtents * 2f);
+    }
+
+    // פונקציה שתופעל על ידי ה-Animation Event בסוף האנימציה
+    public void OnAttackEnded()
+    {
+        if (animator != null)
+        {
+            animator.SetBool("IsAttacking", false);
+            Debug.Log("[PlayerCombat] Attack ended, returning to idle.");
+        }
     }
 }

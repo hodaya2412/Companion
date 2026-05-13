@@ -29,27 +29,30 @@ public class PlayerMovement : MonoBehaviour
     {
         if (animator == null) return;
 
-        // עדכון פרמטרי התנועה
-        animator.SetFloat("MoveX", moveInput.x);
-        animator.SetFloat("MoveY", moveInput.z); // בדרך כלל Z מייצג קדימה/אחורה ב-3D/2.5D
-
-        // חישוב מהירות (Magnitude)
-        float speedVal = new Vector2(moveInput.x, moveInput.z).magnitude;
-        animator.SetFloat("Speed", speedVal);
-
-        // עדכון מצב החרב לפי הסקריפט של הציוד
+        // 1. עדכון מצב הנשק - חייב לקרות בכל פריים כדי שהחרב תופיע מיד ב-Inventory
         if (PlayerEquipment.Instance != null)
         {
             bool isArmed = PlayerEquipment.Instance.HasWeaponEquipped();
             animator.SetBool("IsArmed", isArmed);
+
             InventoryItemData weapon = PlayerEquipment.Instance.EquippedWeapon;
-
+            // WeaponType חייב להתאים לערך שהגדרת ב-Animator (למשל 2 עבור חרב)
             int weaponType = weapon != null ? (int)weapon.weaponAnimationType : 0;
-            Debug.Log($"Weapon: {(weapon != null ? weapon.itemId : "NULL")} | AnimationType: {weaponType}");
-
             animator.SetInteger("WeaponType", weaponType);
         }
 
+        // 2. חישוב ועדכון המהירות
+        float speedVal = new Vector2(moveInput.x, moveInput.z).magnitude;
+        animator.SetFloat("Speed", speedVal);
+
+        // 3. עדכון כיוון המבט (MoveX ו-MoveY)
+        // אנחנו מעדכנים רק אם יש תנועה כדי שבעת עצירה ה-Animator יזכור את הכיוון האחרון
+        // וידע לעבור ל-Idol הנכון (למשל IdolSwordRight אם MoveX נשאר 1)
+        if (speedVal > 0.01f)
+        {
+            animator.SetFloat("MoveX", moveInput.x);
+            animator.SetFloat("MoveY", moveInput.z);
+        }
     }
 
     void Awake()
@@ -173,6 +176,13 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         if (!canMove) return;
+
+        if (!canMove || (animator != null && animator.GetBool("IsAttacking")))
+        {
+            // איפוס המהירות הפיזית כדי שהדמות לא "תחליק" בזמן המכה
+            if (rb != null) rb.linearVelocity = Vector3.zero;
+            return;
+        }
 
         // חישוב כיוון המצלמה
         Vector3 camForward = cam ? cam.forward : Vector3.forward;
