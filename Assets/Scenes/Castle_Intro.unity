@@ -23286,6 +23286,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: cf473eab34219b1479714f716a40e5a4, type: 3}
+    - target: {fileID: 5117216089235694281, guid: b725adb64623dee4c87ca3ba9c59d09f, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6098451584216634348, guid: b725adb64623dee4c87ca3ba9c59d09f, type: 3}
       propertyPath: m_Name
       value: CanvasPopUp
@@ -23368,6 +23372,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6916069315318019743, guid: b725adb64623dee4c87ca3ba9c59d09f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8512162307452237053, guid: b725adb64623dee4c87ca3ba9c59d09f, type: 3}
+      propertyPath: m_BlocksRaycasts
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
