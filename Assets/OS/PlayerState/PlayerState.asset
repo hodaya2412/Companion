@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: PlayerState
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStateSO
   lastMoveX: 0
-  lastMoveY: -1
+  lastMoveY: 1
   isArmed: 1
-  weaponType: 2
+  weaponType: 1
