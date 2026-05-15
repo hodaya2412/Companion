@@ -24,37 +24,33 @@ public class PlayerMovement : MonoBehaviour
     [Header("Animation")]
     public Animator animator;
 
+    [Header("Data Persistence")]
+    public PlayerStateSO playerState;
+
 
     private void UpdateAnimator()
     {
         if (animator == null) return;
 
-        // 1. עדכון מצב הנשק - חייב לקרות בכל פריים כדי שהחרב תופיע מיד ב-Inventory
-        if (PlayerEquipment.Instance != null)
-        {
-            bool isArmed = PlayerEquipment.Instance.HasWeaponEquipped();
-            animator.SetBool("IsArmed", isArmed);
+        // 1. קריאה בלבד מה-SO - האנימטור פשוט עושה מה שה-SO אומר לו
+        animator.SetBool("IsArmed", playerState.isArmed);
+        animator.SetInteger("WeaponType", playerState.weaponType);
 
-            InventoryItemData weapon = PlayerEquipment.Instance.EquippedWeapon;
-            // WeaponType חייב להתאים לערך שהגדרת ב-Animator (למשל 2 עבור חרב)
-            int weaponType = weapon != null ? (int)weapon.weaponAnimationType : 0;
-            animator.SetInteger("WeaponType", weaponType);
-        }
-
-        // 2. חישוב ועדכון המהירות
+        // 2. מהירות
         float speedVal = new Vector2(moveInput.x, moveInput.z).magnitude;
         animator.SetFloat("Speed", speedVal);
 
-        // 3. עדכון כיוון המבט (MoveX ו-MoveY)
-        // אנחנו מעדכנים רק אם יש תנועה כדי שבעת עצירה ה-Animator יזכור את הכיוון האחרון
-        // וידע לעבור ל-Idol הנכון (למשל IdolSwordRight אם MoveX נשאר 1)
+        // 3. כיוון מבט (עדכון ה-SO רק בזמן תנועה)
         if (speedVal > 0.01f)
         {
-            animator.SetFloat("MoveX", moveInput.x);
-            animator.SetFloat("MoveY", moveInput.z);
+            playerState.lastMoveX = moveInput.x;
+            playerState.lastMoveY = moveInput.z;
         }
-    }
 
+        // הזרקת הכיוון לאנימטור (תמיד, כדי שיזכור כיוון בעמידה)
+        animator.SetFloat("MoveX", playerState.lastMoveX);
+        animator.SetFloat("MoveY", playerState.lastMoveY);
+    }
     void Awake()
     {
         rb = GetComponent<Rigidbody>();

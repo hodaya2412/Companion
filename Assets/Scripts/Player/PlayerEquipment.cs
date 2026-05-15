@@ -5,6 +5,9 @@ public class PlayerEquipment : MonoBehaviour
 {
     public static PlayerEquipment Instance { get; private set; }
 
+    [Header("Data Persistence")]
+    public PlayerStateSO playerState;
+
     [SerializeField] private InventoryItemData equippedWeapon;
     public InventoryItemData EquippedWeapon => equippedWeapon;
 
@@ -42,6 +45,11 @@ public class PlayerEquipment : MonoBehaviour
     public void EquipWeapon(InventoryItemData weaponItem)
     {
         equippedWeapon = weaponItem;
+        if (playerState != null)
+        {
+            playerState.isArmed = true;
+            playerState.weaponType = (int)weaponItem.weaponAnimationType;
+        }
         Debug.Log($"Equipped weapon: {equippedWeapon.displayName}");
         OnWeaponEquipped?.Invoke(equippedWeapon);
     }
@@ -49,6 +57,11 @@ public class PlayerEquipment : MonoBehaviour
     public void UnequipWeapon()
     {
         equippedWeapon = null;
+        if (playerState != null)
+        {
+            playerState.isArmed = false;
+            playerState.weaponType = 0;
+        }
         Debug.Log("Weapon unequipped");
         OnWeaponEquipped?.Invoke(null);
     }

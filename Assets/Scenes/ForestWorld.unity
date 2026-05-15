@@ -2148,6 +2148,7 @@ MonoBehaviour:
   cam: {fileID: 330585546}
   characterVisuals: {fileID: 1726451488}
   animator: {fileID: 1726451490}
+  playerState: {fileID: 11400000, guid: 62b007ea45bb85d49bbc0d332c5c1913, type: 2}
 --- !u!54 &270215614
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2208,6 +2209,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f917552c69dc11418874bf91d315197, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerEquipment
+  playerState: {fileID: 11400000, guid: 62b007ea45bb85d49bbc0d332c5c1913, type: 2}
   equippedWeapon: {fileID: 0}
 --- !u!114 &270215617
 MonoBehaviour:

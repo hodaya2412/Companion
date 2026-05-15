@@ -9,7 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3dd2bf2b86630ee48a15ab01f1715453, type: 3}
-  m_Name: Interact
-  m_EditorClassIdentifier: Assembly-CSharp::TutorialStepSO
-  message: Press E to Interact
+  m_Script: {fileID: 11500000, guid: 169fcac23d9a6c44391a2d2fadf2f35f, type: 3}
+  m_Name: PlayerState
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerStateSO
+  lastMoveX: 0
+  lastMoveY: -1
+  isArmed: 1
+  weaponType: 2

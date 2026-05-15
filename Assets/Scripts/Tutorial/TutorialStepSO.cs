@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "NewTutorialStep", menuName = "Dialogue Actions/Tutorial Step")]
 public class TutorialStepSO : DialogueAction
 {
     [TextArea] public string message;
