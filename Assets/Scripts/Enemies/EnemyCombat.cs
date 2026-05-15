@@ -15,6 +15,9 @@ public class EnemyCombat : MonoBehaviour
 
     private float nextAttackTime;
     private GameplayState currentGameplayState;
+   
+    [Header("Tutorial Integration")]
+    public TutorialEventTrigger combatTutorial;
 
     private void OnEnable()
     {
@@ -35,6 +38,13 @@ public class EnemyCombat : MonoBehaviour
     private void HandleGameplayStateChanged(GameplayState newState)
     {
         currentGameplayState = newState;
+        if (newState == GameplayState.Combat)
+        {
+            if (combatTutorial != null)
+            {
+                combatTutorial.TriggerShow();
+            }
+        }
     }
 
     public bool CanAttack()

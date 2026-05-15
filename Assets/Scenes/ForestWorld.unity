@@ -911,6 +911,7 @@ MonoBehaviour:
   attackDamage: 10
   minAttackCooldown: 2.5
   maxAttackCooldown: 1.7
+  combatTutorial: {fileID: 479146379}
 --- !u!114 &78343997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2223,7 +2224,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 931afdc4d65e279408e8871fd22aa045, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
-  attackPoint: {fileID: 270215612}
+  attackPoint: {fileID: 1726451488}
   enemyLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -3414,6 +3415,7 @@ MonoBehaviour:
   attackDamage: 10
   minAttackCooldown: 1.6
   maxAttackCooldown: 0.9
+  combatTutorial: {fileID: 479146379}
 --- !u!114 &429557926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3653,6 +3655,7 @@ GameObject:
   m_Component:
   - component: {fileID: 479146377}
   - component: {fileID: 479146378}
+  - component: {fileID: 479146379}
   m_Layer: 0
   m_Name: BanditGroup
   m_TagString: Untagged
@@ -3698,6 +3701,23 @@ MonoBehaviour:
   totalEnemies: 4
   flagToSet: Forest_BookAccessible
   setOnlyOnce: 1
+--- !u!114 &479146379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 479146376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e532819ae923bc4fbc880279ebfb8ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialEventTrigger
+  stepToDisplay: {fileID: 11400000, guid: 9dc326e5f96945e41943e9fa8f3a0041, type: 2}
+  triggerByProximity: 0
+  playOnlyOnce: 1
+  uniqueId: 
+  playerTag: Player
 --- !u!1 &501105937
 GameObject:
   m_ObjectHideFlags: 0
@@ -4440,6 +4460,7 @@ MonoBehaviour:
   attackDamage: 10
   minAttackCooldown: 2.2
   maxAttackCooldown: 1.4
+  combatTutorial: {fileID: 479146379}
 --- !u!114 &634785574
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6385,6 +6406,7 @@ MonoBehaviour:
   attackDamage: 15
   minAttackCooldown: 1
   maxAttackCooldown: 1.8
+  combatTutorial: {fileID: 479146379}
 --- !u!114 &1076918629
 MonoBehaviour:
   m_ObjectHideFlags: 0

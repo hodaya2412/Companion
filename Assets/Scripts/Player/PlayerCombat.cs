@@ -113,11 +113,11 @@ public class PlayerCombat : MonoBehaviour
             Debug.Log("[PlayerCombat] Attack blocked: cooldown");
             return;
         }
-        if (!hasWeaponEquipped)//להוריד את זה שיהיה לנו אנימצית תקיפה בלי נשק!!
-        {
-            Debug.Log("[PlayerCombat] No weapon equipped - attack canceled to prevent freeze.");
-            return;
-        }
+        //if (!hasWeaponEquipped)//להוריד את זה שיהיה לנו אנימצית תקיפה בלי נשק!!
+        //{
+        //    Debug.Log("[PlayerCombat] No weapon equipped - attack canceled to prevent freeze.");
+        //    return;
+        //}
 
         lastAttackTime = Time.time;
         if (animator != null)
