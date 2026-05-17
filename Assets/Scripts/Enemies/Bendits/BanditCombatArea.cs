@@ -7,6 +7,16 @@ public class BanditCombatArea : MonoBehaviour
 
     private bool hasTriggeredCombat = false;
 
+    private void OnEnable()
+    {
+        GameEvents.OnCombatReset += ResetCombatTrigger;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnCombatReset -= ResetCombatTrigger;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (hasTriggeredCombat) return;
@@ -19,5 +29,10 @@ public class BanditCombatArea : MonoBehaviour
 
         GameEvents.RequestGameplayStateChange?.Invoke(GameplayState.Combat);
         GameEvents.OnCombatTriggered?.Invoke();
+    }
+
+    private void ResetCombatTrigger()
+    {
+        hasTriggeredCombat = false;
     }
 }
