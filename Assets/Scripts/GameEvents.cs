@@ -41,4 +41,7 @@ public static class GameEvents
     public static Action<float> OnPlayerHit;
     public static Action<float, float> OnHealthChanged;
 
+    public static Action<InventoryItemData> OnItemSelected;  // פריט נבחר
+    public static Action<string> OnItemDeselected;
+
 }

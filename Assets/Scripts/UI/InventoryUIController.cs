@@ -31,6 +31,7 @@ public class InventoryUIController : MonoBehaviour, IPuzzlePanelOwner
 
     private readonly List<InventorySlotUI> slotUIs = new();
 
+    private Dictionary<string, ItemCategory> selectedItems = new();
     private void OnEnable()
     {
         GameEvents.OnInventoryChanged += Refresh;
@@ -100,7 +101,7 @@ public class InventoryUIController : MonoBehaviour, IPuzzlePanelOwner
         for (int i = 0; i < slotCount; i++)
         {
             var ui = Instantiate(slotPrefab, contentParent);
-            ui.Set(null, 0);
+            ui.Set(null, 0,false);
             ui.gameObject.SetActive(false);
             slotUIs.Add(ui);
         }
@@ -119,13 +120,38 @@ public class InventoryUIController : MonoBehaviour, IPuzzlePanelOwner
         for (int i = 0; i < filteredItems.Count && i < slotUIs.Count; i++)
         {
             slotUIs[i].gameObject.SetActive(true);
-            slotUIs[i].Set(filteredItems[i].item, filteredItems[i].amount);
+            bool isSelected = selectedItems.ContainsKey(filteredItems[i].item.itemId);
+            slotUIs[i].Set(filteredItems[i].item, filteredItems[i].amount, isSelected);
         }
     }
 
     private void OnSlotClicked(InventoryItemData item)
     {
         if (item == null) return;
+
+        // לחיצה כפולה — ביטול בחירה
+        if (selectedItems.ContainsKey(item.itemId))
+        {
+            selectedItems.Remove(item.itemId);
+            Refresh();
+
+            if (item.category == ItemCategory.Quest && questPanel != null)
+                questPanel.SetActive(false);
+            else if (item.itemId == puzzleItemId && puzzlePanelController != null)
+                puzzlePanelController.RequestClose();
+
+            return;
+        }
+
+        // ← אם זה נשק, מסירים נשק קיים תחילה (קטגוריה בלעדית)
+        if (item.category == ItemCategory.Weapon)
+        {
+            RemoveSelectionByCategory(ItemCategory.Weapon);
+        }
+
+        // לחיצה ראשונה — הוספה לבחירה
+        selectedItems[item.itemId] = item.category;
+        Refresh();
 
         if (item.category == ItemCategory.Quest)
         {
@@ -143,17 +169,17 @@ public class InventoryUIController : MonoBehaviour, IPuzzlePanelOwner
         }
     }
 
-    public void CloseSpecificPuzzle()
+    // ← פונקציה עזר: מסירה את כל הנבחרים מקטגוריה מסוימת
+    private void RemoveSelectionByCategory(ItemCategory category)
     {
-        if (puzzlePanelController != null)
-            puzzlePanelController.RequestClose();
-    }
+        var toRemove = selectedItems
+            .Where(kv => kv.Value == category)
+            .Select(kv => kv.Key)
+            .ToList();
 
-    public void CloseQuestPanel()
-    {
-        if (questPanel != null) questPanel.SetActive(false);
+        foreach (var id in toRemove)
+            selectedItems.Remove(id);
     }
-
     public void OnPuzzlePanelClosed()
     {
         if (panel != null && panel.activeSelf)

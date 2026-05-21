@@ -31,7 +31,7 @@ public class InventorySlotUI : MonoBehaviour
             GameEvents.OnItemClicked?.Invoke(item);
     }
 
-    public void Set(InventoryItemData newItem, int amount)
+    public void Set(InventoryItemData newItem, int amount, bool isSelected)
     {
         item = newItem;
         bool hasItem = (item != null);
@@ -44,7 +44,15 @@ public class InventorySlotUI : MonoBehaviour
         // עדכון האייקון
         if (icon != null)
         {
-            icon.sprite = item.icon;
+            if (isSelected && item.selectedIcon != null)
+            {
+                icon.sprite = item.selectedIcon;
+            }
+            else
+            {
+                icon.sprite = item.icon;
+            }
+
             icon.enabled = (icon.sprite != null);
         }
 

@@ -17,7 +17,9 @@ MonoBehaviour:
   description: A pulsating dark energy taken from the Forbidden Ledger. Its power
     is yours to command.
   icon: {fileID: -1744161458, guid: bd0ee729a5bf3c541abbd54270500ee3, type: 3}
+  selectedIcon: {fileID: 21300000, guid: fdc3c835ba63a714d87f8104139d678e, type: 3}
   category: 5
   stackable: 0
   maxStack: 99
   puzzlePanel: {fileID: 0}
+  weaponAnimationType: 0

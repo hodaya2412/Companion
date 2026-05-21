@@ -16,6 +16,7 @@ MonoBehaviour:
   displayName: Weapon
   description: 
   icon: {fileID: -1601907927, guid: 4bc8349994588cb4bb5e8cf45264ff82, type: 3}
+  selectedIcon: {fileID: 21300000, guid: 39c81adafa9b5404ea2cfe60e21573a4, type: 3}
   category: 5
   stackable: 0
   maxStack: 99

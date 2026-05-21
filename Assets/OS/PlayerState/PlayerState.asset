@@ -15,4 +15,4 @@ MonoBehaviour:
   lastMoveX: 0
   lastMoveY: 1
   isArmed: 1
-  weaponType: 1
+  weaponType: 2

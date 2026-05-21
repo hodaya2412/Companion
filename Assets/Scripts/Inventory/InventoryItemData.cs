@@ -15,6 +15,7 @@ public class InventoryItemData : ScriptableObject
 
     [Header("Visuals")]
     public Sprite icon;
+    public Sprite selectedIcon;
 
     [Header("Behavior")]
     public ItemCategory category = ItemCategory.Misc;
