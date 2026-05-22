@@ -19,6 +19,8 @@ public class EnemyCombat : MonoBehaviour
     [Header("Tutorial Integration")]
     public TutorialEventTrigger combatTutorial;
 
+    [SerializeField] private Animator animator;
+
     private void OnEnable()
     {
         GameEvents.OnGameplayStateChanged += HandleGameplayStateChanged;
@@ -67,6 +69,10 @@ public class EnemyCombat : MonoBehaviour
 
     private void AttackPlayer()
     {
+        if (animator != null)
+        {
+            animator.SetTrigger("Attack");
+        }
         Debug.Log($"{gameObject.name} attacked player for {attackDamage} damage");
         GameEvents.OnPlayerHit?.Invoke(attackDamage);
     }

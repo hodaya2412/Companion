@@ -7,6 +7,7 @@ public class BanditCaveAgent : MonoBehaviour
     [Header("References")]
     [SerializeField] private Transform cavePoint;
     [SerializeField] private Transform playerTarget;
+    [SerializeField] private Animator animator;
 
     [Header("2.5D Visuals")]
     [Tooltip("גררי לכאן את האובייקט הילד שמכיל את ה-Sprite של האויב")]
@@ -19,6 +20,7 @@ public class BanditCaveAgent : MonoBehaviour
     private NavMeshAgent agent;
     private bool isChasingPlayer;
     private bool isReturningToCave;
+    private bool isHoldingMovement = false;
 
     public Transform PlayerTarget => playerTarget;
     public Transform CavePoint => cavePoint;
@@ -45,6 +47,7 @@ public class BanditCaveAgent : MonoBehaviour
     {
         // מעדכנים את הכיוון הויזואלי בכל פריים לפי המהירות של הסוכן
         HandleVisualFlip();
+        HandleAnimation();
     }
 
     private void HandleVisualFlip()
@@ -99,6 +102,7 @@ public class BanditCaveAgent : MonoBehaviour
     {
         isChasingPlayer = false;
         isReturningToCave = false;
+        isHoldingMovement = false;
 
         agent.isStopped = true;
         agent.ResetPath();
@@ -124,12 +128,14 @@ public class BanditCaveAgent : MonoBehaviour
         return transform.position;
     }
 
-    public void MoveToPosition(Vector3 targetPosition, float stoppingDistance = 0.6f)
+    public void MoveToPosition(Vector3 targetPosition, float stoppingDistance = 0.6f, bool walk = false)
     {
         if (agent == null || !agent.enabled) return;
 
         isChasingPlayer = false;
         isReturningToCave = false;
+        isHoldingMovement = walk;
+
 
         agent.isStopped = false;
         agent.stoppingDistance = stoppingDistance;
@@ -144,5 +150,14 @@ public class BanditCaveAgent : MonoBehaviour
     public bool HasReachedPosition(Vector3 targetPosition, float threshold = 0.6f)
     {
         return DistanceToPosition(targetPosition) <= threshold;
+    }
+    private void HandleAnimation()
+    {
+        if (animator == null || agent == null) return;
+
+        bool isMoving = !agent.isStopped && agent.velocity.magnitude > 0.1f;
+
+        animator.SetBool("IsWalking", isMoving && isHoldingMovement);
+        animator.SetBool("IsRunning", isMoving && !isHoldingMovement);
     }
 }

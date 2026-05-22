@@ -27,37 +27,62 @@ public class EnemyHoldingState : IEnemyState
 {
     private EnemyBrain brain;
     private float timer;
+
+    private Vector3 currentHoldPosition;
+    private bool hasPosition = false;
+
     public EnemyHoldingState(EnemyBrain brain) => this.brain = brain;
 
     public override void Enter()
     {
-        // מאפסים את הטיימר כדי שהעדכון הראשון יקרה מיד
         timer = 0f;
+        hasPosition = false;
     }
 
     public override void Execute()
     {
-        if (brain.GetCurrentGameplayState() != GameplayState.Combat) return;
+        if (brain.GetCurrentGameplayState() != GameplayState.Combat)
+            return;
 
         timer -= Time.deltaTime;
-        if (timer <= 0f)
+
+        // רק מדי פעם בוחרים נקודה חדשה
+        if (timer <= 0f || !hasPosition)
         {
-            timer = brain.holdUpdateInterval;
+            timer = Random.Range(2f, 4f);
 
             Vector3 playerPos = brain.movement.GetPlayerPosition();
+
             Vector3 dir = (brain.transform.position - playerPos).normalized;
-            if (dir.sqrMagnitude < 0.01f) dir = brain.transform.right;
 
-            Vector3 targetPos = playerPos + dir * brain.holdDistance;
+            if (dir.sqrMagnitude < 0.01f)
+                dir = brain.transform.right;
+
             Vector3 sideDir = Vector3.Cross(Vector3.up, dir).normalized;
-            targetPos += sideDir * (Random.value < 0.5f ? -1f : 1f) * brain.holdSideStepDistance;
 
-            brain.movement.MoveToPosition(targetPos, 0.8f);
-            brain.TryBecomeActive();
+            // בחירת צד אקראי
+            float side = Random.value < 0.5f ? -1f : 1f;
+
+            currentHoldPosition =
+                playerPos +
+                dir * brain.holdDistance +
+                sideDir * side * brain.holdSideStepDistance;
+
+            hasPosition = true;
+
+            brain.movement.MoveToPosition(currentHoldPosition, 0.5f, true);
         }
+
+        // אם הגיע לנקודה -> לעצור ולעמוד
+        if (brain.movement.HasReachedPosition(currentHoldPosition, 0.7f))
+        {
+            brain.movement.StopMoving();
+        }
+
+        // מדי פעם מנסים להפוך לאקטיביים
+        brain.TryBecomeActive();
     }
 }
-
 // --- מצב מרדף ---
 public class EnemyChasingState : IEnemyState
 {

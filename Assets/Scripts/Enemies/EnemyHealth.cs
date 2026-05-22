@@ -3,6 +3,9 @@ using UnityEngine.Events;
 
 public class EnemyHealth : MonoBehaviour
 {
+    [SerializeField] private Animator animator;
+    [SerializeField] private float destroyDelay = 1.2f;
+
     [Header("Health")]
     public float maxHealth = 50f;
     public float currentHealth = 50f;
@@ -62,6 +65,11 @@ public class EnemyHealth : MonoBehaviour
         Debug.Log($"{gameObject.name} took {damage} damage. Current HP: {currentHealth}/{maxHealth}");
         OnHealthChanged?.Invoke(currentHealth, maxHealth);
 
+        if (currentHealth > 0 && animator != null)
+        {
+            animator.SetTrigger("Hurt");
+        }
+
         if (currentHealth <= 0f)
         {
             Die();
@@ -102,7 +110,12 @@ public class EnemyHealth : MonoBehaviour
         CheckIfLastEnemy();
 
         OnDied?.Invoke();
-        Destroy(gameObject);
+        if (animator != null)
+        {
+            animator.SetTrigger("Die");
+        }
+
+        Destroy(gameObject, destroyDelay);
     }
 
     private void CheckIfLastEnemy()
