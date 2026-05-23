@@ -5,6 +5,8 @@ public class EnemyHealth : MonoBehaviour
 {
     [SerializeField] private Animator animator;
     [SerializeField] private float destroyDelay = 1.2f;
+    [SerializeField] private EnemyHitFlash hitFlash;
+
 
     [Header("Health")]
     public float maxHealth = 50f;
@@ -64,6 +66,11 @@ public class EnemyHealth : MonoBehaviour
 
         Debug.Log($"{gameObject.name} took {damage} damage. Current HP: {currentHealth}/{maxHealth}");
         OnHealthChanged?.Invoke(currentHealth, maxHealth);
+
+        if (hitFlash != null)
+        {
+            hitFlash.Flash();
+        }
 
         if (currentHealth > 0 && animator != null)
         {

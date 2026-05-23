@@ -876,6 +876,7 @@ GameObject:
   - component: {fileID: 78343995}
   - component: {fileID: 78343996}
   - component: {fileID: 78343997}
+  - component: {fileID: 78343998}
   m_Layer: 6
   m_Name: Bandit3
   m_TagString: Enemy
@@ -1013,6 +1014,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
   animator: {fileID: 1482128074}
   destroyDelay: 1.2
+  hitFlash: {fileID: 1482128076}
   maxHealth: 50
   currentHealth: 50
   enemyID: Bandit_Cave_4
@@ -1053,8 +1055,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 0.2}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 3.45, y: 4.97, z: 7.62}
+  m_Center: {x: -0.07, y: 2.15, z: 12.9}
 --- !u!114 &78343996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1091,15 +1093,29 @@ MonoBehaviour:
   health: {fileID: 78343994}
   waitBeforeAttackMin: 0.6
   waitBeforeAttackMax: 1.3
-  holdDistance: 4.5
+  holdDistance: 7
   holdTolerance: 1
-  holdUpdateInterval: 0.5
+  holdUpdateInterval: 3
   holdSideStepDistance: 2
   loseAttackSlotDistance: 8
   typeData: {fileID: 11400000, guid: bb89a1faa09500a4ba025b4e287f90f0, type: 2}
   chaseUpdateInterval: 0.5
   attackPositionReachDistance: 0.75
   playerAttackAllowance: 1
+--- !u!114 &78343998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 78343989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 563ba4731ef2e37499d8ba3f13e21862, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyKnockback
+  movement: {fileID: 78343992}
+  knockbackDistance: 0.3
 --- !u!4 &82234460 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5296567080240018830, guid: 12b09fc18ce743f4291ccaa58edd7ef4, type: 3}
@@ -2260,6 +2276,7 @@ GameObject:
   m_Component:
   - component: {fileID: 207394328}
   - component: {fileID: 207394329}
+  - component: {fileID: 207394330}
   m_Layer: 6
   m_Name: VisualLeader
   m_TagString: Untagged
@@ -2341,6 +2358,21 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &207394330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 207394327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd0a909fc39f50646848caccd0283c14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHitFlash
+  spriteRenderer: {fileID: 0}
+  flashColor: {r: 1, g: 0, b: 0, a: 1}
+  flashDuration: 0.08
 --- !u!4 &217678389 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6914819273891171331, guid: 0f82c4b933691ed42b2428872df70654, type: 3}
@@ -2690,6 +2722,7 @@ GameObject:
   - component: {fileID: 270215617}
   - component: {fileID: 270215618}
   - component: {fileID: 270215619}
+  - component: {fileID: 270215620}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -2851,6 +2884,23 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0.21100001, z: 0}
   m_TimeToStationary: 0.5
+--- !u!114 &270215620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 270215610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4d76c07debb8714ba93cc97e0ffd185, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHitFeedback
+  spriteRenderer: {fileID: 1726451489}
+  flashColor: {r: 1, g: 0, b: 0, a: 1}
+  flashDuration: 0.1
+  knockbackDistance: 0.4
+  knockbackDuration: 0.08
 --- !u!1001 &270845562
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4414,6 +4464,7 @@ GameObject:
   - component: {fileID: 429557924}
   - component: {fileID: 429557925}
   - component: {fileID: 429557926}
+  - component: {fileID: 429557927}
   m_Layer: 6
   m_Name: Bandit2
   m_TagString: Enemy
@@ -4551,6 +4602,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
   animator: {fileID: 0}
   destroyDelay: 1.2
+  hitFlash: {fileID: 1072435715}
   maxHealth: 50
   currentHealth: 50
   enemyID: Bandit_Cave_3
@@ -4591,8 +4643,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 0.2}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 2.98, y: 1, z: 2.95}
+  m_Center: {x: -0.73, y: 0, z: 0}
 --- !u!114 &429557925
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4629,15 +4681,29 @@ MonoBehaviour:
   health: {fileID: 429557923}
   waitBeforeAttackMin: 0.3
   waitBeforeAttackMax: 1
-  holdDistance: 4.5
+  holdDistance: 7
   holdTolerance: 1
-  holdUpdateInterval: 0.5
+  holdUpdateInterval: 3
   holdSideStepDistance: 2
   loseAttackSlotDistance: 8
   typeData: {fileID: 11400000, guid: bb89a1faa09500a4ba025b4e287f90f0, type: 2}
   chaseUpdateInterval: 0.5
   attackPositionReachDistance: 0.75
   playerAttackAllowance: 1
+--- !u!114 &429557927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 429557918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 563ba4731ef2e37499d8ba3f13e21862, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyKnockback
+  movement: {fileID: 429557921}
+  knockbackDistance: 0.3
 --- !u!1 &436891518
 GameObject:
   m_ObjectHideFlags: 0
@@ -6118,6 +6184,7 @@ GameObject:
   - component: {fileID: 634785572}
   - component: {fileID: 634785573}
   - component: {fileID: 634785574}
+  - component: {fileID: 634785575}
   m_Layer: 6
   m_Name: Bandit1
   m_TagString: Enemy
@@ -6255,6 +6322,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
   animator: {fileID: 1079020217}
   destroyDelay: 1.2
+  hitFlash: {fileID: 1079020220}
   maxHealth: 50
   currentHealth: 50
   enemyID: Bandit_Cave_2
@@ -6295,8 +6363,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 0.2}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 4.76, y: 1, z: 4.17}
+  m_Center: {x: -2.2, y: 0, z: 4.2}
 --- !u!114 &634785573
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6333,15 +6401,29 @@ MonoBehaviour:
   health: {fileID: 634785571}
   waitBeforeAttackMin: 0.2
   waitBeforeAttackMax: 0.8
-  holdDistance: 4.5
+  holdDistance: 7
   holdTolerance: 1
-  holdUpdateInterval: 0.5
+  holdUpdateInterval: 3
   holdSideStepDistance: 2
   loseAttackSlotDistance: 8
   typeData: {fileID: 11400000, guid: 1d26f19aa6306394985453023efabe6c, type: 2}
   chaseUpdateInterval: 0.5
   attackPositionReachDistance: 0.75
   playerAttackAllowance: 1
+--- !u!114 &634785575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 634785566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 563ba4731ef2e37499d8ba3f13e21862, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyKnockback
+  movement: {fileID: 634785569}
+  knockbackDistance: 0.3
 --- !u!4 &644904887 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4800127890037349936, guid: f4f373eb05ba7ad4da22a81f519f97ca, type: 3}
@@ -9520,6 +9602,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1072435713}
   - component: {fileID: 1072435714}
+  - component: {fileID: 1072435715}
   m_Layer: 6
   m_Name: Visual2
   m_TagString: Untagged
@@ -9601,6 +9684,21 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &1072435715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1072435712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd0a909fc39f50646848caccd0283c14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHitFlash
+  spriteRenderer: {fileID: 0}
+  flashColor: {r: 1, g: 0, b: 0, a: 1}
+  flashDuration: 0.08
 --- !u!4 &1074611043 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3913352491919607116, guid: 08e7b644b864841409f4446e35a0be42, type: 3}
@@ -9670,6 +9768,7 @@ GameObject:
   - component: {fileID: 1076918627}
   - component: {fileID: 1076918628}
   - component: {fileID: 1076918629}
+  - component: {fileID: 1076918630}
   m_Layer: 6
   m_Name: BanditLeader
   m_TagString: Enemy
@@ -9807,6 +9906,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
   animator: {fileID: 0}
   destroyDelay: 1.2
+  hitFlash: {fileID: 207394330}
   maxHealth: 80
   currentHealth: 80
   enemyID: Bandit_Cave_1
@@ -9847,7 +9947,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 0.2}
+  m_Size: {x: 2.97, y: 3.59, z: 3.34}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1076918628
 MonoBehaviour:
@@ -9885,15 +9985,29 @@ MonoBehaviour:
   health: {fileID: 1076918626}
   waitBeforeAttackMin: 0.4
   waitBeforeAttackMax: 1.1
-  holdDistance: 4.5
+  holdDistance: 7
   holdTolerance: 1
-  holdUpdateInterval: 0.5
+  holdUpdateInterval: 3
   holdSideStepDistance: 2
   loseAttackSlotDistance: 8
   typeData: {fileID: 11400000, guid: 675fd86bf42a7eb4fbfc47a9b650b963, type: 2}
   chaseUpdateInterval: 0.5
   attackPositionReachDistance: 0.75
   playerAttackAllowance: 1
+--- !u!114 &1076918630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1076918621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 563ba4731ef2e37499d8ba3f13e21862, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyKnockback
+  movement: {fileID: 1076918624}
+  knockbackDistance: 0.3
 --- !u!1 &1079020216
 GameObject:
   m_ObjectHideFlags: 0
@@ -9905,6 +10019,7 @@ GameObject:
   - component: {fileID: 1079020219}
   - component: {fileID: 1079020218}
   - component: {fileID: 1079020217}
+  - component: {fileID: 1079020220}
   m_Layer: 0
   m_Name: TrollVisual
   m_TagString: Untagged
@@ -10008,6 +10123,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 560634239}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1079020220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1079020216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd0a909fc39f50646848caccd0283c14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHitFlash
+  spriteRenderer: {fileID: 0}
+  flashColor: {r: 1, g: 0, b: 0, a: 1}
+  flashDuration: 0.08
 --- !u!4 &1083664021 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4800127890037349936, guid: f4f373eb05ba7ad4da22a81f519f97ca, type: 3}
@@ -17686,6 +17816,7 @@ GameObject:
   - component: {fileID: 1482128073}
   - component: {fileID: 1482128075}
   - component: {fileID: 1482128074}
+  - component: {fileID: 1482128076}
   m_Layer: 0
   m_Name: Troll2Visual
   m_TagString: Untagged
@@ -17702,7 +17833,7 @@ Transform:
   m_GameObject: {fileID: 1482128072}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.0689, y: -3.06, z: 12.92}
+  m_LocalPosition: {x: -0.0689, y: -2.4, z: 12.92}
   m_LocalScale: {x: 0.77486175, y: 0.7695951, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -17789,6 +17920,21 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &1482128076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1482128072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd0a909fc39f50646848caccd0283c14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHitFlash
+  spriteRenderer: {fileID: 0}
+  flashColor: {r: 1, g: 0, b: 0, a: 1}
+  flashDuration: 0.08
 --- !u!1 &1492154453
 GameObject:
   m_ObjectHideFlags: 0

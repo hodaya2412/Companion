@@ -169,4 +169,19 @@ public class BanditCaveAgent : MonoBehaviour
         animator.SetBool("IsWalking", isMoving && isHoldingMovement);
         animator.SetBool("IsRunning", isMoving && !isHoldingMovement);
     }
+
+    public void KnockBackFrom(Vector3 sourcePosition, float distance = 0.6f)
+    {
+        if (agent == null || !agent.enabled) return;
+
+        Vector3 dir = (transform.position - sourcePosition).normalized;
+        Vector3 target = transform.position + dir * distance;
+
+        agent.Warp(target);
+    }
+
+    public Vector3 GetKnockbackSourcePosition()
+    {
+        return playerTarget != null ? playerTarget.position : transform.position;
+    }
 }
