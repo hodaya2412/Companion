@@ -15,11 +15,11 @@ MonoBehaviour:
   dialogueId: 
   lines:
   - speaker: Nero
-    text: If that's the book I think it is, it holds an ancient powe a force unseen
-      in this world for eons. It could give us the edge we so desperately need.
-    portrait: {fileID: 0}
+    text: If that's the book I think it is, it holds an ancient power a force unseen
+      in this world. It could give us the edge we so desperately need.
+    portrait: {fileID: 21300000, guid: 6fa6236dad64b084295dd63938e64f14, type: 3}
   - speaker: Nero
     text: 'Perhaps we should find this book ourselves? If we secure it first, we
       are the ones who set the terms. '
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: 6fa6236dad64b084295dd63938e64f14, type: 3}
   endActions: []

@@ -33,8 +33,8 @@ MonoBehaviour:
     text: A dragon....?
     portrait: {fileID: 21300000, guid: b885994ca6d252f4fa9f8995e5bea62d, type: 3}
   - speaker: George
-    text: "Burned cities for fun. They couldn\u2019t kill it  so they locked it behind
-      a magic barrier, i'll give you this sword it breaks the barrier."
+    text: "Burned cities for fun. They couldn\u2019t kill it so they locked it behind
+      a magic barrier, i'll give you this sword so you can break the barrier."
     portrait: {fileID: 21300000, guid: d34783ae0c34f8e43ab3a7d14dcda8f4, type: 3}
   - speaker: Ren
     text: Why give it to me?

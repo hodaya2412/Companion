@@ -34,8 +34,8 @@ MonoBehaviour:
       of a bedtime story.
     portrait: {fileID: 21300000, guid: 98995e056fccfdc44858f6a0e27433e2, type: 3}
   - speaker: Maria
-    text: "But wait... if there\u2019s anyone who remembers stories of strange, shining
-      things, it would be Old George."
+    text: "But wait... if there\u2019s anyone who remembers stories of strange things,
+      it would be Old George."
     portrait: {fileID: 21300000, guid: 98995e056fccfdc44858f6a0e27433e2, type: 3}
   - speaker: Ren
     text: Old George? Where can I find him?
@@ -43,10 +43,10 @@ MonoBehaviour:
   - speaker: Maria
     text: "He\u2019s usually at the Village Market. Just follow this main path straight
       ahead, you can't miss it. Don't be startled by the smell of ale or his sharp
-      tongue\u2014that's just his way of saying hello."
+      tongue that's just his way of saying hello."
     portrait: {fileID: 21300000, guid: 98995e056fccfdc44858f6a0e27433e2, type: 3}
   - speaker: Maria
-    text: Go on then, dear. Tell him Maria sent you, perhaps he'll be a bit more
-      polite. Take care of yourself, you hear?
+    text: Tell him Maria sent you, perhaps he'll be a bit more polite. Take care
+      of yourself, you hear?
     portrait: {fileID: 21300000, guid: 98995e056fccfdc44858f6a0e27433e2, type: 3}
   endActions: []

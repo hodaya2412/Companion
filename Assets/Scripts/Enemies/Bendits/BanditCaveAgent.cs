@@ -17,6 +17,11 @@ public class BanditCaveAgent : MonoBehaviour
     [Header("Movement")]
     [SerializeField] private float stopDistanceFromPlayer = 2f;
 
+    [SerializeField] private float flipThreshold = 0.35f;
+    [SerializeField] private float flipCooldown = 0.25f;
+
+    private float lastFlipTime;
+
     private NavMeshAgent agent;
     private bool isChasingPlayer;
     private bool isReturningToCave;
@@ -53,15 +58,15 @@ public class BanditCaveAgent : MonoBehaviour
     private void HandleVisualFlip()
     {
         if (characterVisuals == null || agent == null) return;
+        if (Time.time < lastFlipTime + flipCooldown) return;
 
-        // בודקים אם האויב זז ימינה או שמאלה לפי המהירות שלו ב-NavMesh
         float velocityX = agent.velocity.x;
 
-        if (velocityX > 0.1f && !facingRight)
+        if (velocityX > flipThreshold && !facingRight)
         {
             Flip();
         }
-        else if (velocityX < -0.1f && facingRight)
+        else if (velocityX < -flipThreshold && facingRight)
         {
             Flip();
         }
@@ -70,8 +75,12 @@ public class BanditCaveAgent : MonoBehaviour
     private void Flip()
     {
         facingRight = !facingRight;
-        // הופכים רק את הויזואליה ב-180 מעלות
-        characterVisuals.localRotation *= Quaternion.Euler(0, 180, 0);
+
+        Vector3 scale = characterVisuals.localScale;
+        scale.x = Mathf.Abs(scale.x) * (facingRight ? 1 : -1);
+        characterVisuals.localScale = scale;
+
+        lastFlipTime = Time.time;
     }
 
     public void GoToPlayer()

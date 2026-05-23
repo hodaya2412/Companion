@@ -28,19 +28,15 @@ MonoBehaviour:
     text: "You look serious.\nThat\u2019s your first mistake."
     portrait: {fileID: 21300000, guid: b645c392f48b61140a06d56869784554, type: 3}
   - speaker: George
-    text: "Yeah\u2026 I\u2019ve heard of your key.\nBig thing. Heavy. Gold like a
-      king\u2019s lie.\nBut it\u2019s not lying around waiting for children with
-      brave faces."
+    text: "Yeah\u2026 I\u2019ve heard of your key.\nBut it\u2019s not lying around
+      waiting for children with brave faces."
     portrait: {fileID: 21300000, guid: b645c392f48b61140a06d56869784554, type: 3}
   - speaker: Ran
     text: So you do know where it is?
     portrait: {fileID: 21300000, guid: 291ae8d5c5a7512459f5b5e13e0be914, type: 3}
   - speaker: George
     text: "I know where it might be.\nThat\u2019s different.\nTruth is a slippery
-      thing \u2014 like me after my third bottle."
-    portrait: {fileID: 21300000, guid: d34783ae0c34f8e43ab3a7d14dcda8f4, type: 3}
-  - speaker: George
-    text: "The key is in bad hands.\nHands that don\u2019t wash."
+      thing  like me after my third bottle."
     portrait: {fileID: 21300000, guid: d34783ae0c34f8e43ab3a7d14dcda8f4, type: 3}
   - speaker: Ran
     text: Then tell me how to get it.
@@ -62,20 +58,10 @@ MonoBehaviour:
     portrait: {fileID: 21300000, guid: fac10aea3c7ad4f47ad6a5085edd602f, type: 3}
   - speaker: George
     text: "You catch on fast for someone your size.  Bring me the book. And I\u2019ll
-      tell you exactly where they\u2019re hiding the key\u2026 and how not to die
-      trying."
+      tell you exactly where the key\u2026 and how not to die trying."
     portrait: {fileID: 21300000, guid: d34783ae0c34f8e43ab3a7d14dcda8f4, type: 3}
   - speaker: Ren
-    text: Deal.
-    portrait: {fileID: 21300000, guid: fac10aea3c7ad4f47ad6a5085edd602f, type: 3}
-  - speaker: George
-    text: 'Careful with that word, boy.
-
-      Deals shape a man more than battles
-      do.'
-    portrait: {fileID: 21300000, guid: d34783ae0c34f8e43ab3a7d14dcda8f4, type: 3}
-  - speaker: Ran
-    text: "I\u2019ll bring it back."
+    text: "Deal. \nI\u2019ll bring it back."
     portrait: {fileID: 21300000, guid: fac10aea3c7ad4f47ad6a5085edd602f, type: 3}
   - speaker: George
     text: "We\u2019ll see."

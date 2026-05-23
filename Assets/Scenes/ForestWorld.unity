@@ -975,6 +975,8 @@ MonoBehaviour:
   animator: {fileID: 1482128074}
   characterVisuals: {fileID: 1591602273}
   stopDistanceFromPlayer: 2
+  flipThreshold: 0.35
+  flipCooldown: 0.25
 --- !u!195 &78343993
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -984,7 +986,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 78343989}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.35
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -996,7 +998,7 @@ NavMeshAgent:
   m_Height: 1
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 0
 --- !u!114 &78343994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3563,8 +3565,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.5125027, y: -0.033442497, z: -5}
+  m_LocalRotation: {x: 0.1730465, y: 0, z: 0, w: 0.9849137}
+  m_LocalPosition: {x: -5.2625027, y: 4.397008, z: -7.076473}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4511,6 +4513,8 @@ MonoBehaviour:
   animator: {fileID: 0}
   characterVisuals: {fileID: 1072435713}
   stopDistanceFromPlayer: 2
+  flipThreshold: 0.35
+  flipCooldown: 0.25
 --- !u!195 &429557922
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -6213,6 +6217,8 @@ MonoBehaviour:
   animator: {fileID: 1079020217}
   characterVisuals: {fileID: 560634239}
   stopDistanceFromPlayer: 2
+  flipThreshold: 0.35
+  flipCooldown: 0.25
 --- !u!195 &634785570
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -6222,7 +6228,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 634785566}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.35
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -6234,7 +6240,7 @@ NavMeshAgent:
   m_Height: 1
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 0
 --- !u!114 &634785571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9763,6 +9769,8 @@ MonoBehaviour:
   animator: {fileID: 0}
   characterVisuals: {fileID: 207394328}
   stopDistanceFromPlayer: 2
+  flipThreshold: 0.35
+  flipCooldown: 0.25
 --- !u!195 &1076918625
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -10005,6 +10013,38 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4800127890037349936, guid: f4f373eb05ba7ad4da22a81f519f97ca, type: 3}
   m_PrefabInstance: {fileID: 594744866}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1091850248
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1091850249}
+  m_Layer: 0
+  m_Name: CameraTiltRig
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1091850249
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1091850248}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.04300906, y: 0, z: 0, w: 0.9990747}
+  m_LocalPosition: {x: 318.62503, y: -2.8536, z: 79.07381}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1734039277}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 4.93, y: 0, z: 0}
 --- !u!1001 &1092673583
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20147,7 +20187,7 @@ MonoBehaviour:
       Size: {x: 0.8, y: 0.8}
       Offset: {x: 0, y: 0}
   CenterOnActivate: 1
-  TargetOffset: {x: 0, y: 0, z: 0}
+  TargetOffset: {x: 0.25, y: 1.2, z: -3.69}
   Damping: {x: 1, y: 1, z: 1}
   Lookahead:
     Enabled: 0
@@ -20205,13 +20245,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1734039274}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.5125027, y: -0.033442497, z: -5}
+  m_LocalRotation: {x: 0.13052616, y: 0, z: 0, w: 0.9914449}
+  m_LocalPosition: {x: -323.88754, y: -0.17984486, z: -86.45467}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Father: {fileID: 1091850249}
+  m_LocalEulerAnglesHint: {x: 15, y: 0, z: 0}
 --- !u!1 &1740457768
 GameObject:
   m_ObjectHideFlags: 0
@@ -25539,9 +25579,9 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 330585546}
+  - {fileID: 1091850249}
   - {fileID: 410087041}
   - {fileID: 832575519}
-  - {fileID: 1734039277}
   - {fileID: 270215612}
   - {fileID: 113955690}
   - {fileID: 317554266}
