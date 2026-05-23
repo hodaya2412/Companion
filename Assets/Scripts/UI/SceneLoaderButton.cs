@@ -8,6 +8,7 @@ public class SceneLoaderButton : MonoBehaviour
 
     public void Load()
     {
+        Time.timeScale = 1f;
         StartCoroutine(LoadRoutine());
     }
 
@@ -16,5 +17,7 @@ public class SceneLoaderButton : MonoBehaviour
         // Fade Out
         if (SceneFader.Instance != null)
             yield return SceneFader.Instance.FadeOutAndLoad(sceneName);
+        else
+            SceneManager.LoadScene(sceneName);
     }
 }

@@ -21,6 +21,7 @@ public class BreakableForceFieldBarrier : MonoBehaviour, IPlayerAttackReceiver
     [Header("Persistence / Result")]
     [SerializeField] private string brokenFlagName;
 
+   
     private int currentHits;
     private bool isBroken;
 
@@ -39,6 +40,13 @@ public class BreakableForceFieldBarrier : MonoBehaviour, IPlayerAttackReceiver
 
     public void ReceivePlayerAttack(PlayerAttackData attackData)
     {
+        Debug.Log("Barrier was hit");
+
+        Debug.Log("Has weapon: " + attackData.hasWeaponEquipped);
+
+        Debug.Log("Weapon: " +
+            (attackData.equippedWeapon != null ? attackData.equippedWeapon.itemId : "NULL"));
+
         if (isBroken) return;
 
         bool canDamageBarrier = CanAttackBreakBarrier(attackData);
@@ -102,8 +110,8 @@ public class BreakableForceFieldBarrier : MonoBehaviour, IPlayerAttackReceiver
             Destroy(effect, 3f);
         }
 
-        if (collidersToDisable != null)
-            collidersToDisable.SetActive(false);
+        //if (collidersToDisable != null)
+            //collidersToDisable.SetActive(false);
 
         forceFieldPulse?.SetBreakProgress(1f);
         forceFieldPulse?.TriggerValidHitFeedback();
@@ -118,6 +126,12 @@ public class BreakableForceFieldBarrier : MonoBehaviour, IPlayerAttackReceiver
         }
 
         yield return new WaitForSeconds(1.5f);
+
+        Debug.Log("DEMO COMPLETED EVENT FIRED");
+        GameEvents.OnDemoCompleted?.Invoke();
+
+        if (collidersToDisable != null)
+            collidersToDisable.SetActive(false);
 
         gameObject.SetActive(false);
     }

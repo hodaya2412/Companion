@@ -44,4 +44,6 @@ public static class GameEvents
     public static Action<InventoryItemData> OnItemSelected;  // פריט נבחר
     public static Action<string> OnItemDeselected;
 
+    public static Action OnDemoCompleted;
+
 }

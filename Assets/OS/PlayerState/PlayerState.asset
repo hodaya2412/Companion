@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStateSO
   lastMoveX: 0
   lastMoveY: 1
-  isArmed: 1
-  weaponType: 2
+  isArmed: 0
+  weaponType: 0
