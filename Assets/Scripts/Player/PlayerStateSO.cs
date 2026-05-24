@@ -11,7 +11,9 @@ public class PlayerStateSO : ScriptableObject
     public bool isArmed = false;
     public int weaponType = 0;
 
-    // פונקציה לאיפוס הנתונים (שימושי כשמתחילים משחק חדש לגמרי)
+    public InventoryItemData currentWeaponItem;
+
+    // פונקציה לאיפוס הנתונים (שימושי כשמתחילים משחק חדש לגמרי
     public void ResetState()
     {
         lastMoveX = 0;

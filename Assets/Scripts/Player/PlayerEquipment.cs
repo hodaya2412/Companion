@@ -8,10 +8,10 @@ public class PlayerEquipment : MonoBehaviour
     [Header("Data Persistence")]
     public PlayerStateSO playerState;
 
-    [SerializeField] private InventoryItemData equippedWeapon;
-    public InventoryItemData EquippedWeapon => equippedWeapon;
+    // מחזיר תמיד את הנשק השמור בתוך ה-PlayerStateSO (מונע התאפסות במעבר סצנה)
+    public InventoryItemData EquippedWeapon => (playerState != null) ? playerState.currentWeaponItem : null;
 
-    // אירוע מקומי שמאפשר ל-Combat לדעת על שינוי בנשק
+    // אירוע מקומי למי שעדיין רוצה להאזין לשינויים בזמן אמת במשחק
     public event Action<InventoryItemData> OnWeaponEquipped;
 
     private void Awake()
@@ -20,9 +20,14 @@ public class PlayerEquipment : MonoBehaviour
         Instance = this;
     }
 
+    private void Start()
+    {
+        // קריטי: מעדכן את האנימטור של השחקן החדש מיד כשהסצנה עולה
+        UpdateAnimator();
+    }
+
     private void OnEnable()
     {
-        // חשוב: שם האירוע ב-GameEvents שלך הוא Clicked
         GameEvents.OnItemClicked += HandleItemClicked;
     }
 
@@ -33,10 +38,9 @@ public class PlayerEquipment : MonoBehaviour
 
     private void HandleItemClicked(InventoryItemData item)
     {
-        // אם הפריט שנלחץ אינו נשק, אנחנו לא עושים כלום
         if (item == null || item.category != ItemCategory.Weapon) return;
 
-        if (equippedWeapon == item)
+        if (EquippedWeapon == item)
             UnequipWeapon();
         else
             EquipWeapon(item);
@@ -44,27 +48,45 @@ public class PlayerEquipment : MonoBehaviour
 
     public void EquipWeapon(InventoryItemData weaponItem)
     {
-        equippedWeapon = weaponItem;
         if (playerState != null)
         {
             playerState.isArmed = true;
             playerState.weaponType = (int)weaponItem.weaponAnimationType;
+            playerState.currentWeaponItem = weaponItem; // נשמר ישירות ב-SO ששורד סצנות
         }
-        Debug.Log($"Equipped weapon: {equippedWeapon.displayName}");
-        OnWeaponEquipped?.Invoke(equippedWeapon);
+
+        UpdateAnimator();
+        OnWeaponEquipped?.Invoke(weaponItem);
     }
 
     public void UnequipWeapon()
     {
-        equippedWeapon = null;
         if (playerState != null)
         {
             playerState.isArmed = false;
             playerState.weaponType = 0;
+            playerState.currentWeaponItem = null;
         }
-        Debug.Log("Weapon unequipped");
+
+        UpdateAnimator();
         OnWeaponEquipped?.Invoke(null);
     }
 
-    public bool HasWeaponEquipped() => equippedWeapon != null;
+    // מסנכרן את האנימטור הנוכחי בסצנה עם מה ששמור ב-State
+    public void UpdateAnimator()
+    {
+        Animator animator = GetComponentInChildren<Animator>();
+        if (animator != null && playerState != null)
+        {
+            animator.SetBool("IsArmed", playerState.isArmed);
+            animator.SetInteger("WeaponType", playerState.weaponType);
+        }
+    }
+
+    // בדיקה אמינה ב-100% כי היא קוראת ישירות מה-SO
+    public bool HasWeaponEquipped()
+    {
+        if (playerState == null) return false;
+        return playerState.isArmed && playerState.currentWeaponItem != null;
+    }
 }
