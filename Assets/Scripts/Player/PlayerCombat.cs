@@ -22,16 +22,14 @@ public class PlayerCombat : MonoBehaviour
     [Header("General Combat")]
     public float attackCooldown = 0.5f;
 
-    private Animator animator;
+    private Animator animator; // הוסף את זה 
 
     private InputActions inputActions;
     private float lastAttackTime = -999f;
 
     private GameplayState currentGameplayState;
     private UIState currentUIState;
-
-    // מאפיין (Property) שבודק בזמן אמת מול ה-Equipment וה-SO בכל רגע נתון
-    private bool HasWeaponEquipped => PlayerEquipment.Instance != null && PlayerEquipment.Instance.HasWeaponEquipped();
+    private bool hasWeaponEquipped;
 
     private void Awake()
     {
@@ -48,6 +46,12 @@ public class PlayerCombat : MonoBehaviour
         GameEvents.OnGameplayStateChanged += HandleGameplayStateChanged;
         GameEvents.OnUIStateChanged += HandleUIStateChanged;
 
+        if (PlayerEquipment.Instance != null)
+        {
+            PlayerEquipment.Instance.OnWeaponEquipped += HandleWeaponChanged;
+            hasWeaponEquipped = PlayerEquipment.Instance.HasWeaponEquipped();
+        }
+
         currentGameplayState = GameEvents.RequestCurrentGameplayState?.Invoke() ?? GameplayState.Playing;
         currentUIState = GameEvents.RequestCurrentUIState?.Invoke() ?? UIState.None;
     }
@@ -59,10 +63,19 @@ public class PlayerCombat : MonoBehaviour
 
         GameEvents.OnGameplayStateChanged -= HandleGameplayStateChanged;
         GameEvents.OnUIStateChanged -= HandleUIStateChanged;
+
+        if (PlayerEquipment.Instance != null)
+            PlayerEquipment.Instance.OnWeaponEquipped -= HandleWeaponChanged;
     }
 
     private void HandleGameplayStateChanged(GameplayState newState) => currentGameplayState = newState;
     private void HandleUIStateChanged(UIState newState) => currentUIState = newState;
+
+    private void HandleWeaponChanged(InventoryItemData weapon)
+    {
+        hasWeaponEquipped = (weapon != null);
+        Debug.Log($"[PlayerCombat] Weapon changed. Equipped = {hasWeaponEquipped}, weapon = {(weapon != null ? weapon.itemId : "NULL")}");
+    }
 
     private void OnAttackPerformed(InputAction.CallbackContext context)
     {
@@ -81,10 +94,7 @@ public class PlayerCombat : MonoBehaviour
             currentUIState == UIState.Map ||
             currentUIState == UIState.Choice;
 
-        // שליפת הנתון האמיתי והעדכני בזמן הלחיצה
-        bool isArmed = HasWeaponEquipped;
-
-        Debug.Log($"[PlayerCombat] TryAttack | gameplay={currentGameplayState} | ui={currentUIState} | hasWeapon={isArmed}");
+        Debug.Log($"[PlayerCombat] TryAttack | gameplay={currentGameplayState} | ui={currentUIState} | hasWeapon={hasWeaponEquipped}");
 
         if (!gameplayAllowsAttack)
         {
@@ -107,20 +117,20 @@ public class PlayerCombat : MonoBehaviour
         lastAttackTime = Time.time;
         if (animator != null)
         {
+            // בתוך הפונקציה שבה את עושה animator.SetTrigger("Attack")
             animator.SetBool("IsAttacking", true);
             animator.SetTrigger("Attack");
         }
 
-        // שימוש בנתון הקיים (isArmed)
-        float damage = isArmed ? weaponDamage : unarmedDamage;
-        float range = isArmed ? weaponRange : unarmedRange;
+        float damage = hasWeaponEquipped ? weaponDamage : unarmedDamage;
+        float range = hasWeaponEquipped ? weaponRange : unarmedRange;
 
         Debug.Log($"[PlayerCombat] Performing attack | damage={damage} | range={range}");
 
-        PerformAttackOverlap(damage, range, isArmed);
+        PerformAttackOverlap(damage, range);
     }
 
-    private void PerformAttackOverlap(float damage, float range, bool isArmed)
+    private void PerformAttackOverlap(float damage, float range)
     {
         Vector3 center = attackPoint.position + transform.forward * range * 0.5f;
         Vector3 halfExtents = new Vector3(0.7f, 1f, range * 0.5f);
@@ -141,7 +151,7 @@ public class PlayerCombat : MonoBehaviour
         PlayerAttackData attackData = new PlayerAttackData(
             gameObject,
             damage,
-            isArmed,
+            hasWeaponEquipped,
             PlayerEquipment.Instance != null ? PlayerEquipment.Instance.EquippedWeapon : null
         );
 
@@ -176,8 +186,7 @@ public class PlayerCombat : MonoBehaviour
     {
         if (attackPoint == null) attackPoint = transform;
 
-        // עדכון הטווח בגיזמוס מול המצב האמיתי ב-SO
-        float range = HasWeaponEquipped ? weaponRange : unarmedRange;
+        float range = hasWeaponEquipped ? weaponRange : unarmedRange;
         Vector3 center = attackPoint.position + transform.forward * range * 0.5f;
         Vector3 halfExtents = new Vector3(0.7f, 1f, range * 0.5f);
 
@@ -186,6 +195,7 @@ public class PlayerCombat : MonoBehaviour
         Gizmos.DrawWireCube(Vector3.zero, halfExtents * 2f);
     }
 
+    // פונקציה שתופעל על ידי ה-Animation Event בסוף האנימציה
     public void OnAttackEnded()
     {
         if (animator != null)

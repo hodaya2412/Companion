@@ -1,4 +1,4 @@
-using UnityEngine;
+ο»Ώusing UnityEngine;
 using System;
 
 public class PlayerEquipment : MonoBehaviour
@@ -8,21 +8,27 @@ public class PlayerEquipment : MonoBehaviour
     [Header("Data Persistence")]
     public PlayerStateSO playerState;
 
-    // ξηζιψ ϊξιγ ΰϊ δπωχ δωξεψ αϊεκ δ-PlayerStateSO (ξεπς δϊΰτρεϊ αξςαψ ρφπδ)
-    public InventoryItemData EquippedWeapon => (playerState != null) ? playerState.currentWeaponItem : null;
+    // ΧΧ—Χ–Χ™Χ¨ ΧªΧΧ™Χ“ ΧΧª Χ”Χ Χ©Χ§ Χ”Χ©ΧΧ•Χ¨ Χ‘ΧªΧ•Χ Χ”-PlayerStateSO (ΧΧ•Χ ΧΆ Χ”ΧªΧΧ¤Χ΅Χ•Χª Χ‘ΧΧΆΧ‘Χ¨ Χ΅Χ¦Χ Χ”)
+    public InventoryItemData EquippedWeapon =>
+        (playerState != null) ? playerState.currentWeaponItem : null;
 
-    // ΰιψες ξχεξι μξι ωςγιιο ψεφδ μδΰζιο μωιπειιν αζξο ΰξϊ αξωηχ
+    // ΧΧ™Χ¨Χ•ΧΆ ΧΧΧ™ Χ©Χ¨Χ•Χ¦Χ” ΧΧ”ΧΧ–Χ™Χ ΧΧ©Χ™Χ Χ•Χ™Χ™Χ Χ‘Χ–ΧΧ ΧΧΧª
     public event Action<InventoryItemData> OnWeaponEquipped;
 
     private void Awake()
     {
-        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         Instance = this;
     }
 
     private void Start()
     {
-        // χψιθι: ξςγλο ΰϊ δΰπιξθεψ ωμ δωηχο δηγω ξιγ λωδρφπδ ςεμδ
+        // ΧΧ΅Χ Χ›Χ¨Χ ΧΧ Χ™ΧΧΧ•Χ¨ ΧΧ™Χ“ Χ‘ΧΆΧΧ™Χ™Χª Χ΅Χ¦Χ Χ”
         UpdateAnimator();
     }
 
@@ -38,7 +44,8 @@ public class PlayerEquipment : MonoBehaviour
 
     private void HandleItemClicked(InventoryItemData item)
     {
-        if (item == null || item.category != ItemCategory.Weapon) return;
+        if (item == null || item.category != ItemCategory.Weapon)
+            return;
 
         if (EquippedWeapon == item)
             UnequipWeapon();
@@ -52,7 +59,7 @@ public class PlayerEquipment : MonoBehaviour
         {
             playerState.isArmed = true;
             playerState.weaponType = (int)weaponItem.weaponAnimationType;
-            playerState.currentWeaponItem = weaponItem; // πωξψ ιωιψεϊ α-SO ωωεψγ ρφπεϊ
+            playerState.currentWeaponItem = weaponItem;
         }
 
         UpdateAnimator();
@@ -72,10 +79,11 @@ public class PlayerEquipment : MonoBehaviour
         OnWeaponEquipped?.Invoke(null);
     }
 
-    // ξρπλψο ΰϊ δΰπιξθεψ δπεληι αρφπδ ςν ξδ ωωξεψ α-State
+    // ΧΧ΅Χ Χ›Χ¨Χ ΧΧª Χ”ΧΧ Χ™ΧΧΧ•Χ¨ ΧΧ¤Χ™ Χ”-State
     public void UpdateAnimator()
     {
         Animator animator = GetComponentInChildren<Animator>();
+
         if (animator != null && playerState != null)
         {
             animator.SetBool("IsArmed", playerState.isArmed);
@@ -83,10 +91,12 @@ public class PlayerEquipment : MonoBehaviour
         }
     }
 
-    // αγιχδ ΰξιπδ α-100% λι διΰ χεψΰϊ ιωιψεϊ ξδ-SO
+    // Χ‘Χ“Χ™Χ§Χ” ΧΧΧ™Χ Χ” ΧΧ¤Χ™ Χ”-SO
     public bool HasWeaponEquipped()
     {
-        if (playerState == null) return false;
+        if (playerState == null)
+            return false;
+
         return playerState.isArmed && playerState.currentWeaponItem != null;
     }
 }
