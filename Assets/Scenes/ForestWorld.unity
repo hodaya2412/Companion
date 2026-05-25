@@ -883,7 +883,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &78343990
 Transform:
   m_ObjectHideFlags: 0
@@ -2824,7 +2824,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerEquipment
   playerState: {fileID: 11400000, guid: 62b007ea45bb85d49bbc0d332c5c1913, type: 2}
-  equippedWeapon: {fileID: 0}
 --- !u!114 &270215617
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4587,7 +4586,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &429557919
 Transform:
   m_ObjectHideFlags: 0
@@ -6301,6 +6300,7 @@ GameObject:
   - component: {fileID: 634785573}
   - component: {fileID: 634785574}
   - component: {fileID: 634785575}
+  - component: {fileID: 634785576}
   m_Layer: 6
   m_Name: Bandit1
   m_TagString: Enemy
@@ -6411,7 +6411,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 634785566}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.35
+  m_Radius: 0.39
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -6479,8 +6479,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4.76, y: 1, z: 4.17}
-  m_Center: {x: -2.2, y: 0, z: 4.2}
+  m_Size: {x: 3.530426, y: 1, z: 0.6207962}
+  m_Center: {x: -2.2148895, y: 0, z: 0}
 --- !u!114 &634785573
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6540,6 +6540,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyKnockback
   movement: {fileID: 634785569}
   knockbackDistance: 0.3
+--- !u!65 &634785576
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 634785566}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3.4464417, y: 6.1790314, z: 2.4597778}
+  m_Center: {x: -1.9007416, y: 2.5895157, z: 0}
 --- !u!4 &644904887 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4800127890037349936, guid: f4f373eb05ba7ad4da22a81f519f97ca, type: 3}
@@ -10032,7 +10053,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1076918622
 Transform:
   m_ObjectHideFlags: 0
@@ -10374,7 +10395,7 @@ Transform:
   m_GameObject: {fileID: 1079020216}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.229, y: -2.79, z: 3.8700027}
+  m_LocalPosition: {x: -1.229, y: -2.79, z: 0}
   m_LocalScale: {x: 0.64073306, y: 0.7073031, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

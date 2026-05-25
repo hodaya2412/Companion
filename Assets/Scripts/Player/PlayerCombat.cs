@@ -137,7 +137,7 @@ public class PlayerCombat : MonoBehaviour
 
         Debug.Log($"[PlayerCombat] Overlap center={center}, halfExtents={halfExtents}");
 
-        Collider[] enemyHits = Physics.OverlapBox(center, halfExtents, transform.rotation, enemyLayer);
+        Collider[] enemyHits = Physics.OverlapBox(center, halfExtents, transform.rotation, enemyLayer, QueryTriggerInteraction.Collide);
         Debug.Log($"[PlayerCombat] enemyHits count = {enemyHits.Length}");
 
         foreach (Collider hit in enemyHits)
