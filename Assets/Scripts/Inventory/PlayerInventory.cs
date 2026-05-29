@@ -73,6 +73,7 @@ public class PlayerInventory : ScriptableObject
         
         NotifyChanged();
         return true;
+
     }
 
     public void ResetInventory()
