@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -27,25 +27,29 @@ public class PlayerHitFeedback : MonoBehaviour
         if (spriteRenderer != null)
             originalColor = spriteRenderer.color;
     }
-
     private void OnEnable()
     {
+        // 🤝 חוזרים להקשיב לאירוע הגלובלי של המשחק
         GameEvents.OnPlayerHit += HandlePlayerHit;
     }
 
     private void OnDisable()
     {
+        // 🛑 ביטול הרשמה
         GameEvents.OnPlayerHit -= HandlePlayerHit;
     }
 
     private void HandlePlayerHit(float damage)
     {
+        // האפקט האדום יעבוד בצורה מושלמת בכל פעם שהאירוע נורה!
         Flash();
 
+        // לגבי הקנוקבק: מאחר והאירוע הגלובלי רק אומר "השחקן נפגע", 
+        // נרתע פשוט לכיוון האחורי של השחקן (או שנשנה את ה-Event בעתיד שיעביר גם מיקום)
         Vector3 sourcePosition = transform.position + Vector3.back;
-
         KnockbackFrom(sourcePosition);
     }
+
 
     private void Flash()
     {

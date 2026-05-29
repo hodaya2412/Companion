@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 169fcac23d9a6c44391a2d2fadf2f35f, type: 3}
   m_Name: PlayerState
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStateSO
-  lastMoveX: 0
-  lastMoveY: 1
-  isArmed: 0
-  weaponType: 0
+  lastMoveX: -1
+  lastMoveY: 0
+  isArmed: 1
+  weaponType: 2
+  currentWeaponItem: {fileID: 11400000, guid: 7bce85d19e0cf0d4aa9b73b3e4584317, type: 2}

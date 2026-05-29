@@ -9,9 +9,9 @@ public class PlayerHealth : MonoBehaviour
     public float currentHealth = 100f;
 
     [Header("Regen")]
-    public float regenDelay = 4f;
+    public float regenDelay = 7f;
 
-    public float regenRate = 3f;
+    public float regenRate = 1.5f;
 
     public bool regenOnlyIfAlive = true;
 
@@ -29,16 +29,6 @@ public class PlayerHealth : MonoBehaviour
         lastDamageTime = -999f;
     }
 
-    private void OnEnable()
-    {
-        GameEvents.OnPlayerHit += HandlePlayerHit;
-    }
-
-    private void OnDisable()
-    {
-        GameEvents.OnPlayerHit -= HandlePlayerHit;
-    }
-
     private void Start()
     {
         GameEvents.OnHealthChanged?.Invoke(currentHealth, maxHealth);
@@ -48,14 +38,34 @@ public class PlayerHealth : MonoBehaviour
     {
         HandleRegen();
     }
+    //[Header("Invulnerability")]
+    //[SerializeField] private float hitCooldown = 0.5f; // חצי שנייה של חסינות
+    //private float lastHitTime = -999f;
 
-    private void HandlePlayerHit(float damage)
-    {
-        if (isDead) return;
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (isDead) return;
 
-        Debug.Log("PLAYER RECEIVED HIT EVENT: " + damage);
-        TakeDamage(damage);
-    }
+    //    // בדיקה 1: האם עבר מספיק זמן מאז הפגיעה האחרונה?
+    //    if (Time.time < lastHitTime + hitCooldown) return;
+
+    //    // בדיקה 2: האם מי שפגע בנו הוא אויב?
+    //    if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+    //    {
+    //        EnemyCombat enemyCombat = other.GetComponentInParent<EnemyCombat>();
+
+    //        if (enemyCombat != null)
+    //        {
+    //            // עדכון זמן הפגיעה האחרונה כדי לנעול פגיעות נוספות בפריימים הבאים
+    //            lastHitTime = Time.time;
+
+    //            Debug.Log($"[Hitbox] Player hit by: {other.name}! Taking {enemyCombat.attackDamage} damage.");
+    //            TakeDamage(enemyCombat.attackDamage);
+    //            GameEvents.OnPlayerHit?.Invoke(enemyCombat.attackDamage);
+    //        }
+    //    }
+        
+    //}
 
     private void HandleRegen()
     {

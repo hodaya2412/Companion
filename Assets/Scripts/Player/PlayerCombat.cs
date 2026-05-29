@@ -1,4 +1,4 @@
-using UnityEngine;
+ο»Ώusing UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
 
@@ -22,7 +22,7 @@ public class PlayerCombat : MonoBehaviour
     [Header("General Combat")]
     public float attackCooldown = 0.5f;
 
-    private Animator animator; // δερσ ΰϊ ζδ 
+    private Animator animator; // Χ”Χ•Χ΅Χ£ ΧΧª Χ–Χ” 
 
     private InputActions inputActions;
     private float lastAttackTime = -999f;
@@ -117,7 +117,7 @@ public class PlayerCombat : MonoBehaviour
         lastAttackTime = Time.time;
         if (animator != null)
         {
-            // αϊεκ δτεπχφιδ ωαδ ΰϊ ςεωδ animator.SetTrigger("Attack")
+            // Χ‘ΧªΧ•Χ Χ”Χ¤Χ•Χ Χ§Χ¦Χ™Χ” Χ©Χ‘Χ” ΧΧª ΧΆΧ•Χ©Χ” animator.SetTrigger("Attack")
             animator.SetBool("IsAttacking", true);
             animator.SetTrigger("Attack");
         }
@@ -181,21 +181,7 @@ public class PlayerCombat : MonoBehaviour
             }
         }
     }
-
-    private void OnDrawGizmosSelected()
-    {
-        if (attackPoint == null) attackPoint = transform;
-
-        float range = hasWeaponEquipped ? weaponRange : unarmedRange;
-        Vector3 center = attackPoint.position + transform.forward * range * 0.5f;
-        Vector3 halfExtents = new Vector3(0.7f, 1f, range * 0.5f);
-
-        Gizmos.color = Color.red;
-        Gizmos.matrix = Matrix4x4.TRS(center, transform.rotation, Vector3.one);
-        Gizmos.DrawWireCube(Vector3.zero, halfExtents * 2f);
-    }
-
-    // τεπχφιδ ωϊετςμ ςμ ιγι δ-Animation Event αρεσ δΰπιξφιδ
+    // Χ¤Χ•Χ Χ§Χ¦Χ™Χ” Χ©ΧªΧ•Χ¤ΧΆΧ ΧΆΧ Χ™Χ“Χ™ Χ”-Animation Event Χ‘Χ΅Χ•Χ£ Χ”ΧΧ Χ™ΧΧ¦Χ™Χ”
     public void OnAttackEnded()
     {
         if (animator != null)

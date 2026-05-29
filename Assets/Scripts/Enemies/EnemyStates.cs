@@ -1,6 +1,6 @@
-using UnityEngine;
+ο»Ώusing UnityEngine;
 
-// --- ξφα ηζψδ μξςψδ ---
+// --- ΧΧ¦Χ‘ Χ—Χ–Χ¨Χ” ΧΧΧΆΧ¨Χ” ---
 public class EnemyReturningState : IEnemyState
 {
     private EnemyBrain brain;
@@ -8,13 +8,13 @@ public class EnemyReturningState : IEnemyState
 
     public override void Enter()
     {
-        // χεψΰιν μτχεγϊ δϊπεςδ ψχ τςν ΰηϊ λωπλπριν μξφα
+        // Χ§Χ•Χ¨ΧΧ™Χ ΧΧ¤Χ§Χ•Χ“Χª Χ”ΧªΧ Χ•ΧΆΧ” Χ¨Χ§ Χ¤ΧΆΧ ΧΧ—Χª Χ›Χ©Χ Χ›Χ Χ΅Χ™Χ ΧΧΧ¦Χ‘
         brain.movement.ReturnToCave();
     }
 
     public override void Execute()
     {
-        // αεγχιν αλμ τψιιν ψχ ΰν δβςπε μιςγ λγι μςφεψ
+        // Χ‘Χ•Χ“Χ§Χ™Χ Χ‘Χ›Χ Χ¤Χ¨Χ™Χ™Χ Χ¨Χ§ ΧΧ Χ”Χ’ΧΆΧ Χ• ΧΧ™ΧΆΧ“ Χ›Χ“Χ™ ΧΧΆΧ¦Χ•Χ¨
         if (brain.movement.HasReachedCave())
         {
             brain.movement.StopMoving();
@@ -22,7 +22,7 @@ public class EnemyReturningState : IEnemyState
     }
 }
 
-// --- ξφα δηζχδ (ΰιβεσ/ριαεα ραια δωηχο) ---
+// --- ΧΧ¦Χ‘ Χ”Χ—Χ–Χ§Χ” (ΧΧ™Χ’Χ•Χ£/Χ΅Χ™Χ‘Χ•Χ‘ Χ΅Χ‘Χ™Χ‘ Χ”Χ©Χ—Χ§Χ) ---
 public class EnemyHoldingState : IEnemyState
 {
     private EnemyBrain brain;
@@ -44,46 +44,41 @@ public class EnemyHoldingState : IEnemyState
         if (brain.GetCurrentGameplayState() != GameplayState.Combat)
             return;
 
+        // ΧΆΧ•Χ§Χ£ Χ΅ΧΧ•Χ: Χ”Χ©Χ—Χ§Χ Χ Χ›Χ Χ΅ ΧΧ™ ΧΧ¤Χ¨Χ¦Χ•Χ£? ΧΆΧ•Χ‘Χ¨Χ™Χ Χ™Χ©Χ¨ ΧΧ΅ΧΧ™Χ™Χ Χ”ΧªΧ§Χ¤Χ”
+        if (brain.movement.IsPlayerInRange(brain.combat.attackRange + brain.playerAttackAllowance))
+        {
+            brain.ChangeState(brain.AttackingState);
+            return;
+        }
+
         timer -= Time.deltaTime;
 
-        // ψχ ξγι τςν αεηψιν πχεγδ ηγωδ
+        
         if (timer <= 0f || !hasPosition)
         {
             timer = Random.Range(2f, 4f);
-
             Vector3 playerPos = brain.movement.GetPlayerPosition();
-
             Vector3 dir = (brain.transform.position - playerPos).normalized;
 
-            if (dir.sqrMagnitude < 0.01f)
-                dir = brain.transform.right;
+            if (dir.sqrMagnitude < 0.01f) dir = brain.transform.right;
 
             Vector3 sideDir = Vector3.Cross(Vector3.up, dir).normalized;
-
-            // αηιψϊ φγ ΰχψΰι
             float side = Random.value < 0.5f ? -1f : 1f;
 
-            currentHoldPosition =
-                playerPos +
-                dir * brain.holdDistance +
-                sideDir * side * brain.holdSideStepDistance;
-
+            currentHoldPosition = playerPos + dir * brain.holdDistance + sideDir * side * brain.holdSideStepDistance;
             hasPosition = true;
-
-            brain.movement.MoveToPosition(currentHoldPosition, 0.5f, true);
+            brain.movement.MoveToPosition(currentHoldPosition, 0.5f);
         }
 
-        // ΰν δβις μπχεγδ -> μςφεψ εμςξεγ
         if (brain.movement.HasReachedPosition(currentHoldPosition, 0.7f))
         {
             brain.movement.StopMoving();
         }
 
-        // ξγι τςν ξπριν μδτεκ μΰχθιαιιν
         brain.TryBecomeActive();
     }
 }
-// --- ξφα ξψγσ ---
+// --- ΧΧ¦Χ‘ ΧΧ¨Χ“Χ£ ---
 public class EnemyChasingState : IEnemyState
 {
     private EnemyBrain brain;
@@ -92,12 +87,19 @@ public class EnemyChasingState : IEnemyState
 
     public override void Enter()
     {
-        // ηωεα: ξΰτριν θιιξψ λγι ωμΰ ιηλδ ξδτςν δχεγξϊ ωδιδ αξφα δζδ
+        // Χ—Χ©Χ•Χ‘: ΧΧΧ¤Χ΅Χ™Χ ΧΧ™Χ™ΧΧ¨ Χ›Χ“Χ™ Χ©ΧΧ Χ™Χ—Χ›Χ” ΧΧ”Χ¤ΧΆΧ Χ”Χ§Χ•Χ“ΧΧª Χ©Χ”Χ™Χ” Χ‘ΧΧ¦Χ‘ Χ”Χ–Χ”
         timer = 0f;
     }
 
     public override void Execute()
     {
+        // Χ”Χ©Χ—Χ§Χ Χ‘ΧΧ•Χ•Χ—? ΧΧΆΧ‘Χ™Χ¨Χ™Χ ΧΧª Χ”Χ©ΧΧ™ΧΧ” Χ™Χ©Χ™Χ¨Χ•Χª ΧΧ΅ΧΧ™Χ™Χ Χ”ΧªΧ§Χ¤Χ” Χ©Χ”Χ•Χ Χ™Χ Χ”Χ ΧΧª Χ–Χ”!
+        if (brain.movement.IsPlayerInRange(brain.combat.attackRange + brain.playerAttackAllowance))
+        {
+            brain.ChangeState(brain.AttackingState);
+            return;
+        }
+
         if (!brain.HasAttackSlot) { brain.ChangeState(brain.HoldingState); return; }
         if (brain.IsTooFarToKeepSlot()) { brain.ReleaseAttackSlotIfNeeded(); brain.ChangeState(brain.HoldingState); return; }
 
@@ -109,18 +111,12 @@ public class EnemyChasingState : IEnemyState
                 EnemyAttackCoordinator.Instance.GetAttackPosition(brain) : brain.movement.GetPlayerPosition();
         }
 
+        // Χ›Χ ΧΆΧ•Χ“ Χ”Χ•Χ ΧΧ Χ‘ΧΧ•Χ•Χ—, Χ”Χ•Χ Χ–Χ– Χ‘Χ›Χ Χ¤Χ¨Χ™Χ¥ Χ™Χ©Χ™Χ¨Χ•Χª ΧΧ Χ”Χ™ΧΆΧ“ Χ©ΧΧ•!
         brain.movement.MoveToPosition(brain.CurrentChaseTarget, 1.0f);
-
-        if (brain.movement.HasReachedPosition(brain.CurrentChaseTarget, 1.0f) &&
-            brain.movement.IsPlayerInRange(brain.combat.attackRange + brain.playerAttackAllowance))
-        {
-            brain.ChangeState(brain.WaitingState);
-        }
     }
 }
-
-// --- ξφα δξϊπδ μϊχιτδ ---
-public class EnemyWaitingState : IEnemyState
+    // --- ΧΧ¦Χ‘ Χ”ΧΧªΧ Χ” ΧΧªΧ§Χ™Χ¤Χ” ---
+    public class EnemyWaitingState : IEnemyState
 {
     private EnemyBrain brain;
     private float waitTimer;
@@ -128,7 +124,7 @@ public class EnemyWaitingState : IEnemyState
 
     public override void Enter()
     {
-        // δβψμϊ ζξο δδξϊπδ χεψιϊ τςν ΰηϊ αλπιρδ
+        // Χ”Χ’Χ¨ΧΧª Χ–ΧΧ Χ”Χ”ΧΧªΧ Χ” Χ§Χ•Χ¨Χ™Χª Χ¤ΧΆΧ ΧΧ—Χª Χ‘Χ›Χ Χ™Χ΅Χ”
         waitTimer = Random.Range(brain.waitBeforeAttackMin, brain.waitBeforeAttackMax);
         brain.movement.StopMoving();
     }
@@ -146,56 +142,80 @@ public class EnemyWaitingState : IEnemyState
     }
 }
 
+
 public class EnemyAttackingState : IEnemyState
 {
     private EnemyBrain brain;
-    private bool isRetreating = false;
-    private float retreatTimer = 0f;
-    private const float RETREAT_DURATION = 0.5f; // λξδ ζξο δεΰ ιαψη ΰηεψδ
+    private float attackDurationTimer = 0f;
+    private bool hasAttacked = false;
+
+    // β±οΈ ΧΧ•Χ¨Χ Χ”ΧΧ Χ™ΧΧ¦Χ™Χ” (Χ‘Χ©Χ Χ™Χ•Χª). 
+    private const float ATTACK_ANIMATION_DURATION = 0.8f;
 
     public EnemyAttackingState(EnemyBrain brain) => this.brain = brain;
 
     public override void Enter()
     {
-        isRetreating = false;
-
-        // 1. ξαφςιν ΰϊ δϊχιτδ ξιγ αλπιρδ μξφα
-        if (brain.movement.IsPlayerInRange(brain.combat.attackRange + brain.playerAttackAllowance))
-        {
-            brain.combat.TryAttack();
-            StartRetreat();
-        }
-        else
-        {
-            // ΰν δεΰ ιφΰ ξθεεη ψβς μτπι, τωεθ ηεζψιν μψγεσ
-            brain.ChangeState(brain.ChasingState);
-        }
-    }
-
-    private void StartRetreat()
-    {
-        isRetreating = true;
-        retreatTimer = RETREAT_DURATION;
-
-        // ηιωεα πχεγϊ πριβδ
-        Vector3 playerPos = brain.movement.GetPlayerPosition();
-        Vector3 retreatDir = (brain.transform.position - playerPos).normalized;
-        Vector3 retreatTarget = brain.transform.position + retreatDir * 3f;
-
-        // τχεγδ μζεζ μπχεγδ
-        brain.movement.MoveToPosition(retreatTarget, 0.1f);
+        hasAttacked = false;
+        ExecuteAttackChain();
     }
 
     public override void Execute()
     {
-        if (isRetreating)
+        if (hasAttacked)
         {
-            retreatTimer -= Time.deltaTime;
-            if (retreatTimer <= 0f)
+            attackDurationTimer -= Time.deltaTime;
+
+            // π― Χ”ΧªΧ™Χ§Χ•Χ Χ”Χ§Χ¨Χ™ΧΧ™: ΧΧ Χ”ΧΧ Χ™ΧΧ¦Χ™Χ” ΧΆΧ“Χ™Χ™Χ Χ¨Χ¦Χ” ΧΧ‘Χ Χ”Χ©Χ—Χ§Χ Χ›Χ‘Χ¨ Χ”Χ΅Χ¤Χ™Χ§ ΧΧ”ΧªΧ¨Χ—Χ§ ΧΧ”ΧΧ•Χ•Χ—,
+            // ΧΧ Χ—Χ Χ• ΧΧ ΧΧ—Χ›Χ™Χ Χ©Χ”ΧΧ Χ™ΧΧ¦Χ™Χ” ΧªΧ΅ΧªΧ™Χ™Χ Χ‘ΧΧ•Χ•Χ™Χ¨ Χ΅ΧªΧ! Χ—Χ•Χ–Χ¨Χ™Χ ΧΧ™Χ“ ΧΧ¨Χ“Χ•Χ£ ΧΧ—Χ¨Χ™Χ•.
+            if (!brain.movement.IsPlayerInRange(brain.combat.attackRange + brain.playerAttackAllowance))
             {
-                // ψχ ΰηψι ωριιν μρβϊ, ςεαψιν μδξϊπδ
-                brain.ChangeState(brain.WaitingState);
+                brain.ChangeState(brain.ChasingState); // πƒβ€β™‚οΈ Χ—Χ•Χ–Χ¨ ΧΧ¨Χ•Χ¥ Χ•ΧΧ¦ΧΧ¦Χ ΧΧ•Χ•Χ—!
+                return;
             }
+
+            if (attackDurationTimer <= 0f)
+            {
+                // Χ”ΧΧ Χ™ΧΧ¦Χ™Χ” Χ”Χ Χ•Χ›Χ—Χ™Χª Χ”Χ΅ΧªΧ™Χ™ΧΧ” Χ‘Χ”Χ¦ΧΧ—Χ”, Χ‘Χ•Χ“Χ§Χ™Χ ΧΧ” Χ”Χ¦ΧΆΧ“ Χ”Χ‘Χ
+                EvaluateNextAction();
+            }
+        }
+    }
+
+    private void ExecuteAttackChain()
+    {
+        // Χ‘Χ•Χ“Χ§Χ™Χ ΧΧ Χ”Χ•Χ Χ‘ΧΧ•Χ•Χ— Χ”ΧΧΧ™ΧªΧ™ ΧΧ¤Χ’Χ™ΧΆΧ”
+        if (brain.movement.IsPlayerInRange(brain.combat.attackRange + brain.playerAttackAllowance))
+        {
+            brain.movement.StopMoving(); // ΧΆΧ¦Χ™Χ¨Χ” ΧΧ¦Χ•Χ¨Χ Χ”Χ Χ¤Χª Χ”Χ Χ©Χ§
+            brain.combat.TryAttack();    // ΧΧ¤ΧΆΧ™Χ ΧΧª Χ”ΧΧ Χ™ΧΧ¦Χ™Χ”
+
+            attackDurationTimer = ATTACK_ANIMATION_DURATION;
+            hasAttacked = true;
+        }
+        else
+        {
+            // πƒβ€β™‚οΈ ΧΧ Χ”Χ•Χ ΧΧ Χ‘ΧΧ•Χ•Χ— Χ‘Χ›ΧΧ, Χ©Χ™Χ—Χ–Χ•Χ¨ ΧΧ™Χ“ ΧΧ¨Χ“Χ•Χ£ Χ‘ΧΧ§Χ•Χ ΧΧΆΧΧ•Χ“!
+            brain.ChangeState(brain.ChasingState);
+        }
+    }
+
+    private void EvaluateNextAction()
+    {
+        // ΧΧ Χ”Χ©Χ—Χ§Χ ΧΆΧ“Χ™Χ™Χ Χ¤Χ” Χ•Χ”Χ¦Χ™Χ Χ•Χ Χ Χ’ΧΧ¨ - Χ“Χ•Χ¤Χ§Χ™Χ ΧΆΧ•Χ“ ΧΧ›Χ” Χ‘Χ¨Χ¦Χ£
+        if (brain.movement.IsPlayerInRange(brain.combat.attackRange + brain.playerAttackAllowance) && brain.combat.CanAttack())
+        {
+            ExecuteAttackChain();
+        }
+        // ΧΧ Χ”Χ•Χ Χ¤Χ” ΧΧ‘Χ Χ™Χ© Cooldown, Χ ΧΆΧΧ“Χ™Χ ΧΧ©Χ‘Χ¨Χ™Χ¨ Χ©Χ Χ™Χ™Χ” Χ•ΧΧ—Χ›Χ™Χ ΧΧ¦Χ™Χ Χ•Χ
+        else if (brain.movement.IsPlayerInRange(brain.combat.attackRange + brain.playerAttackAllowance))
+        {
+            brain.movement.StopMoving();
+        }
+        // ΧΧ Χ”Χ•Χ ΧΧ Χ‘ΧΧ•Χ•Χ— - Χ—Χ•Χ–Χ¨Χ™Χ ΧΧ™Χ“ ΧΧΧ¨Χ“Χ£!
+        else
+        {
+            brain.ChangeState(brain.ChasingState);
         }
     }
 }

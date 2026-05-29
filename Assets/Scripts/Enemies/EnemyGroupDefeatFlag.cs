@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EnemyGroupDefeatFlag : MonoBehaviour
 {
-    [SerializeField] private int totalEnemies = 4;
+    [SerializeField] private int totalEnemies = 3;
     [SerializeField] private string flagToSet = "Forest_BookAccessible";
     [SerializeField] private bool setOnlyOnce = true;
 

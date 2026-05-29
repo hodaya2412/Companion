@@ -1,25 +1,33 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class EnemyCombat : MonoBehaviour
 {
     [Header("References")]
     public Transform playerTarget;
+    [SerializeField] private Animator animator;
+
+    // 🧠 מוסיפים רפרנס ל-Brain כדי למשוך משתנים
+    private EnemyBrain brain;
 
     [Header("Attack Settings")]
-    public float attackRange = 2.7f;
-    public float attackDamage = 10f;
+    public float attackRange;
+    public float attackDamage;
 
     [Header("Cooldown Settings")]
-    public float minAttackCooldown = 1.2f;
-    public float maxAttackCooldown = 2f;
+    public float minAttackCooldown;
+    public float maxAttackCooldown;
 
     private float nextAttackTime;
     private GameplayState currentGameplayState;
-   
+
     [Header("Tutorial Integration")]
     public TutorialEventTrigger combatTutorial;
 
-    [SerializeField] private Animator animator;
+    private void Awake()
+    {
+        // מוצא את ה-Brain שיושב על אותו האובייקט
+        brain = GetComponent<EnemyBrain>();
+    }
 
     private void OnEnable()
     {
@@ -34,6 +42,7 @@ public class EnemyCombat : MonoBehaviour
 
     private void Start()
     {
+        nextAttackTime = 0f;
         SetNextAttackTime();
     }
 
@@ -61,7 +70,7 @@ public class EnemyCombat : MonoBehaviour
 
     public void TryAttack()
     {
-        if (!CanAttack()) return;
+        if (playerTarget == null) return;
 
         AttackPlayer();
         SetNextAttackTime();
@@ -73,8 +82,35 @@ public class EnemyCombat : MonoBehaviour
         {
             animator.SetTrigger("Attack");
         }
-        Debug.Log($"{gameObject.name} attacked player for {attackDamage} damage");
-        GameEvents.OnPlayerHit?.Invoke(attackDamage);
+
+        Debug.Log($"{gameObject.name} started attack animation.");
+    }
+
+    public void ExecuteDamageEvent()
+    {
+        if (playerTarget == null) return;
+
+        // 🛠️ בודקים מה ה-Allowance מתוך ה-Brain. אם ה-Brain לא נמצא מסיבה כלשהי, נשתמש בברירת מחדל של 1.0
+        float allowance = (brain != null) ? brain.playerAttackAllowance : 1.0f;
+
+        float distance = Vector3.Distance(transform.position, playerTarget.position);
+
+        // עכשיו משתמשים במשתנה allowance שחילצנו בבטחה
+        if (distance <= attackRange + allowance)
+        {
+            PlayerHealth playerHealth = playerTarget.GetComponent<PlayerHealth>();
+            if (playerHealth != null)
+            {
+                playerHealth.TakeDamage(attackDamage);
+                GameEvents.OnPlayerHit?.Invoke(attackDamage);
+              
+                Debug.Log($"[Hit!] {gameObject.name} dealt {attackDamage} damage to player via Animation Event.");
+            }
+        }
+        else
+        {
+            Debug.Log($"{gameObject.name} attacked, but player dodged out of range!");
+        }
     }
 
     private void SetNextAttackTime()

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dd2bf2b86630ee48a15ab01f1715453, type: 3}
   m_Name: TutorialFight
   m_EditorClassIdentifier: Assembly-CSharp::TutorialStepSO
-  message: Press F to attack
-  keyToClose: 102
-  keysToClose: 66000000
+  message: Press Space to attack
+  keyToClose: 32
+  keysToClose: 20000000

@@ -19102,6 +19102,7 @@ GameObject:
   - component: {fileID: 1734039277}
   - component: {fileID: 1734039276}
   - component: {fileID: 1734039275}
+  - component: {fileID: 1734039278}
   m_Layer: 0
   m_Name: CinemachineCamera
   m_TagString: Untagged
@@ -19198,6 +19199,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 684927475}
   m_LocalEulerAnglesHint: {x: 15, y: 0.05, z: 0}
+--- !u!114 &1734039278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1734039274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c11265b855408d42af33d62691f5194, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineExternalImpulseListener
+  ChannelMask: 1
+  Gain: 1
+  Use2DDistance: 0
+  UseLocalSpace: 1
+  ReactionSettings:
+    m_SecondaryNoise: {fileID: 0}
+    AmplitudeGain: 1
+    FrequencyGain: 1
+    Duration: 1
+    m_NoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &1739279816
 GameObject:
   m_ObjectHideFlags: 0

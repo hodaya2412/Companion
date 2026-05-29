@@ -10,7 +10,6 @@ public class BanditCaveAgent : MonoBehaviour
     [SerializeField] private Animator animator;
 
     [Header("2.5D Visuals")]
-    [Tooltip("גררי לכאן את האובייקט הילד שמכיל את ה-Sprite של האויב")]
     [SerializeField] private Transform characterVisuals;
     private bool facingRight = true;
 
@@ -25,7 +24,6 @@ public class BanditCaveAgent : MonoBehaviour
     private NavMeshAgent agent;
     private bool isChasingPlayer;
     private bool isReturningToCave;
-    private bool isHoldingMovement = false;
 
     public Transform PlayerTarget => playerTarget;
     public Transform CavePoint => cavePoint;
@@ -111,7 +109,6 @@ public class BanditCaveAgent : MonoBehaviour
     {
         isChasingPlayer = false;
         isReturningToCave = false;
-        isHoldingMovement = false;
 
         agent.isStopped = true;
         agent.ResetPath();
@@ -137,14 +134,13 @@ public class BanditCaveAgent : MonoBehaviour
         return transform.position;
     }
 
-    public void MoveToPosition(Vector3 targetPosition, float stoppingDistance = 0.6f, bool walk = false)
+    // שים לב: מחקנו את הפרמטר walk שהיה כאן כי עכשיו הכל זו הליכה
+    public void MoveToPosition(Vector3 targetPosition, float stoppingDistance = 0.6f)
     {
         if (agent == null || !agent.enabled) return;
 
         isChasingPlayer = false;
         isReturningToCave = false;
-        isHoldingMovement = walk;
-
 
         agent.isStopped = false;
         agent.stoppingDistance = stoppingDistance;
@@ -160,14 +156,16 @@ public class BanditCaveAgent : MonoBehaviour
     {
         return DistanceToPosition(targetPosition) <= threshold;
     }
+
     private void HandleAnimation()
     {
         if (animator == null || agent == null) return;
 
+        // בודק אם הסוכן לא עצור ויש לו מהירות תנועה
         bool isMoving = !agent.isStopped && agent.velocity.magnitude > 0.1f;
 
-        animator.SetBool("IsWalking", isMoving && isHoldingMovement);
-        animator.SetBool("IsRunning", isMoving && !isHoldingMovement);
+        // מעדכן רק את ההליכה. שורת ה-IsRunning נמחקה!
+        animator.SetBool("IsWalking", isMoving);
     }
 
     public void KnockBackFrom(Vector3 sourcePosition, float distance = 0.6f)

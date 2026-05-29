@@ -15,6 +15,7 @@ MonoBehaviour:
   damage: 10
   attackRange: 2
   attackCooldown: 1
-  moveSpeed: 3.5
+  moveSpeed: 8
   aggression: 1.5
   flankDesire: 0.2
+  preferFlank: 0
