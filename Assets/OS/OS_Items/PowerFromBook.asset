@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PowerFromBook
   m_EditorClassIdentifier: Assembly-CSharp::InventoryItemData
   itemId: PowerFromBook
-  displayName: PowerFromBook
+  displayName: Power
   description: A pulsating dark energy taken from the Forbidden Ledger. Its power
     is yours to command.
   icon: {fileID: -1744161458, guid: bd0ee729a5bf3c541abbd54270500ee3, type: 3}

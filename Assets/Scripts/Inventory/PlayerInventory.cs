@@ -43,14 +43,19 @@ public class PlayerInventory : ScriptableObject
             var slot = slots.Find(s => s.item == item);
             if (slot != null)
             {
+                int oldAmount = slot.amount;
                 slot.amount = Mathf.Min(slot.amount + amount, item.maxStack);
+                int addedAmount = slot.amount - oldAmount;
+
                 NotifyChanged();
+                GameEvents.OnItemAdded?.Invoke(item, addedAmount);
                 return true;
             }
         }
 
         slots.Add(new InventorySlot(item, amount));
         NotifyChanged();
+        GameEvents.OnItemAdded?.Invoke(item, amount);
         return true;
     }
 

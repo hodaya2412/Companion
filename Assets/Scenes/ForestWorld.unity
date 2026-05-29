@@ -10181,7 +10181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37e2329916b5bb9478e9881f2ae0c9dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackCoordinator
-  maxConcurrentAttackers: 1
+  maxConcurrentAttackers: 2
   frontOffset: 1.4
   sideOffset: 1.8
   rearOffset: 1.8

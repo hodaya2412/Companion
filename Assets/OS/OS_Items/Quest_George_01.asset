@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Quest_George_01
   m_EditorClassIdentifier: Assembly-CSharp::InventoryItemData
   itemId: Quest_George_01
-  displayName: George's Mission
+  displayName: Quest
   description: George asked me to retrieve the Book stolen by the bandits in the
     deep forest.
   icon: {fileID: 1454592643, guid: fd2dea16a186e6545b8564edabf4d2d7, type: 3}

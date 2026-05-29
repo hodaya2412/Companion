@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Data_AncientBook
   m_EditorClassIdentifier: Assembly-CSharp::InventoryItemData
   itemId: AncientBook
-  displayName: AncientBook
+  displayName: Book
   description: 
   icon: {fileID: -1949805200, guid: 648a25ef3a9424742b378ea6ce46e80c, type: 3}
   selectedIcon: {fileID: 21300000, guid: 6b8b181244a493b449bf5edfbfe63f53, type: 3}

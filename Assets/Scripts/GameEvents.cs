@@ -46,4 +46,5 @@ public static class GameEvents
 
     public static Action OnDemoCompleted;
 
+    public static Action<InventoryItemData, int> OnItemAdded;
 }
