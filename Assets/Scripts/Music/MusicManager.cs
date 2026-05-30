@@ -5,9 +5,13 @@ public class MusicManager : MonoBehaviour
 {
     public static MusicManager Instance;
 
-    [SerializeField] private AudioSource musicSource;
-    [SerializeField] private float fadeDuration = 2f;
+    [SerializeField] private AudioSource musicSourceA;
+    [SerializeField] private AudioSource musicSourceB;
+    [SerializeField] private float fadeDuration = 0.6f;
+    [SerializeField] private float targetVolume = 0.4f;
 
+    private AudioSource activeSource;
+    private AudioSource inactiveSource;
     private Coroutine fadeCoroutine;
 
     private void Awake()
@@ -19,41 +23,54 @@ public class MusicManager : MonoBehaviour
         }
 
         Instance = this;
-
         DontDestroyOnLoad(gameObject);
+
+        activeSource = musicSourceA;
+        inactiveSource = musicSourceB;
+
+        activeSource.volume = targetVolume;
+        inactiveSource.volume = 0f;
     }
 
     public void PlayMusic(AudioClip newClip)
     {
-        if (musicSource.clip == newClip)
-            return;
+        if (newClip == null) return;
+        if (activeSource.clip == newClip) return;
 
         if (fadeCoroutine != null)
             StopCoroutine(fadeCoroutine);
 
-        fadeCoroutine = StartCoroutine(FadeMusic(newClip));
+        fadeCoroutine = StartCoroutine(Crossfade(newClip));
     }
 
-    private IEnumerator FadeMusic(AudioClip newClip)
+    private IEnumerator Crossfade(AudioClip newClip)
     {
-        float startVolume = musicSource.volume;
+        inactiveSource.clip = newClip;
+        inactiveSource.volume = 0f;
+        inactiveSource.loop = true;
+        inactiveSource.Play();
 
-        while (musicSource.volume > 0)
+        float timer = 0f;
+        float startVolume = activeSource.volume;
+
+        while (timer < fadeDuration)
         {
-            musicSource.volume -= startVolume * Time.deltaTime / fadeDuration;
+            timer += Time.deltaTime;
+            float t = timer / fadeDuration;
+
+            activeSource.volume = Mathf.Lerp(startVolume, 0f, t);
+            inactiveSource.volume = Mathf.Lerp(0f, targetVolume, t);
+
             yield return null;
         }
 
-        musicSource.Stop();
-        musicSource.clip = newClip;
-        musicSource.Play();
+        activeSource.Stop();
+        activeSource.volume = 0f;
 
-        while (musicSource.volume < startVolume)
-        {
-            musicSource.volume += startVolume * Time.deltaTime / fadeDuration;
-            yield return null;
-        }
+        inactiveSource.volume = targetVolume;
 
-        musicSource.volume = startVolume;
+        AudioSource temp = activeSource;
+        activeSource = inactiveSource;
+        inactiveSource = temp;
     }
 }
