@@ -22,6 +22,7 @@ public class EnemyGroupDefeatFlag : MonoBehaviour
             if (GameStateManager.Instance != null)
             {
                 GameStateManager.Instance.SetFlag(flagToSet, true);
+                Debug.Log("[EnemyGroupDefeatFlag] Combat finished");
                 GameEvents.RequestGameplayStateChange?.Invoke(GameplayState.Playing);
                 GameEvents.OnCombatReset?.Invoke();
 

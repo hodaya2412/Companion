@@ -4,6 +4,7 @@ public class BanditCombatArea : MonoBehaviour
 {
     [SerializeField] private string playerTag = "Player";
     [SerializeField] private string puzzleSolvedFlag = "Forest_PuzzleSolved";
+    [SerializeField] private string combatFinishedFlag = "Forest_BookAccessible";
 
     private bool hasTriggeredCombat = false;
 
@@ -33,6 +34,10 @@ public class BanditCombatArea : MonoBehaviour
 
     private void ResetCombatTrigger()
     {
+        bool combatFinished = GameEvents.RequestFlagState?.Invoke(combatFinishedFlag) ?? false;
+
+        if (combatFinished) return;
+
         hasTriggeredCombat = false;
     }
 }

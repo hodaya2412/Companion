@@ -1,5 +1,6 @@
 using UnityEngine;
 
+
 public class CompanionFollow : MonoBehaviour
 {
     public Transform player;
@@ -27,19 +28,26 @@ public class CompanionFollow : MonoBehaviour
 
     private void OnEnable()
     {
+        Debug.Log("[CompanionFollow] OnEnable called");
         GameEvents.OnCompanionFollowEnabled += SetFollowEnabled;
         GameEvents.OnGameplayStateChanged += HandleGameplayStateChanged;
+        
         currentGameplayState = GameEvents.RequestCurrentGameplayState?.Invoke() ?? GameplayState.Playing;
+
     }
 
     private void OnDisable()
     {
         GameEvents.OnCompanionFollowEnabled -= SetFollowEnabled;
         GameEvents.OnGameplayStateChanged -= HandleGameplayStateChanged;
+        
     }
 
-    private void SetFollowEnabled(bool enabled) => followEnabled = enabled;
-
+    private void SetFollowEnabled(bool enabled)
+    {
+        followEnabled = enabled;
+        Debug.Log("[CompanionFollow] followEnabled = " + enabled);
+    }
     private void HandleGameplayStateChanged(GameplayState state)
     {
         currentGameplayState = state;
@@ -53,6 +61,9 @@ public class CompanionFollow : MonoBehaviour
 
     private void FixedUpdate()
     {
+        Debug.Log(
+        $"[Companion] state={currentGameplayState} followEnabled={followEnabled}"
+    );
         // אנחנו תמיד רוצים לעדכן אנימציות, גם אם followEnabled כבוי (בשביל Idle)
         if (player == null || rb == null) return;
 
@@ -148,4 +159,6 @@ public class CompanionFollow : MonoBehaviour
         target.y = rb.position.y;
         return target;
     }
+
+   
 }
