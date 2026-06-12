@@ -174,7 +174,7 @@ public class OrderPuzzleManager : MonoBehaviour
             if (action != null)
                 action.Execute();
         }
-
+        GameEvents.OnPuzzleOrCombatSolved?.Invoke();
         GameEvents.RequestGameplayStateChange?.Invoke(GameplayState.Playing);
         ClosePuzzle();
     }

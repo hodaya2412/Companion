@@ -25,6 +25,7 @@ public class EnemyGroupDefeatFlag : MonoBehaviour
                 Debug.Log("[EnemyGroupDefeatFlag] Combat finished");
                 GameEvents.RequestGameplayStateChange?.Invoke(GameplayState.Playing);
                 GameEvents.OnCombatReset?.Invoke();
+                GameEvents.OnPuzzleOrCombatSolved?.Invoke();
 
                 Debug.Log($"[EnemyGroupDefeatFlag] Flag set: {flagToSet} = true");
                 alreadySet = true;
