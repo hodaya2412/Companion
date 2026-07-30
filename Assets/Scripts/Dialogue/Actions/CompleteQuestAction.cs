@@ -9,7 +9,7 @@ public class CompleteQuestAction : DialogueAction
     {
         if (quest != null)
         {
-            // כאן אנחנו קוראים לפונקציה שמסיימת את המשימה ב-QuestManager שלך
+            
             QuestManager.Instance.CompleteQuest(quest);
         }
     }

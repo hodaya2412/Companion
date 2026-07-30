@@ -20,16 +20,19 @@ public class EnemyHealth : MonoBehaviour
     public UnityEvent<float, float> OnHealthChanged;
     public UnityEvent OnDied;
 
+    [SerializeField] private float minHealthLimit = 0f;
+    [SerializeField] private float minDamageThreshold = 0f;
+
     private bool isDead = false;
 
     private void Awake()
     {
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        currentHealth = Mathf.Clamp(currentHealth, minHealthLimit, maxHealth);
     }
 
     private void Start()
     {
-        // בדיקה בטעינת הסצנה: אם האויב הזה כבר מת בעבר, נשמיד אותו מיד
+        
         if (GameStateManager.Instance != null && !string.IsNullOrEmpty(enemyID))
         {
             if (GameStateManager.Instance.GetFlag("Dead_" + enemyID))
@@ -59,10 +62,10 @@ public class EnemyHealth : MonoBehaviour
     public void TakeDamage(float damage)
     {
         if (isDead) return;
-        if (damage <= 0f) return;
+        if (damage <= minDamageThreshold) return;
 
         currentHealth -= damage;
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        currentHealth = Mathf.Clamp(currentHealth, minHealthLimit, maxHealth);
 
         Debug.Log($"{gameObject.name} took {damage} damage. Current HP: {currentHealth}/{maxHealth}");
         OnHealthChanged?.Invoke(currentHealth, maxHealth);
@@ -72,12 +75,12 @@ public class EnemyHealth : MonoBehaviour
             hitFlash.Flash();
         }
 
-        if (currentHealth > 0 && animator != null)
+        if (currentHealth > minHealthLimit && animator != null)
         {
             animator.SetTrigger("Hurt");
         }
 
-        if (currentHealth <= 0f)
+        if (currentHealth <= minHealthLimit)
         {
             Die();
         }
@@ -86,10 +89,10 @@ public class EnemyHealth : MonoBehaviour
     public void Heal(float amount)
     {
         if (isDead) return;
-        if (amount <= 0f) return;
+        if (amount <= minDamageThreshold) return;
 
         currentHealth += amount;
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        currentHealth = Mathf.Clamp(currentHealth, minHealthLimit, maxHealth);
         OnHealthChanged?.Invoke(currentHealth, maxHealth);
     }
 
@@ -100,20 +103,20 @@ public class EnemyHealth : MonoBehaviour
 
         Debug.Log($"{gameObject.name} died.");
 
-        // 1. שמירת המצב ב-GameStateManager כדי שלא יחזור בסצנה הבאה
+        
         if (GameStateManager.Instance != null && !string.IsNullOrEmpty(enemyID))
         {
             GameStateManager.Instance.SetFlag("Dead_" + enemyID, true);
         }
 
-        // 2. שחרור ה-Slot ב-Coordinator כדי שאויב אחר יוכל לתקוף
+     
         EnemyBrain brain = GetComponent<EnemyBrain>();
         if (brain != null)
         {
             brain.ReleaseAttackSlotIfNeeded();
         }
 
-        // 3. בדיקה אם זה האויב האחרון כדי לחסום את אבן החידה
+      
         CheckIfLastEnemy();
 
         OnDied?.Invoke();
@@ -127,15 +130,15 @@ public class EnemyHealth : MonoBehaviour
 
     private void CheckIfLastEnemy()
     {
-        // מחפשים את כל מי שיש לו תגית Enemy
+        
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
 
-        // אם נשאר רק 1 (האויב הנוכחי שעדיין לא הושמד סופית), זה האחרון
+       
         if (enemies.Length <= 1)
         {
             if (GameStateManager.Instance != null)
             {
-                // מעדכנים את הדגל שחוסם את ה-PuzzleStone
+              
                 GameStateManager.Instance.SetFlag("Forest_BanditsDefeated", true);
                 Debug.Log("All enemies defeated! Permanent flag set.");
             }

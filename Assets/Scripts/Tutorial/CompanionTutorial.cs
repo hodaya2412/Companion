@@ -12,14 +12,17 @@ public class CompanionTutorial : MonoBehaviour
     public float fadeSpeed = 3f;
 
     private bool lockFromAutoHide = false;
-    private TutorialStepSO currentStep; // שומר את הצעד הנוכחי כדי לדעת איזה מקשים לבדוק
+    private TutorialStepSO currentStep;
 
+    [SerializeField] private float hiddenCanvasAlpha = 0f;
+    [SerializeField] private float visibleCanvasAlpha = 1f;
+    [SerializeField] private float alphaThresholdToCheck = 0.1f;
     private void Awake()
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
 
-        if (canvasGroup != null) canvasGroup.alpha = 0;
+        if (canvasGroup != null) canvasGroup.alpha = hiddenCanvasAlpha;
     }
 
     private void OnEnable() { GameEvents.OnDialogueEnded += HandleDialogueEnded; }
@@ -37,15 +40,15 @@ public class CompanionTutorial : MonoBehaviour
 
     private void Update()
     {
-        if (canvasGroup == null || canvasGroup.alpha < 0.1f) return;
+        if (canvasGroup == null || canvasGroup.alpha < alphaThresholdToCheck) return;
 
-        // 1. Billboard - פונה למצלמה
+        
         if (Camera.main != null)
         {
             transform.LookAt(transform.position + Camera.main.transform.forward);
         }
 
-        // 2. בדיקת לחיצה על מקשים לסגירה
+       
         CheckForCloseInput();
     }
 
@@ -53,7 +56,7 @@ public class CompanionTutorial : MonoBehaviour
     {
         bool shouldClose = false;
 
-        // אם יש צעד פעיל עם מקשים ספציפיים (כמו WASD)
+       
         if (currentStep != null && currentStep.keysToClose != null && currentStep.keysToClose.Count > 0)
         {
             foreach (KeyCode k in currentStep.keysToClose)
@@ -67,7 +70,7 @@ public class CompanionTutorial : MonoBehaviour
         }
         else
         {
-            // ברירת מחדל אם אין מקשים ספציפיים (E, Enter)
+            
             if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.E))
             {
                 shouldClose = true;
@@ -84,7 +87,7 @@ public class CompanionTutorial : MonoBehaviour
     {
         if (step != null)
         {
-            currentStep = step; // עדכון הצעד הנוכחי
+            currentStep = step;
             lockFromAutoHide = true;
             Show(step.message);
         }
@@ -95,17 +98,17 @@ public class CompanionTutorial : MonoBehaviour
         if (tutorialText == null || canvasGroup == null) return;
         tutorialText.text = message;
         StopAllCoroutines();
-        StartCoroutine(Fade(1));
+        StartCoroutine(Fade(visibleCanvasAlpha));
     }
 
     public void Hide()
     {
         lockFromAutoHide = false;
-        currentStep = null; // איפוס הצעד כשסוגרים
+        currentStep = null; 
 
         if (canvasGroup == null || !gameObject.activeInHierarchy) return;
         StopAllCoroutines();
-        StartCoroutine(Fade(0));
+        StartCoroutine(Fade(hiddenCanvasAlpha));
     }
 
     private IEnumerator Fade(float target)

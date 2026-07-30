@@ -5,16 +5,16 @@ using System.Collections;
 public class SceneLoaderButton : MonoBehaviour
 {
     public string sceneName;
-
+    [SerializeField] private float normalTimeScale = 1f;
     public void Load()
     {
-        Time.timeScale = 1f;
+        Time.timeScale = normalTimeScale;
         StartCoroutine(LoadRoutine());
     }
 
     private IEnumerator LoadRoutine()
     {
-        // Fade Out
+        
         if (SceneFader.Instance != null)
             yield return SceneFader.Instance.FadeOutAndLoad(sceneName);
         else

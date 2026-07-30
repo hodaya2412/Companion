@@ -6,6 +6,10 @@ public class RayLine : MonoBehaviour
     public Transform startPoint;
     public Transform endPoint;
 
+    [SerializeField] private int linePositionCount = 2;
+    [SerializeField] private int startLineIndex = 0;
+    [SerializeField] private int endLineIndex = 1;
+
     private LineRenderer line;
 
     void Awake()
@@ -17,8 +21,8 @@ public class RayLine : MonoBehaviour
     {
         if (startPoint == null || endPoint == null) return;
 
-        line.positionCount = 2;
-        line.SetPosition(0, startPoint.position);
-        line.SetPosition(1, endPoint.position);
+        line.positionCount = linePositionCount;
+        line.SetPosition(startLineIndex, startPoint.position);
+        line.SetPosition(endLineIndex, endPoint.position);
     }
 }

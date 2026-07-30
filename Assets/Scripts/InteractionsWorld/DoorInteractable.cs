@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.InputSystem; // חובה
+using UnityEngine.InputSystem; 
 
 public class DoorInteractable : MonoBehaviour, IPuzzlePanelOwner
 {
@@ -12,7 +12,7 @@ public class DoorInteractable : MonoBehaviour, IPuzzlePanelOwner
     public UnityEvent onPuzzleOpened;
     public UnityEvent onPuzzleClosed;
 
-    private InputActions inputActions; // אותו קובץ שקיים אצלך בקרב
+    private InputActions inputActions; 
     private bool isOpen = false;
     private bool canOpenPuzzle = false;
     private bool isPlayerInRange = false;
@@ -22,13 +22,13 @@ public class DoorInteractable : MonoBehaviour, IPuzzlePanelOwner
 
     private void Awake()
     {
-        // יצירת מופע של ה-Input Actions
+        
         inputActions = new InputActions();
     }
 
     private void OnEnable()
     {
-        // הפעלת ה-Input ורישום לפעולה (נניח שקראת לה Interact בתוך מפת ה-Player)
+      
         inputActions.Interact.Enable();
         inputActions.Interact.Interact.performed += OnInteractPerformed;
 
@@ -37,7 +37,7 @@ public class DoorInteractable : MonoBehaviour, IPuzzlePanelOwner
 
     private void OnDisable()
     {
-        // ביטול רישום וכיבוי
+        
         inputActions.Interact.Interact.performed -= OnInteractPerformed;
         inputActions.Interact.Disable();
 
@@ -48,7 +48,7 @@ public class DoorInteractable : MonoBehaviour, IPuzzlePanelOwner
     {
         if (!isPlayerInRange) return;
 
-        // מניעת לחיצות כפולות בטעות
+        
         if (Time.time < lastInteractTime + interactCooldown) return;
         lastInteractTime = Time.time;
 
@@ -66,7 +66,7 @@ public class DoorInteractable : MonoBehaviour, IPuzzlePanelOwner
 
     private void TryOpenPuzzle()
     {
-        // בדיקת מצבי משחק (כמו שעשית ב-Combat)
+        
         GameplayState gameplayState = GameEvents.RequestCurrentGameplayState?.Invoke() ?? GameplayState.Playing;
         UIState uiState = GameEvents.RequestCurrentUIState?.Invoke() ?? UIState.None;
 
@@ -74,7 +74,7 @@ public class DoorInteractable : MonoBehaviour, IPuzzlePanelOwner
 
         if (!canInteract || !canOpenPuzzle || isOpen) return;
 
-        // בדיקת ItemGiver
+       
         if (itemGiver != null && itemGiver.giveOnlyOnce && itemGiver.AlreadyGiven)
             return;
 
@@ -91,7 +91,7 @@ public class DoorInteractable : MonoBehaviour, IPuzzlePanelOwner
         onPuzzleOpened?.Invoke();
     }
 
-    // זיהוי כניסת שחקן לטווח הדלת
+   
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -109,7 +109,7 @@ public class DoorInteractable : MonoBehaviour, IPuzzlePanelOwner
         }
     }
 
-    // --- לוגיקה קיימת ---
+ 
 
     private void HandleDialogueEvent(DialogueAction action)
     {

@@ -1,13 +1,14 @@
 using System.Collections;
 using UnityEngine;
 using TMPro;
-using UnityEngine.UI; // נדרש כדי להשתמש ברכיב ה-Image של ה-UI
+using UnityEngine.UI; 
 
 public class ItemPickupPopupUI : MonoBehaviour
 {
     [Header("UI")]
     [SerializeField] private GameObject popupPrefab;
     [SerializeField] private Transform container;
+    [SerializeField] private float popupLifetime = 4f;
 
     private void OnEnable()
     {
@@ -21,18 +22,17 @@ public class ItemPickupPopupUI : MonoBehaviour
 
     private void ShowPopup(InventoryItemData item, int amount)
     {
-        // יצירת הפופ-אפ מתוך ה-Prefab בתוך ה-Container
+       
         GameObject popup = Instantiate(popupPrefab, container);
 
-        // 1. עדכון הטקסט של החפץ והכמות
+       
         TMP_Text text = popup.GetComponentInChildren<TMP_Text>();
         if (text != null)
         {
             text.text = $"+{amount} {item.displayName}";
         }
 
-        // 2. עדכון האייקון של החפץ בתוך ה-Prefab
-        // הקוד מחפש ילד בשם "ItemIcon" בתוך הפופ-אפ שנוצר
+        
         Transform iconTransform = popup.transform.Find("ItemIcon");
         if (iconTransform != null)
         {
@@ -43,8 +43,8 @@ public class ItemPickupPopupUI : MonoBehaviour
             }
         }
 
-        // הפעלת הטיימר להשמדה עצמית כעבור 2 שניות
-        StartCoroutine(DestroyAfterTime(popup, 4f));
+       
+        StartCoroutine(DestroyAfterTime(popup, popupLifetime));
     }
 
     private IEnumerator DestroyAfterTime(GameObject obj, float time)

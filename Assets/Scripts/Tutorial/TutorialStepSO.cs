@@ -5,8 +5,8 @@ using UnityEngine;
 public class TutorialStepSO : DialogueAction
 {
     [TextArea] public string message;
-    public KeyCode keyToClose = KeyCode.E; // מקש ברירת מחדל
-    // אם את רוצה תמיכה בכמה מקשים (כמו WASD), אפשר להשתמש ברשימה:
+    public KeyCode keyToClose = KeyCode.E; 
+    
     public List<KeyCode> keysToClose = new List<KeyCode>();
 
     public override void Execute()

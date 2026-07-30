@@ -21,7 +21,12 @@ public class BreakableForceFieldBarrier : MonoBehaviour, IPlayerAttackReceiver
     [Header("Persistence / Result")]
     [SerializeField] private string brokenFlagName;
 
-   
+    [Header("Break Timing Settings")]
+    [SerializeField] private float effectDestroyDelay = 3f;
+    [SerializeField] private float fullBreakProgress = 1f;
+    [SerializeField] private float breakSequenceWaitTime = 1.5f;
+
+
     private int currentHits;
     private bool isBroken;
 
@@ -107,13 +112,11 @@ public class BreakableForceFieldBarrier : MonoBehaviour, IPlayerAttackReceiver
             Vector3 spawnPos = breakEffectSpawnPoint != null ? breakEffectSpawnPoint.position : transform.position;
             Quaternion spawnRot = breakEffectSpawnPoint != null ? breakEffectSpawnPoint.rotation : transform.rotation;
             GameObject effect = Instantiate(breakEffectPrefab, spawnPos, spawnRot);
-            Destroy(effect, 3f);
+            Destroy(effect, effectDestroyDelay);
         }
 
-        //if (collidersToDisable != null)
-            //collidersToDisable.SetActive(false);
 
-        forceFieldPulse?.SetBreakProgress(1f);
+        forceFieldPulse?.SetBreakProgress(fullBreakProgress);
         forceFieldPulse?.TriggerValidHitFeedback();
 
         if (visualsRoot != null)
@@ -125,7 +128,7 @@ public class BreakableForceFieldBarrier : MonoBehaviour, IPlayerAttackReceiver
             }
         }
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(breakSequenceWaitTime);
 
         Debug.Log("DEMO COMPLETED EVENT FIRED");
         GameEvents.OnDemoCompleted?.Invoke();

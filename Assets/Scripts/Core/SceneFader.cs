@@ -11,6 +11,9 @@ public class SceneFader : MonoBehaviour
     public Image fadeImage;
     public float fadeSpeed = 1f;
 
+    [SerializeField] private float opaqueAlpha = 1f;
+    [SerializeField] private float transparentAlpha = 0f;
+
     private CanvasGroup canvasGroup;
 
     private void Awake()
@@ -30,7 +33,7 @@ public class SceneFader : MonoBehaviour
             if (canvasGroup == null)
                 canvasGroup = fadeImage.gameObject.AddComponent<CanvasGroup>();
 
-            canvasGroup.alpha = 1f;
+            canvasGroup.alpha = opaqueAlpha;
             canvasGroup.blocksRaycasts = true;
         }
     }
@@ -64,13 +67,13 @@ public class SceneFader : MonoBehaviour
 
         canvasGroup.blocksRaycasts = true;
 
-        while (canvasGroup.alpha > 0f)
+        while (canvasGroup.alpha > transparentAlpha)
         {
             canvasGroup.alpha -= Time.deltaTime * fadeSpeed;
             yield return null;
         }
 
-        canvasGroup.alpha = 0f;
+        canvasGroup.alpha = transparentAlpha;
         canvasGroup.blocksRaycasts = false;
 
         GameEvents.RequestUIStateChange?.Invoke(UIState.None);
@@ -83,13 +86,13 @@ public class SceneFader : MonoBehaviour
 
         canvasGroup.blocksRaycasts = true;
 
-        while (canvasGroup.alpha < 1f)
+        while (canvasGroup.alpha < opaqueAlpha)
         {
             canvasGroup.alpha += Time.deltaTime * fadeSpeed;
             yield return null;
         }
 
-        canvasGroup.alpha = 1f;
+        canvasGroup.alpha = opaqueAlpha;
 
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
         while (!asyncLoad.isDone)
@@ -109,12 +112,12 @@ public class SceneFader : MonoBehaviour
 
         canvasGroup.blocksRaycasts = true;
 
-        while (canvasGroup.alpha < 1f)
+        while (canvasGroup.alpha < opaqueAlpha)
         {
             canvasGroup.alpha += Time.deltaTime * fadeSpeed;
             yield return null;
         }
 
-        canvasGroup.alpha = 1f;
+        canvasGroup.alpha = opaqueAlpha;
     }
 }

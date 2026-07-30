@@ -3,10 +3,14 @@ using UnityEngine.UI;
 
 public class MapAttentionSeeker : MonoBehaviour
 {
-    public Image glowImage; // גרירת ה-GlowEffect לכאן
+    public Image glowImage; 
     public float pulseSpeed = 3f;
     public float minAlpha = 0.1f;
     public float maxAlpha = 0.8f;
+
+    [SerializeField] private float hiddenAlpha = 0f;
+    [SerializeField] private float sineOffset = 1f;
+    [SerializeField] private float sineDivisor = 2f;
 
     private bool isGlowing = false;
 
@@ -14,9 +18,9 @@ public class MapAttentionSeeker : MonoBehaviour
     {
         if (glowImage != null)
         {
-            // מוודא שהזוהר כבוי בהתחלה
+           
             Color c = glowImage.color;
-            c.a = 0;
+            c.a = hiddenAlpha;
             glowImage.color = c;
         }
     }
@@ -41,8 +45,8 @@ public class MapAttentionSeeker : MonoBehaviour
     {
         if (isGlowing && glowImage != null)
         {
-            // חישוב שקיפות שמשתנה בזמן (בין min ל-max)
-            float alpha = minAlpha + (Mathf.Sin(Time.time * pulseSpeed) + 1f) / 2f * (maxAlpha - minAlpha);
+            
+            float alpha = minAlpha + (Mathf.Sin(Time.time * pulseSpeed) + sineOffset) / sineDivisor * (maxAlpha - minAlpha);
 
             Color c = glowImage.color;
             c.a = alpha;

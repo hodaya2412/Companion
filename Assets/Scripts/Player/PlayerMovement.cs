@@ -11,7 +11,8 @@ public class PlayerMovement : MonoBehaviour
     [Header("Visuals")]
     [Tooltip("גררי לכאן את האובייקט הילד שמכיל את ה-Sprite")]
     public Transform characterVisuals;
-  
+
+    [SerializeField] private float animationSpeedThreshold = 0.01f;
 
     private InputActions inputAction;
     private Rigidbody rb;
@@ -32,22 +33,21 @@ public class PlayerMovement : MonoBehaviour
     {
         if (animator == null) return;
 
-        // 1. קריאה בלבד מה-SO - האנימטור פשוט עושה מה שה-SO אומר לו
         animator.SetBool("IsArmed", playerState.isArmed);
         animator.SetInteger("WeaponType", playerState.weaponType);
 
-        // 2. מהירות
+        
         float speedVal = new Vector2(moveInput.x, moveInput.z).magnitude;
         animator.SetFloat("Speed", speedVal);
 
-        // 3. כיוון מבט (עדכון ה-SO רק בזמן תנועה)
-        if (speedVal > 0.01f)
+        
+        if (speedVal > animationSpeedThreshold)
         {
             playerState.lastMoveX = moveInput.x;
             playerState.lastMoveY = moveInput.z;
         }
 
-        // הזרקת הכיוון לאנימטור (תמיד, כדי שיזכור כיוון בעמידה)
+       
         animator.SetFloat("MoveX", playerState.lastMoveX);
         animator.SetFloat("MoveY", playerState.lastMoveY);
     }
@@ -127,7 +127,7 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector3 input = ctx.ReadValue<Vector3>();
 
-        // נותן עדיפות לכיוון האחרון / ציר אחד בלבד
+        
         if (Mathf.Abs(input.x) > Mathf.Abs(input.z))
         {
             moveInput = new Vector3(Mathf.Sign(input.x), 0, 0);
@@ -175,12 +175,12 @@ public class PlayerMovement : MonoBehaviour
 
         if (!canMove || (animator != null && animator.GetBool("IsAttacking")))
         {
-            // איפוס המהירות הפיזית כדי שהדמות לא "תחליק" בזמן המכה
+           
             if (rb != null) rb.linearVelocity = Vector3.zero;
             return;
         }
 
-        // חישוב כיוון המצלמה
+       
         Vector3 camForward = cam ? cam.forward : Vector3.forward;
         Vector3 camRight = cam ? cam.right : Vector3.right;
         camForward.y = 0f;
@@ -188,14 +188,13 @@ public class PlayerMovement : MonoBehaviour
         camForward.Normalize();
         camRight.Normalize();
 
-        // כיוון תנועה סופי
+        
         Vector3 moveDir = (camRight * moveInput.x + camForward * moveInput.z).normalized;
       
 
-        // תנועה פיזית
+       
         rb.MovePosition(rb.position + moveDir * speed * Time.fixedDeltaTime);
 
-        // טיפול בויזואליות (Flip)
-        //ApplyVisualFlip(moveInput.x);
+        
     }
 }

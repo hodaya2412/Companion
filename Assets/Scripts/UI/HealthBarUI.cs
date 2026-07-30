@@ -12,6 +12,10 @@ public class HealthBarUI : MonoBehaviour
     private float targetHealth;
     private float maxHealth;
 
+    [SerializeField] private float minHealthThreshold = 0f;
+    [SerializeField] private float sliderSnapThreshold = 0.01f;
+    [SerializeField] private float greenHealthPercentThreshold = 0.6f;
+    [SerializeField] private float yellowHealthPercentThreshold = 0.3f;
     private void Awake()
     {
         if (slider == null)
@@ -51,7 +55,7 @@ public class HealthBarUI : MonoBehaviour
     {
         slider.value = Mathf.Lerp(slider.value, targetHealth, Time.deltaTime * smoothSpeed);
 
-        if (Mathf.Abs(slider.value - targetHealth) < 0.01f)
+        if (Mathf.Abs(slider.value - targetHealth) < sliderSnapThreshold)
             slider.value = targetHealth;
 
         UpdateColor();
@@ -59,13 +63,13 @@ public class HealthBarUI : MonoBehaviour
 
     private void UpdateColor()
     {
-        if (fillImage == null || maxHealth <= 0) return;
+        if (fillImage == null || maxHealth <= minHealthThreshold) return;
 
         float percent = slider.value / maxHealth;
 
-        if (percent > 0.6f)
+        if (percent > greenHealthPercentThreshold)
             fillImage.color = Color.green;
-        else if (percent > 0.3f)
+        else if (percent > yellowHealthPercentThreshold)
             fillImage.color = Color.yellow;
         else
             fillImage.color = Color.red;

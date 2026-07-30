@@ -7,6 +7,11 @@ public class BarrierVisualShard : MonoBehaviour
     [SerializeField] private float duration = 3f;
     [SerializeField] private float randomDelay = 0.03f;
     [SerializeField] private float minScaleY = 0.02f;
+   
+    [Header("Break Settings")]
+    [SerializeField] private float positionOffsetFactor = 0.5f;
+    [SerializeField] private float endEmissionMultiplier = 0.25f;
+    [SerializeField] private float fullAlpha = 1f;
 
     private Renderer[] renderers;
     private Color[][] originalColors;
@@ -72,10 +77,10 @@ public class BarrierVisualShard : MonoBehaviour
             float lostHeight = startLocalScale.y - currentScaleY;
 
             Vector3 pos = startLocalPosition;
-            pos.y = startLocalPosition.y - (lostHeight * 0.5f);
+            pos.y = startLocalPosition.y - (lostHeight * positionOffsetFactor);
             transform.localPosition = pos;
 
-            float alpha = Mathf.Lerp(1f, 0f, normalized);
+            float alpha = Mathf.Lerp(fullAlpha, 0f, normalized);
 
             for (int i = 0; i < renderers.Length; i++)
             {
@@ -93,7 +98,7 @@ public class BarrierVisualShard : MonoBehaviour
                     if (mats[j].HasProperty("_EmissionColor"))
                     {
                         Color emission = mats[j].GetColor("_EmissionColor");
-                        emission *= Mathf.Lerp(1f, 0.25f, normalized);
+                        emission *= Mathf.Lerp(fullAlpha, endEmissionMultiplier, normalized);
                         mats[j].SetColor("_EmissionColor", emission);
                     }
                 }
@@ -119,7 +124,7 @@ public class BarrierVisualShard : MonoBehaviour
                 if (mats[j].HasProperty("_Color"))
                 {
                     Color c = originalColors[i][j];
-                    c.a = 1f;
+                    c.a = fullAlpha;
                     mats[j].color = c;
                 }
             }

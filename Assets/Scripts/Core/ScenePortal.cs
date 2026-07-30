@@ -6,11 +6,11 @@ public class ScenePortal : MonoBehaviour
     public string sceneToLoad = "VillageScene";
     public string requiredFlag = "TalkedToGuard";
 
-    private bool isTransitioning = false; // מונע קריאה כפולה בזמן שה-Fade כבר עובד
+    private bool isTransitioning = false; 
 
     private void OnTriggerEnter(Collider other)
     {
-        // בדיקה שהשחקן נכנס ושאנחנו לא בתהליך מעבר כרגע
+        
         if (other.CompareTag("Player") && !isTransitioning)
         {
             TryEnterPortal();
@@ -19,7 +19,7 @@ public class ScenePortal : MonoBehaviour
 
     private void TryEnterPortal()
     {
-        // בדיקה שהדגל מהדיאלוג קיים ודלוק
+        
         if (GameStateManager.Instance != null)
         {
             if (GameStateManager.Instance.GetFlag(requiredFlag))
@@ -33,7 +33,7 @@ public class ScenePortal : MonoBehaviour
         }
         else
         {
-            // אם אין GameStateManager, פשוט נעבור סצנה ליתר ביטחון
+            
             LoadNextScene();
         }
     }
@@ -43,12 +43,12 @@ public class ScenePortal : MonoBehaviour
         if (SceneFader.Instance != null)
         {
             isTransitioning = true;
-            // שימוש בפונקציה החכמה של ה-Fader שלך
+            
             SceneFader.Instance.LoadScene(sceneToLoad);
         }
         else
         {
-            // גיבוי למקרה שה-Fader לא נמצא בסצנה
+           
             Debug.LogWarning("SceneFader Instance not found! Using direct load.");
             UnityEngine.SceneManagement.SceneManager.LoadScene(sceneToLoad);
         }

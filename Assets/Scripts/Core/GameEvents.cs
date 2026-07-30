@@ -7,12 +7,12 @@ public static class GameEvents
     public static Action<DialogueAction> OnDialogueEvent;
     public static Action<InventoryItemData> OnItemClicked;
 
-    // Gameplay State
+    
     public static Action<GameplayState> OnGameplayStateChanged;
     public static Action<GameplayState> RequestGameplayStateChange;
     public static Func<GameplayState> RequestCurrentGameplayState;
 
-    // UI State
+   
     public static Action<UIState> OnUIStateChanged;
     public static Action<UIState> RequestUIStateChange;
     public static Func<UIState> RequestCurrentUIState;
@@ -35,18 +35,18 @@ public static class GameEvents
     public static Action OnDialogueEnded;
 
     public static Func<string, bool> RequestFlagState;
-    //public static Action<string> OnPuzzleOpened;
+   
 
     public static Action<GameObject, float> OnEnemyHit;
     public static Action<float> OnPlayerHit;
     public static Action<float, float> OnHealthChanged;
 
-    public static Action<InventoryItemData> OnItemSelected;  // פריט נבחר
+    public static Action<InventoryItemData> OnItemSelected;  
     public static Action<string> OnItemDeselected;
 
     public static Action OnDemoCompleted;
 
     public static Action<InventoryItemData, int> OnItemAdded;
 
-    public static Action OnPuzzleOrCombatSolved; // תוסיפי את השורה הזו
+    public static Action OnPuzzleOrCombatSolved;
 }

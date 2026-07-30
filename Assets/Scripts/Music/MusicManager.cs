@@ -10,6 +10,9 @@ public class MusicManager : MonoBehaviour
     [SerializeField] private float fadeDuration = 0.6f;
     [SerializeField] private float targetVolume = 0.4f;
 
+    [SerializeField] private float minVolume = 0f;
+    [SerializeField] private float initialTimerValue = 0f;
+
     private AudioSource activeSource;
     private AudioSource inactiveSource;
     private Coroutine fadeCoroutine;
@@ -29,7 +32,7 @@ public class MusicManager : MonoBehaviour
         inactiveSource = musicSourceB;
 
         activeSource.volume = targetVolume;
-        inactiveSource.volume = 0f;
+        inactiveSource.volume = minVolume;
     }
 
     public void PlayMusic(AudioClip newClip)
@@ -46,11 +49,11 @@ public class MusicManager : MonoBehaviour
     private IEnumerator Crossfade(AudioClip newClip)
     {
         inactiveSource.clip = newClip;
-        inactiveSource.volume = 0f;
+        inactiveSource.volume = minVolume;
         inactiveSource.loop = true;
         inactiveSource.Play();
 
-        float timer = 0f;
+        float timer = initialTimerValue;
         float startVolume = activeSource.volume;
 
         while (timer < fadeDuration)
@@ -58,14 +61,14 @@ public class MusicManager : MonoBehaviour
             timer += Time.deltaTime;
             float t = timer / fadeDuration;
 
-            activeSource.volume = Mathf.Lerp(startVolume, 0f, t);
+            activeSource.volume = Mathf.Lerp(startVolume, minVolume, t);
             inactiveSource.volume = Mathf.Lerp(0f, targetVolume, t);
 
             yield return null;
         }
 
         activeSource.Stop();
-        activeSource.volume = 0f;
+        activeSource.volume = minVolume;
 
         inactiveSource.volume = targetVolume;
 

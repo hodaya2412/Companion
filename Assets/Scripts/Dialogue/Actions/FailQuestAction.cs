@@ -9,7 +9,7 @@ public class FailQuestAction : DialogueAction
     {
         if (quest != null)
         {
-            // אנחנו קוראים לפונקציה שמכשילה את המשימה ב-QuestManager
+            
             QuestManager.Instance.FailQuest(quest);
         }
     }

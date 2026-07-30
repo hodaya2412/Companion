@@ -29,7 +29,7 @@ public class DialogueChoiceUI : MonoBehaviour
         panel.SetActive(true);
         currentChoice = choice;
 
-        // אם את משתמשת ב-TextMeshPro, שימי לב להחליף את השורות האלו ל-TMP
+       
         var yesText = yesButton.GetComponentInChildren<UnityEngine.UI.Text>();
         var noText = noButton.GetComponentInChildren<UnityEngine.UI.Text>();
 

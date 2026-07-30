@@ -19,28 +19,28 @@ public class QuestManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    // ✅ הפעלת משימה
+  
     public void StartQuest(QuestData quest)
     {
         quests[quest.questID] = QuestStatus.InProgress;
         Debug.Log($"Quest '{quest.questName}' started.");
     }
 
-    // ✅ סיום משימה בהצלחה
+   
     public void CompleteQuest(QuestData quest)
     {
         quests[quest.questID] = QuestStatus.Completed;
         Debug.Log($"Quest '{quest.questName}' completed!");
     }
 
-    // ✅ סיום משימה בכישלון
+    
     public void FailQuest(QuestData quest)
     {
         quests[quest.questID] = QuestStatus.Failed;
         Debug.Log($"Quest '{quest.questName}' failed.");
     }
 
-    // ✅ בדיקה של מצב משימה
+ 
     public QuestStatus GetStatus(string questID)
     {
         if (quests.ContainsKey(questID))

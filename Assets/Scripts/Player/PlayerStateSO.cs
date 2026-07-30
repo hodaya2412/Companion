@@ -5,7 +5,7 @@ public class PlayerStateSO : ScriptableObject
 {
     [Header("Movement Data")]
     public float lastMoveX = 0;
-    public float lastMoveY = -1; // ברירת מחדל - מסתכל קדימה
+    public float lastMoveY = -1; 
 
     [Header("Equipment Data")]
     public bool isArmed = false;
@@ -13,7 +13,7 @@ public class PlayerStateSO : ScriptableObject
 
     public InventoryItemData currentWeaponItem;
 
-    // פונקציה לאיפוס הנתונים (שימושי כשמתחילים משחק חדש לגמרי
+    
     public void ResetState()
     {
         lastMoveX = 0;

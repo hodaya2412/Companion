@@ -9,11 +9,11 @@ public class ConditionalDialogueAsset : ScriptableObject
     public QuestConditionSO[] questConditions;
 
     [Header("תנאי Flag (חדש!)")]
-    public FlagConditionSO[] flagConditions; // הוסיפי את השורה הזו
+    public FlagConditionSO[] flagConditions; 
 
     public bool CanPlay()
     {
-        // בדיקת תנאי משימות (הקוד הקיים שלך)
+        
         if (questConditions != null)
         {
             foreach (var condition in questConditions)
@@ -22,7 +22,7 @@ public class ConditionalDialogueAsset : ScriptableObject
             }
         }
 
-        // בדיקת תנאי דגלים (התוספת החדשה)
+       
         if (flagConditions != null)
         {
             foreach (var condition in flagConditions)

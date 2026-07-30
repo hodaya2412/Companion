@@ -17,6 +17,10 @@ public class DialogueManager : MonoBehaviour
     [Header("Typing")]
     public float charsPerSecond = 45f;
 
+    [SerializeField] private int initialDialogueIndex = 0;
+    [SerializeField] private float minCharsPerSecondLimit = 1f;
+    [SerializeField] private float baseTimeDivider = 1f;
+
     private DialogueAsset current;
     private int index;
     private Coroutine typingRoutine;
@@ -69,7 +73,7 @@ public class DialogueManager : MonoBehaviour
         EventSystem.current?.SetSelectedGameObject(null);
 
         current = dialogue;
-        index = 0;
+        index = initialDialogueIndex;
 
         GameEvents.OnDialogueStarted?.Invoke();
         GameEvents.RequestUIStateChange?.Invoke(UIState.Dialogue);
@@ -101,7 +105,7 @@ public class DialogueManager : MonoBehaviour
         GameEvents.RequestUIStateChange?.Invoke(UIState.None);
 
         current = null;
-        index = 0;
+        index = initialDialogueIndex;
         isTyping = false;
         typingRoutine = null;
     }
@@ -135,7 +139,7 @@ public class DialogueManager : MonoBehaviour
 
     private void ShowLine()
     {
-        if (current == null || index < 0 || index >= current.lines.Count) return;
+        if (current == null || index < initialDialogueIndex || index >= current.lines.Count) return;
 
         var line = current.lines[index];
 
@@ -168,7 +172,7 @@ public class DialogueManager : MonoBehaviour
         if (bodyText != null)
             bodyText.text = "";
 
-        float delay = 1f / Mathf.Max(1f, charsPerSecond);
+        float delay = 1f / Mathf.Max(minCharsPerSecondLimit, charsPerSecond);
 
         for (int i = 0; i < text.Length; i++)
         {

@@ -23,7 +23,7 @@ public class ItemGiver : MonoBehaviour
     {
         if (giveOnlyOnce && alreadyGiven) return;
 
-        // הסרנו את ה-FindFirstObjectByType כי ה-inventory כבר משויך מלמעלה
+      
         if (inventory == null)
         {
             Debug.LogError("ItemGiver: Inventory file is missing!");
@@ -42,7 +42,7 @@ public class ItemGiver : MonoBehaviour
         if (gaveAnything)
         {
             alreadyGiven = true;
-            // כאן אנחנו מפעילים את האירוע!
+           
             OnItemsGiven?.Invoke();
         }
     }

@@ -28,14 +28,14 @@ public class EnemyBrain : MonoBehaviour
     public float attackPositionReachDistance = 0.75f;
     public float playerAttackAllowance = 1.0f;
 
-    // State Machine
+   
     private IEnemyState currentState;
     public Vector3 CurrentChaseTarget { get; set; }
     public bool HasAttackSlot { get; private set; }
     private GameplayState currentGameplayState;
     private AttackRole currentAttackRole = AttackRole.None;
 
-    // Instances of states
+    
     public EnemyReturningState ReturningState;
     public EnemyHoldingState HoldingState;
     public EnemyChasingState ChasingState;
@@ -48,7 +48,7 @@ public class EnemyBrain : MonoBehaviour
         if (combat == null) combat = GetComponent<EnemyCombat>();
         if (health == null) health = GetComponent<EnemyHealth>();
 
-        // Initialize states
+       
         ReturningState = new EnemyReturningState(this);
         HoldingState = new EnemyHoldingState(this);
         ChasingState = new EnemyChasingState(this);
@@ -92,13 +92,13 @@ public class EnemyBrain : MonoBehaviour
         currentState.Enter();
     }
 
-    // --- Coordinator Compatibility Methods ---
+  
     public void SetAttackRole(AttackRole role) => currentAttackRole = role;
 
-    // תיקון השם ל-preferFlank כדי שיתאים ל-ScriptableObject שלך
+  
     public bool PrefersFlank() => typeData != null && typeData.preferFlank;
 
-    // --- Helper Methods for States ---
+   
     private void HandleGameplayStateChanged(GameplayState newState)
     {
         currentGameplayState = newState;

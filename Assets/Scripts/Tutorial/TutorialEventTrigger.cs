@@ -14,10 +14,10 @@ public class TutorialEventTrigger : MonoBehaviour
 
     private void Start()
     {
-        // אם לא נתת ID, נשתמש בשם האובייקט
+     
         if (string.IsNullOrEmpty(uniqueId)) uniqueId = gameObject.name;
 
-        // בדיקה מול ה-GameStateManager שלך
+        
         if (GameStateManager.Instance != null)
         {
             hasBeenPlayed = GameStateManager.Instance.GetFlag(uniqueId);
@@ -26,7 +26,7 @@ public class TutorialEventTrigger : MonoBehaviour
 
     public void TriggerShow()
     {
-        // אם זה כבר נוגן בעבר - לא מראים שוב
+        
         if (playOnlyOnce && hasBeenPlayed) return;
 
         if (CompanionTutorial.Instance != null && stepToDisplay != null)
@@ -37,7 +37,7 @@ public class TutorialEventTrigger : MonoBehaviour
             {
                 hasBeenPlayed = true;
 
-                // עדכון ה-GameStateManager (ודאי שיש לו פונקציה כזו)
+                
                 if (GameStateManager.Instance != null)
                 {
                     GameStateManager.Instance.SetFlag(uniqueId, true);

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-// --- מצב חזרה למערה ---
+
 public class EnemyReturningState : IEnemyState
 {
     private EnemyBrain brain;
@@ -8,13 +8,13 @@ public class EnemyReturningState : IEnemyState
 
     public override void Enter()
     {
-        // קוראים לפקודת התנועה רק פעם אחת כשנכנסים למצב
+        
         brain.movement.ReturnToCave();
     }
 
     public override void Execute()
     {
-        // בודקים בכל פריים רק אם הגענו ליעד כדי לעצור
+        
         if (brain.movement.HasReachedCave())
         {
             brain.movement.StopMoving();
@@ -22,7 +22,7 @@ public class EnemyReturningState : IEnemyState
     }
 }
 
-// --- מצב החזקה (איגוף/סיבוב סביב השחקן) ---
+
 public class EnemyHoldingState : IEnemyState
 {
     private EnemyBrain brain;
@@ -31,11 +31,17 @@ public class EnemyHoldingState : IEnemyState
     private Vector3 currentHoldPosition;
     private bool hasPosition = false;
 
+    private const float INITIAL_TIMER = 0f;
+    private const float HOLD_TIMER_MIN = 2f;
+    private const float HOLD_TIMER_MAX = 4f;
+    private const float DIR_SQR_MAGNITUDE_THRESHOLD = 0.01f;
+    private const float CHASE_MOVEMENT_SPEED_MULTIPLIER = 0.5f;
+    private const float REACH_POSITION_TOLERANCE = 0.7f;
     public EnemyHoldingState(EnemyBrain brain) => this.brain = brain;
 
     public override void Enter()
     {
-        timer = 0f;
+        timer = INITIAL_TIMER;
         hasPosition = false;
     }
 
@@ -44,7 +50,7 @@ public class EnemyHoldingState : IEnemyState
         if (brain.GetCurrentGameplayState() != GameplayState.Combat)
             return;
 
-        // עוקף סלוט: השחקן נכנס לי לפרצוף? עוברים ישר לסטייט התקפה
+     
         if (brain.movement.IsPlayerInRange(brain.combat.attackRange + brain.playerAttackAllowance))
         {
             brain.ChangeState(brain.AttackingState);
@@ -56,21 +62,21 @@ public class EnemyHoldingState : IEnemyState
         
         if (timer <= 0f || !hasPosition)
         {
-            timer = Random.Range(2f, 4f);
+            timer = Random.Range(HOLD_TIMER_MIN, HOLD_TIMER_MAX);
             Vector3 playerPos = brain.movement.GetPlayerPosition();
             Vector3 dir = (brain.transform.position - playerPos).normalized;
 
-            if (dir.sqrMagnitude < 0.01f) dir = brain.transform.right;
+            if (dir.sqrMagnitude < DIR_SQR_MAGNITUDE_THRESHOLD) dir = brain.transform.right;
 
             Vector3 sideDir = Vector3.Cross(Vector3.up, dir).normalized;
             float side = Random.value < 0.5f ? -1f : 1f;
 
             currentHoldPosition = playerPos + dir * brain.holdDistance + sideDir * side * brain.holdSideStepDistance;
             hasPosition = true;
-            brain.movement.MoveToPosition(currentHoldPosition, 0.5f);
+            brain.movement.MoveToPosition(currentHoldPosition, DIR_SQR_MAGNITUDE_THRESHOLD);
         }
 
-        if (brain.movement.HasReachedPosition(currentHoldPosition, 0.7f))
+        if (brain.movement.HasReachedPosition(currentHoldPosition, REACH_POSITION_TOLERANCE))
         {
             brain.movement.StopMoving();
         }
@@ -78,22 +84,25 @@ public class EnemyHoldingState : IEnemyState
         brain.TryBecomeActive();
     }
 }
-// --- מצב מרדף ---
+
 public class EnemyChasingState : IEnemyState
 {
     private EnemyBrain brain;
     private float timer;
+
+    private const float INITIAL_TIMER = 0f;
+    private const float CHASE_MOVEMENT_SPEED_MULTIPLIER = 1.0f;
     public EnemyChasingState(EnemyBrain brain) => this.brain = brain;
 
     public override void Enter()
     {
-        // חשוב: מאפסים טיימר כדי שלא יחכה מהפעם הקודמת שהיה במצב הזה
-        timer = 0f;
+       
+        timer = INITIAL_TIMER;
     }
 
     public override void Execute()
     {
-        // השחקן בטווח? מעבירים את השליטה ישירות לסטייט התקפה שהוא ינהל את זה!
+      
         if (brain.movement.IsPlayerInRange(brain.combat.attackRange + brain.playerAttackAllowance))
         {
             brain.ChangeState(brain.AttackingState);
@@ -111,11 +120,11 @@ public class EnemyChasingState : IEnemyState
                 EnemyAttackCoordinator.Instance.GetAttackPosition(brain) : brain.movement.GetPlayerPosition();
         }
 
-        // כל עוד הוא לא בטווח, הוא זז בכל פריץ ישירות אל היעד שלו!
-        brain.movement.MoveToPosition(brain.CurrentChaseTarget, 1.0f);
+       
+        brain.movement.MoveToPosition(brain.CurrentChaseTarget, CHASE_MOVEMENT_SPEED_MULTIPLIER);
     }
 }
-    // --- מצב המתנה לתקיפה ---
+   
     public class EnemyWaitingState : IEnemyState
 {
     private EnemyBrain brain;
@@ -124,7 +133,7 @@ public class EnemyChasingState : IEnemyState
 
     public override void Enter()
     {
-        // הגרלת זמן ההמתנה קורית פעם אחת בכניסה
+       
         waitTimer = Random.Range(brain.waitBeforeAttackMin, brain.waitBeforeAttackMax);
         brain.movement.StopMoving();
     }
@@ -149,9 +158,9 @@ public class EnemyAttackingState : IEnemyState
     private float attackDurationTimer = 0f;
     private bool hasAttacked = false;
 
-    // ⏱️ אורך האנימציה (בשניות). 
+   
     private const float ATTACK_ANIMATION_DURATION = 0.8f;
-
+    private const float INITIAL_TIMER = 0f;
     public EnemyAttackingState(EnemyBrain brain) => this.brain = brain;
 
     public override void Enter()
@@ -166,17 +175,16 @@ public class EnemyAttackingState : IEnemyState
         {
             attackDurationTimer -= Time.deltaTime;
 
-            // 🎯 התיקון הקריטי: אם האנימציה עדיין רצה אבל השחקן כבר הספיק להתרחק מהטווח,
-            // אנחנו לא מחכים שהאנימציה תסתיים באוויר סתם! חוזרים מיד לרדוף אחריו.
+            
             if (!brain.movement.IsPlayerInRange(brain.combat.attackRange + brain.playerAttackAllowance))
             {
-                brain.ChangeState(brain.ChasingState); // 🏃‍♂️ חוזר לרוץ ולצמצם טווח!
+                brain.ChangeState(brain.ChasingState);
                 return;
             }
 
             if (attackDurationTimer <= 0f)
             {
-                // האנימציה הנוכחית הסתיימה בהצלחה, בודקים מה הצעד הבא
+              
                 EvaluateNextAction();
             }
         }
@@ -184,35 +192,34 @@ public class EnemyAttackingState : IEnemyState
 
     private void ExecuteAttackChain()
     {
-        // בודקים אם הוא בטווח האמיתי לפגיעה
         if (brain.movement.IsPlayerInRange(brain.combat.attackRange + brain.playerAttackAllowance))
         {
-            brain.movement.StopMoving(); // עצירה לצורך הנפת הנשק
-            brain.combat.TryAttack();    // מפעיל את האנימציה
+            brain.movement.StopMoving(); 
+            brain.combat.TryAttack();   
 
             attackDurationTimer = ATTACK_ANIMATION_DURATION;
             hasAttacked = true;
         }
         else
         {
-            // 🏃‍♂️ אם הוא לא בטווח בכלל, שיחזור מיד לרדוף במקום לעמוד!
+          
             brain.ChangeState(brain.ChasingState);
         }
     }
 
     private void EvaluateNextAction()
     {
-        // אם השחקן עדיין פה והצינון נגמר - דופקים עוד מכה ברצף
+        
         if (brain.movement.IsPlayerInRange(brain.combat.attackRange + brain.playerAttackAllowance) && brain.combat.CanAttack())
         {
             ExecuteAttackChain();
         }
-        // אם הוא פה אבל יש Cooldown, נעמדים לשבריר שנייה ומחכים לצינון
+        
         else if (brain.movement.IsPlayerInRange(brain.combat.attackRange + brain.playerAttackAllowance))
         {
             brain.movement.StopMoving();
         }
-        // אם הוא לא בטווח - חוזרים מיד למרדף!
+        
         else
         {
             brain.ChangeState(brain.ChasingState);

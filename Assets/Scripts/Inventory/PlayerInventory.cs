@@ -20,6 +20,7 @@ public class PlayerInventory : ScriptableObject
     [SerializeField] private List<InventorySlot> slots = new();
     public IReadOnlyList<InventorySlot> Slots => slots;
 
+    [SerializeField] private int minValidAmountThreshold = 0;
     private void NotifyChanged()
     {
         GameEvents.OnInventoryChanged?.Invoke();
@@ -28,7 +29,7 @@ public class PlayerInventory : ScriptableObject
     public bool HasItem(string itemId)
     {
         if (string.IsNullOrEmpty(itemId)) return false;
-        return slots.Exists(s => s.item != null && s.item.itemId == itemId && s.amount > 0);
+        return slots.Exists(s => s.item != null && s.item.itemId == itemId && s.amount > minValidAmountThreshold);
     }
 
     public bool AddItem(InventoryItemData item, int amount = 1)
@@ -68,7 +69,7 @@ public class PlayerInventory : ScriptableObject
 
         slot.amount -= amount;
 
-        if (slot.amount <= 0)
+        if (slot.amount <= minValidAmountThreshold)
             slots.Remove(slot);
         
         NotifyChanged();

@@ -6,12 +6,12 @@ public class WorldItemRegistry : MonoBehaviour
 {
     public static WorldItemRegistry Instance;
 
-    // כל הפריטים הרשומים לפי ID
+    
     private Dictionary<string, WorldItem> items = new Dictionary<string, WorldItem>();
 
     private void Awake()
     {
-        // Singleton
+        
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -20,10 +20,10 @@ public class WorldItemRegistry : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        // רישום פריטים קיימים בסצנה הנוכחית
+        
         RegisterAllWorldItemsInScene();
 
-        // מאזין למעבר סצנות
+        
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
@@ -34,13 +34,11 @@ public class WorldItemRegistry : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // רישום פריטים חדשים בסצנה נטענת
+        
         RegisterAllWorldItemsInScene();
     }
 
-    /// <summary>
-    /// רישום כל WorldItems בסצנה הנוכחית
-    /// </summary>
+    
     public void RegisterAllWorldItemsInScene()
     {
         var worldItems = FindObjectsByType<WorldItem>(FindObjectsSortMode.None);
@@ -50,9 +48,6 @@ public class WorldItemRegistry : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// רישום פריט יחיד (ניתן לקרוא גם מדינמיקה)
-    /// </summary>
     public void Register(WorldItem item)
     {
         if (item == null || string.IsNullOrEmpty(item.worldItemId)) return;
@@ -60,12 +55,10 @@ public class WorldItemRegistry : MonoBehaviour
         if (!items.ContainsKey(item.worldItemId))
             items.Add(item.worldItemId, item);
         else
-            items[item.worldItemId] = item; // עדכון אם כבר קיים
+            items[item.worldItemId] = item; 
     }
 
-    /// <summary>
-    /// קבלת פריט לפי ID
-    /// </summary>
+  
     public WorldItem Get(string id)
     {
         if (string.IsNullOrEmpty(id)) return null;
@@ -76,9 +69,7 @@ public class WorldItemRegistry : MonoBehaviour
         return null;
     }
 
-    /// <summary>
-    /// הסרת פריט מהרשימה (למשל אחרי שקיבלנו אותו לאינוונטורי)
-    /// </summary>
+  
     public void Unregister(string id)
     {
         if (string.IsNullOrEmpty(id)) return;

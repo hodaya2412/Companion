@@ -11,6 +11,11 @@ public class AnimatedRayLine : MonoBehaviour
     [Header("Animation")]
     [SerializeField] private float growDuration = 0.25f;
 
+    [SerializeField] private int linePositionCount = 2;
+    [SerializeField] private int startLineIndex = 0;
+    [SerializeField] private int endLineIndex = 1;
+    [SerializeField] private float initialAnimationProgress = 0f;
+
     public float GrowDuration => growDuration;
 
     private LineRenderer line;
@@ -19,7 +24,7 @@ public class AnimatedRayLine : MonoBehaviour
     private void Awake()
     {
         line = GetComponent<LineRenderer>();
-        line.positionCount = 2;
+        line.positionCount = linePositionCount;
         ResetLine();
     }
 
@@ -44,8 +49,8 @@ public class AnimatedRayLine : MonoBehaviour
     {
         if (line == null || startPoint == null) return;
 
-        line.SetPosition(0, startPoint.position);
-        line.SetPosition(1, startPoint.position);
+        line.SetPosition(startLineIndex, startPoint.position);
+        line.SetPosition(endLineIndex, startPoint.position);
     }
 
     private IEnumerator AnimateBeam()
@@ -53,9 +58,9 @@ public class AnimatedRayLine : MonoBehaviour
         Vector3 start = startPoint.position;
         Vector3 end = endPoint.position;
 
-        float t = 0f;
-        line.SetPosition(0, start);
-        line.SetPosition(1, start);
+        float t = initialAnimationProgress;
+        line.SetPosition(startLineIndex, start);
+        line.SetPosition(endLineIndex, start);
 
         while (t < growDuration)
         {
@@ -63,14 +68,14 @@ public class AnimatedRayLine : MonoBehaviour
             float k = Mathf.Clamp01(t / growDuration);
 
             Vector3 currentEnd = Vector3.Lerp(start, end, k);
-            line.SetPosition(0, start);
-            line.SetPosition(1, currentEnd);
+            line.SetPosition(startLineIndex, start);
+            line.SetPosition(endLineIndex, currentEnd);
 
             yield return null;
         }
 
-        line.SetPosition(0, start);
-        line.SetPosition(1, end);
+        line.SetPosition(startLineIndex, start);
+        line.SetPosition(endLineIndex, end);
         currentRoutine = null;
     }
 }

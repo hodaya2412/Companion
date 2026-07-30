@@ -2,16 +2,16 @@ using UnityEngine;
 
 public class WorldItem : MonoBehaviour
 {
-    public string worldItemId;   // מזהה ייחודי
+    public string worldItemId;   
     public InventoryItemData itemData;
     public PlayerInventory inventory;
 
     [Header("Optional persistent flag")]
-    public string collectedFlag; // דגל שמציין שהפריט כבר נאסף בעבר
+    public string collectedFlag;
 
     private void Start()
     {
-        // בדיקה אם הדגל כבר דלוק
+        
         if (!string.IsNullOrEmpty(collectedFlag) &&
             GameStateManager.Instance != null &&
             GameStateManager.Instance.GetFlag(collectedFlag))
@@ -21,7 +21,7 @@ public class WorldItem : MonoBehaviour
             return;
         }
 
-        // בדיקה אם הפריט כבר באינוונטורי
+        
         if (inventory != null && itemData != null)
         {
             if (inventory.HasItem(itemData.itemId))
@@ -40,7 +40,7 @@ public class WorldItem : MonoBehaviour
 
             if (added)
             {
-                // מדליקים את הדגל אם הוגדר
+                
                 if (!string.IsNullOrEmpty(collectedFlag) &&
                     GameStateManager.Instance != null)
                 {

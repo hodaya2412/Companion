@@ -36,12 +36,12 @@ public class InventorySlotUI : MonoBehaviour
         item = newItem;
         bool hasItem = (item != null);
 
-        // --- התיקון כאן: הסתרת או הצגת כל הסלוט ---
+        
         gameObject.SetActive(hasItem);
 
-        if (!hasItem) return; // אם אין פריט, אין צורך להמשיך לעדכן ויזואלית
+        if (!hasItem) return; 
 
-        // עדכון האייקון
+        
         if (icon != null)
         {
             if (isSelected && item.selectedIcon != null)
@@ -56,7 +56,7 @@ public class InventorySlotUI : MonoBehaviour
             icon.enabled = (icon.sprite != null);
         }
 
-        // עדכון טקסט הכמות
+        
         if (amountText != null)
         {
             amountText.text = (amount > 1) ? $"x{amount}" : "";

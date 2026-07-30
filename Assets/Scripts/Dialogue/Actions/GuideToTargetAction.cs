@@ -18,7 +18,7 @@ public class GuideToTargetAction : DialogueAction
 
     public override void Execute()
     {
-        // שולח את ה-ID בלבד
+        
         GameEvents.OnGuideRequested?.Invoke(targetID);
     }
 }

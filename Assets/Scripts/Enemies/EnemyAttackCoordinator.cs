@@ -13,6 +13,8 @@ public class EnemyAttackCoordinator : MonoBehaviour
     [SerializeField] private float sideOffset = 1.8f;
     [SerializeField] private float rearOffset = 1.8f;
 
+    [SerializeField] private float forwardSqrMagnitudeThreshold = 0.001f;
+
     private readonly HashSet<EnemyBrain> activeAttackers = new HashSet<EnemyBrain>();
     private readonly Dictionary<EnemyBrain, AttackRole> enemyRoles = new Dictionary<EnemyBrain, AttackRole>();
 
@@ -60,7 +62,7 @@ public class EnemyAttackCoordinator : MonoBehaviour
         activeAttackers.Add(enemy);
         enemyRoles[enemy] = role;
 
-        // עכשיו הפונקציה הזו קיימת ב-Brain
+        
         enemy.SetAttackRole(role);
 
         return true;
@@ -87,7 +89,7 @@ public class EnemyAttackCoordinator : MonoBehaviour
         bool rightTaken = enemyRoles.ContainsValue(AttackRole.RightFlank);
         bool rearTaken = enemyRoles.ContainsValue(AttackRole.RearFlank);
 
-        // עכשיו הפונקציה הזו קיימת ב-Brain ומושכת נתונים מ-TypeData
+      
         if (enemy.PrefersFlank())
         {
             if (!rearTaken) return AttackRole.RearFlank;
@@ -124,7 +126,7 @@ public class EnemyAttackCoordinator : MonoBehaviour
         Vector3 playerForward = player.forward;
         playerForward.y = 0f;
 
-        if (playerForward.sqrMagnitude < 0.001f)
+        if (playerForward.sqrMagnitude < forwardSqrMagnitudeThreshold)
             playerForward = Vector3.forward;
 
         playerForward.Normalize();

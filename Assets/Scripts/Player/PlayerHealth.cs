@@ -16,17 +16,21 @@ public class PlayerHealth : MonoBehaviour
     public bool regenOnlyIfAlive = true;
 
     [Header("Death / Respawn")]
-    //[SerializeField] private string castleSceneName = "Castle_Intro";
+  
     [SerializeField] private float deathDelay = 0.5f;
     [SerializeField] private Transform respawnPoint;
+
+    [SerializeField] private float minHealthThreshold = 0f;
+    [SerializeField] private float initialLastDamageTime = -999f;
+    [SerializeField] private float respawnFadeInDelay = 0.2f;
 
     private float lastDamageTime;
     private bool isDead = false;
 
     private void Awake()
     {
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-        lastDamageTime = -999f;
+        currentHealth = Mathf.Clamp(currentHealth, minHealthThreshold, maxHealth);
+        lastDamageTime = initialLastDamageTime;
     }
 
     private void Start()
@@ -38,38 +42,11 @@ public class PlayerHealth : MonoBehaviour
     {
         HandleRegen();
     }
-    //[Header("Invulnerability")]
-    //[SerializeField] private float hitCooldown = 0.5f; // חצי שנייה של חסינות
-    //private float lastHitTime = -999f;
 
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (isDead) return;
-
-    //    // בדיקה 1: האם עבר מספיק זמן מאז הפגיעה האחרונה?
-    //    if (Time.time < lastHitTime + hitCooldown) return;
-
-    //    // בדיקה 2: האם מי שפגע בנו הוא אויב?
-    //    if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
-    //    {
-    //        EnemyCombat enemyCombat = other.GetComponentInParent<EnemyCombat>();
-
-    //        if (enemyCombat != null)
-    //        {
-    //            // עדכון זמן הפגיעה האחרונה כדי לנעול פגיעות נוספות בפריימים הבאים
-    //            lastHitTime = Time.time;
-
-    //            Debug.Log($"[Hitbox] Player hit by: {other.name}! Taking {enemyCombat.attackDamage} damage.");
-    //            TakeDamage(enemyCombat.attackDamage);
-    //            GameEvents.OnPlayerHit?.Invoke(enemyCombat.attackDamage);
-    //        }
-    //    }
-        
-    //}
 
     private void HandleRegen()
     {
-        if (regenOnlyIfAlive && currentHealth <= 0f) return;
+        if (regenOnlyIfAlive && currentHealth <= minHealthThreshold) return;
         if (isDead) return;
 
         if (Time.time >= lastDamageTime + regenDelay)
@@ -86,17 +63,17 @@ public class PlayerHealth : MonoBehaviour
     public void TakeDamage(float damage)
     {
         if (isDead) return;
-        if (damage <= 0f) return;
+        if (damage <= minHealthThreshold) return;
 
         currentHealth -= damage;
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        currentHealth = Mathf.Clamp(currentHealth, minHealthThreshold, maxHealth);
 
         Debug.Log($"Player took {damage} damage. Current HP: {currentHealth}/{maxHealth}");
 
         lastDamageTime = Time.time;
         GameEvents.OnHealthChanged?.Invoke(currentHealth, maxHealth);
 
-        if (currentHealth <= 0f)
+        if (currentHealth <= minHealthThreshold)
         {
             Die();
         }
@@ -104,10 +81,10 @@ public class PlayerHealth : MonoBehaviour
 
     public void Heal(float amount)
     {
-        if (amount <= 0f) return;
+        if (amount <= minHealthThreshold) return;
 
         currentHealth += amount;
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        currentHealth = Mathf.Clamp(currentHealth, minHealthThreshold, maxHealth);
 
         GameEvents.OnHealthChanged?.Invoke(currentHealth, maxHealth);
     }
@@ -116,7 +93,7 @@ public class PlayerHealth : MonoBehaviour
     {
         isDead = false;
         currentHealth = maxHealth;
-        lastDamageTime = -999f;
+        lastDamageTime = initialLastDamageTime;
         GameEvents.OnHealthChanged?.Invoke(currentHealth, maxHealth);
     }
 
@@ -125,7 +102,7 @@ public class PlayerHealth : MonoBehaviour
         if (isDead) return;
 
         isDead = true;
-        currentHealth = 0f;
+        currentHealth = minHealthThreshold;
         GameEvents.OnHealthChanged?.Invoke(currentHealth, maxHealth);
 
         Debug.Log("Player Died");
@@ -139,11 +116,11 @@ public class PlayerHealth : MonoBehaviour
 
         yield return new WaitForSeconds(deathDelay);
 
-        // 🎬 Fade Out
+      
         if (SceneFader.Instance != null)
             yield return SceneFader.Instance.FadeOut();
 
-        // 📍 Teleport (אחרי שהמסך שחור!)
+       
         if (respawnPoint != null)
         {
             transform.position = respawnPoint.position;
@@ -154,16 +131,16 @@ public class PlayerHealth : MonoBehaviour
             Debug.LogWarning("Respawn point not set!");
         }
 
-        // ❤️ Restore HP
+        
         RestoreFullHealth();
 
-        // 🔄 Gameplay reset
+      
         GameEvents.RequestGameplayStateChange?.Invoke(GameplayState.Playing);
         GameEvents.OnCombatReset?.Invoke();
 
-        yield return new WaitForSeconds(0.2f); 
+        yield return new WaitForSeconds(respawnFadeInDelay); 
 
-        // 🎬 Fade In
+        
         if (SceneFader.Instance != null)
             yield return SceneFader.Instance.FadeIn();
     }

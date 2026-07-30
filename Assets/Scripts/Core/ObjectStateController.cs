@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class ObjectStateController : MonoBehaviour
 {
-    public string flagKey;    // למשל: "Forest_PuzzleSolved"
-    public bool activeIfTrue; // האם האובייקט פעיל כשהדגל אמת?
+    public string flagKey;   
+    public bool activeIfTrue; 
 
     private void OnEnable()
     {
-        // הרשמה לאירוע הגלובלי - אין צמידות לאובייקט ספציפי
+        
         GameEvents.OnFlagChanged += HandleFlagChanged;
         Refresh();
     }

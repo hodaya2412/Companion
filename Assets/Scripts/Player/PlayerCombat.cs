@@ -22,7 +22,7 @@ public class PlayerCombat : MonoBehaviour
     [Header("General Combat")]
     public float attackCooldown = 0.5f;
 
-    private Animator animator; // הוסף את זה 
+    private Animator animator; 
 
     private InputActions inputActions;
     private float lastAttackTime = -999f;
@@ -30,6 +30,12 @@ public class PlayerCombat : MonoBehaviour
     private GameplayState currentGameplayState;
     private UIState currentUIState;
     private bool hasWeaponEquipped;
+
+
+    
+    [SerializeField] private float attackBoxHalfWidth = 0.7f;
+    [SerializeField] private float attackBoxHalfHeight = 1f;
+    [SerializeField] private float rangeMultiplier = 0.5f;
 
     private void Awake()
     {
@@ -117,7 +123,7 @@ public class PlayerCombat : MonoBehaviour
         lastAttackTime = Time.time;
         if (animator != null)
         {
-            // בתוך הפונקציה שבה את עושה animator.SetTrigger("Attack")
+            
             animator.SetBool("IsAttacking", true);
             animator.SetTrigger("Attack");
         }
@@ -132,8 +138,8 @@ public class PlayerCombat : MonoBehaviour
 
     private void PerformAttackOverlap(float damage, float range)
     {
-        Vector3 center = attackPoint.position + transform.forward * range * 0.5f;
-        Vector3 halfExtents = new Vector3(0.7f, 1f, range * 0.5f);
+        Vector3 center = attackPoint.position + transform.forward * range * rangeMultiplier;
+        Vector3 halfExtents = new Vector3(attackBoxHalfWidth, attackBoxHalfHeight, range * rangeMultiplier);
 
         Debug.Log($"[PlayerCombat] Overlap center={center}, halfExtents={halfExtents}");
 
@@ -181,7 +187,7 @@ public class PlayerCombat : MonoBehaviour
             }
         }
     }
-    // פונקציה שתופעל על ידי ה-Animation Event בסוף האנימציה
+    
     public void OnAttackEnded()
     {
         if (animator != null)

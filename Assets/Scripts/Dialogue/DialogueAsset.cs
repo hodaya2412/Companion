@@ -10,7 +10,7 @@ public class DialogueAsset : ScriptableObject
 
     public List<DialogueLine> lines = new();
 
-    //New dialogue actions
+    
     public List<DialogueAction> endActions;
 }
 

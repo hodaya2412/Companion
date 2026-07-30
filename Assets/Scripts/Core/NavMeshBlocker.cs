@@ -5,17 +5,21 @@ public class NavMeshBlocker : MonoBehaviour
 {
     public string flagKey = "Forest_PuzzleSolved";
     public Transform targetPoint;
-    public float speed = 3f; // מהירות גלגול יציבה ואיטית
+    public float speed = 3f; 
 
     private bool isRolling = false;
     private bool hasReachedTarget = false;
 
+    [SerializeField] private float rollRotationSpeedZ = -100f;
+    [SerializeField] private float targetReachedThreshold = 0.05f;
+    [SerializeField] private float defaultRotationX = 0f;
+    [SerializeField] private float defaultRotationY = 0f;
     private void Awake()
     {
         Rigidbody rb = GetComponent<Rigidbody>();
         if (rb != null)
         {
-            // ננעל את האבן מראש כדי שהשחקן לא יזיז אותה
+           
             rb.isKinematic = true;
             rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
         }
@@ -39,7 +43,7 @@ public class NavMeshBlocker : MonoBehaviour
         {
             isRolling = true;
             Rigidbody rb = GetComponent<Rigidbody>();
-            if (rb != null) rb.isKinematic = true; // שומרים על kinematic כדי שלא תעוף בגלל פיזיקה
+            if (rb != null) rb.isKinematic = true; 
         }
     }
 
@@ -47,15 +51,15 @@ public class NavMeshBlocker : MonoBehaviour
     {
         if (isRolling && targetPoint != null)
         {
-            // תנועה לעבר היעד בצורה מבוקרת (בלי פיזיקה שמעיפה את האבן)
+           
             transform.position = Vector3.MoveTowards(transform.position, targetPoint.position, speed * Time.deltaTime);
 
-            // סיבוב ימינה (ציר Z שלילי/חיובי בהתאם לכיוון המודל)
-            // נסי את זה, אם היא מסתובבת הפוך, שנו את המספר ל-100
-            transform.Rotate(0, 0, -100 * Time.deltaTime, Space.Self);
+            
+           
+            transform.Rotate(defaultRotationX, defaultRotationY, rollRotationSpeedZ * Time.deltaTime, Space.Self);
 
-            // בדיקה האם הגענו ליעד
-            if (Vector3.Distance(transform.position, targetPoint.position) < 0.05f)
+          
+            if (Vector3.Distance(transform.position, targetPoint.position) < targetReachedThreshold)
             {
                 FinishAndBlock();
             }
@@ -67,10 +71,10 @@ public class NavMeshBlocker : MonoBehaviour
         isRolling = false;
         hasReachedTarget = true;
 
-        // הצמדה סופית לנקודה
+       
         transform.position = targetPoint.position;
 
-        // הפיכה למכשול NavMesh קבוע
+        
         if (GetComponent<NavMeshObstacle>() == null)
         {
             NavMeshObstacle obs = gameObject.AddComponent<NavMeshObstacle>();

@@ -45,7 +45,7 @@ public class HelpUIController : MonoBehaviour
     {
         currentUIState = newState;
 
-        // אם UI אחר נפתח בזמן שה-Help פתוח, נסגור את ה-Help
+       
         if (newState != UIState.Help && newState != UIState.None && helpPanel != null && helpPanel.activeSelf)
         {
             CloseHelpSilently();

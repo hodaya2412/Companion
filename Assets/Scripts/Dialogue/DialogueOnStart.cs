@@ -19,11 +19,11 @@ public class DialogueOnStart : MonoBehaviour
         bool alreadyPlayed = GameEvents.RequestFlagState?.Invoke(id) ?? false;
         if (alreadyPlayed) yield break;
 
-        // מחכה שכל המערכות יעלו
+        
         yield return null;
         yield return null;
 
-        // הדיליי שלך
+        
         yield return new WaitForSeconds(delay);
 
         Begin();
@@ -31,10 +31,10 @@ public class DialogueOnStart : MonoBehaviour
 
     void Begin()
     {
-        // 1. הפעלת הדיאלוג
+        
         GameEvents.OnDialogueRequested?.Invoke(dialogue);
 
-        // 2. הפעלת הפופ-אפ של היצור (רק אם הוגדר כזה ב-Inspector)
+        
         if (tutorialStep != null && CompanionTutorial.Instance != null)
         {
             CompanionTutorial.Instance.ShowStep(tutorialStep);

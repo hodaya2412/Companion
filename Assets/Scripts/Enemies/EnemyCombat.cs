@@ -6,7 +6,7 @@ public class EnemyCombat : MonoBehaviour
     public Transform playerTarget;
     [SerializeField] private Animator animator;
 
-    // 🧠 מוסיפים רפרנס ל-Brain כדי למשוך משתנים
+    
     private EnemyBrain brain;
 
     [Header("Attack Settings")]
@@ -23,9 +23,13 @@ public class EnemyCombat : MonoBehaviour
     [Header("Tutorial Integration")]
     public TutorialEventTrigger combatTutorial;
 
+
+    [SerializeField] private float initialNextAttackTime = 0f;
+    [SerializeField] private float fallbackPlayerAttackAllowance = 1.0f;
+
     private void Awake()
     {
-        // מוצא את ה-Brain שיושב על אותו האובייקט
+      
         brain = GetComponent<EnemyBrain>();
     }
 
@@ -42,7 +46,7 @@ public class EnemyCombat : MonoBehaviour
 
     private void Start()
     {
-        nextAttackTime = 0f;
+        nextAttackTime = initialNextAttackTime;
         SetNextAttackTime();
     }
 
@@ -90,12 +94,12 @@ public class EnemyCombat : MonoBehaviour
     {
         if (playerTarget == null) return;
 
-        // 🛠️ בודקים מה ה-Allowance מתוך ה-Brain. אם ה-Brain לא נמצא מסיבה כלשהי, נשתמש בברירת מחדל של 1.0
-        float allowance = (brain != null) ? brain.playerAttackAllowance : 1.0f;
+        
+        float allowance = (brain != null) ? brain.playerAttackAllowance : fallbackPlayerAttackAllowance;
 
         float distance = Vector3.Distance(transform.position, playerTarget.position);
 
-        // עכשיו משתמשים במשתנה allowance שחילצנו בבטחה
+      
         if (distance <= attackRange + allowance)
         {
             PlayerHealth playerHealth = playerTarget.GetComponent<PlayerHealth>();

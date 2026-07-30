@@ -20,21 +20,21 @@ public class PuzzleStone : MonoBehaviour
 
     private void OnEnable()
     {
-        // הפעלת ה-Input ורישום לפעולת ה-Interact מהמפה שיצרת
+        
         inputActions.Interact.Enable();
         inputActions.Interact.Interact.performed += OnInteractPerformed;
     }
 
     private void OnDisable()
     {
-        // ביטול רישום וכיבוי
+        
         inputActions.Interact.Interact.performed -= OnInteractPerformed;
         inputActions.Interact.Disable();
     }
 
     private void OnInteractPerformed(InputAction.CallbackContext context)
     {
-        // בדיקה שהשחקן פיזית ליד האבן
+     
         if (!isPlayerInRange) return;
 
         TryOpenStonePuzzle();
@@ -44,18 +44,18 @@ public class PuzzleStone : MonoBehaviour
     {
         if (GameStateManager.Instance == null) return;
 
-        // 1. בדיקה: אם החידה כבר נפתרה - אל תעשה כלום
+       
         if (GameStateManager.Instance.GetFlag(solvedFlag))
             return;
 
-        // 2. בדיקה: האם השודדים כבר חוסלו?
+        
         if (GameStateManager.Instance.GetFlag(banditsDefeatedFlag))
         {
             Debug.Log("השודדים מתו, האבן כבר לא מגיבה.");
             return;
         }
 
-        // 3. בדיקת מצבי המשחק הרגילים
+        
         GameplayState gameplayState = GameEvents.RequestCurrentGameplayState?.Invoke() ?? GameplayState.Playing;
         UIState uiState = GameEvents.RequestCurrentUIState?.Invoke() ?? UIState.None;
 
@@ -70,7 +70,7 @@ public class PuzzleStone : MonoBehaviour
         }
     }
 
-    // --- זיהוי טווח (Trigger) ---
+    
 
     private void OnTriggerEnter(Collider other)
     {

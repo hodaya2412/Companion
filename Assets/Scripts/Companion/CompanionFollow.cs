@@ -21,6 +21,17 @@ public class CompanionFollow : MonoBehaviour
     public float combatMoveSpeed = 6f;
     public float combatArrivalDistance = 0.2f;
 
+    [SerializeField] private float zeroVectorMagnitudeThreshold = 0.05f;
+    [SerializeField] private float animationDirectionIdle = 0f;
+    [SerializeField] private float animationDirectionRight = 4f;
+    [SerializeField] private float animationDirectionLeft = 3f;
+    [SerializeField] private float animationDirectionUp = 2f;
+    [SerializeField] private float animationDirectionDown = 1f;
+    [SerializeField] private float forwardSqrMagnitudeThreshold = 0.001f;
+    [SerializeField] private float sideRandomThreshold = 0.5f;
+    [SerializeField] private float sideFactorNegative = -1f;
+    [SerializeField] private float sideFactorPositive = 1f;
+
     private bool followEnabled = true;
     private GameplayState currentGameplayState = GameplayState.Playing;
     private Vector3 combatWaitPosition;
@@ -64,7 +75,7 @@ public class CompanionFollow : MonoBehaviour
         Debug.Log(
         $"[Companion] state={currentGameplayState} followEnabled={followEnabled}"
     );
-        // אנחנו תמיד רוצים לעדכן אנימציות, גם אם followEnabled כבוי (בשביל Idle)
+       
         if (player == null || rb == null) return;
 
         Vector3 moveDirection = Vector3.zero;
@@ -93,7 +104,7 @@ public class CompanionFollow : MonoBehaviour
 
         Vector3 move = toPlayer.normalized * speed * Time.fixedDeltaTime;
         rb.MovePosition(rb.position + move);
-        return toPlayer.normalized; // מחזירים כיוון
+        return toPlayer.normalized; 
     }
 
     private Vector3 MoveToCombatWaitPosition()
@@ -115,14 +126,14 @@ public class CompanionFollow : MonoBehaviour
         return toTarget.normalized;
     }
 
-    // הפונקציה שביקשת שתשלוט באנימציות
+   
     public void UpdateSpriteAnimation(Vector3 moveDir)
     {
         if (animator == null || spriteRenderer == null) return;
 
-        if (moveDir.magnitude < 0.05f)
+        if (moveDir.magnitude < zeroVectorMagnitudeThreshold)
         {
-            animator.SetInteger("Direction", 0); // Idle
+            animator.SetInteger("Direction", (int)animationDirectionIdle); 
             return;
         }
 
@@ -130,20 +141,20 @@ public class CompanionFollow : MonoBehaviour
         {
             if (moveDir.x > 0)
             {
-                animator.SetInteger("Direction", 4); // Right
+                animator.SetInteger("Direction", (int)animationDirectionRight); 
                 spriteRenderer.flipX = true;
             }
             else
             {
-                animator.SetInteger("Direction", 3); // Left
+                animator.SetInteger("Direction", (int)animationDirectionLeft); 
                 spriteRenderer.flipX = false;
             }
         }
         else
         {
             spriteRenderer.flipX = false;
-            if (moveDir.z > 0) animator.SetInteger("Direction", 2); // Back
-            else animator.SetInteger("Direction", 1); // Front
+            if (moveDir.z > 0) animator.SetInteger("Direction", (int)animationDirectionUp); 
+            else animator.SetInteger("Direction", (int)animationDirectionDown);
         }
     }
 
@@ -151,10 +162,10 @@ public class CompanionFollow : MonoBehaviour
     {
         Vector3 playerForward = player.forward;
         playerForward.y = 0f;
-        if (playerForward.sqrMagnitude < 0.001f) playerForward = Vector3.forward;
+        if (playerForward.sqrMagnitude < forwardSqrMagnitudeThreshold) playerForward = Vector3.forward;
         playerForward.Normalize();
         Vector3 side = Vector3.Cross(Vector3.up, playerForward).normalized;
-        float sideSign = Random.value < 0.5f ? -1f : 1f;
+        float sideSign = Random.value < sideRandomThreshold ? sideFactorNegative : sideFactorPositive;
         Vector3 target = player.position - playerForward * combatBackOffset + side * combatSideOffset * sideSign;
         target.y = rb.position.y;
         return target;

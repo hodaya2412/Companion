@@ -23,7 +23,7 @@ public class InventoryItemData : ScriptableObject
     public int maxStack = 99;
 
     [Header("Puzzle / UI (optional)")]
-    public GameObject puzzlePanel; // גוררים לפה את ה-Panel של החידה (אם זה פריט חידה)
+    public GameObject puzzlePanel; 
 
     [Header("Weapon Animation")]
     public WeaponAnimationType weaponAnimationType = WeaponAnimationType.None;

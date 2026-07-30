@@ -29,23 +29,22 @@ public class PlayerHitFeedback : MonoBehaviour
     }
     private void OnEnable()
     {
-        // 🤝 חוזרים להקשיב לאירוע הגלובלי של המשחק
+      
         GameEvents.OnPlayerHit += HandlePlayerHit;
     }
 
     private void OnDisable()
     {
-        // 🛑 ביטול הרשמה
+       
         GameEvents.OnPlayerHit -= HandlePlayerHit;
     }
 
     private void HandlePlayerHit(float damage)
     {
-        // האפקט האדום יעבוד בצורה מושלמת בכל פעם שהאירוע נורה!
+        
         Flash();
 
-        // לגבי הקנוקבק: מאחר והאירוע הגלובלי רק אומר "השחקן נפגע", 
-        // נרתע פשוט לכיוון האחורי של השחקן (או שנשנה את ה-Event בעתיד שיעביר גם מיקום)
+      
         Vector3 sourcePosition = transform.position + Vector3.back;
         KnockbackFrom(sourcePosition);
     }

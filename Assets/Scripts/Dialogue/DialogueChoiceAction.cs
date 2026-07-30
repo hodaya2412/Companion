@@ -9,8 +9,8 @@ public class DialogueChoiceAction : DialogueAction
     public string negativeText = "No";
 
     [Header("Choice Results")]
-    public List<DialogueAction> positiveActions = new List<DialogueAction>(); // כל מה שיקרה אם בוחרים Yes
-    public List<DialogueAction> negativeActions = new List<DialogueAction>(); // כל מה שיקרה אם בוחרים No
+    public List<DialogueAction> positiveActions = new List<DialogueAction>();
+    public List<DialogueAction> negativeActions = new List<DialogueAction>();
 
     public override void Execute()
     {

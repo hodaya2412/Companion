@@ -15,6 +15,8 @@ public class NPCInteractable : MonoBehaviour
     [Header("Settings")]
     public float interactRange = 5f;
 
+    [SerializeField] private int minDialogueLinesCount = 0;
+
     private Transform player;
     private InputActions inputAction;
 
@@ -100,7 +102,7 @@ public class NPCInteractable : MonoBehaviour
             }
         }
 
-        if (dialogueAsset != null && dialogueAsset.lines != null && dialogueAsset.lines.Count > 0)
+        if (dialogueAsset != null && dialogueAsset.lines != null && dialogueAsset.lines.Count > minDialogueLinesCount)
         {
             GameEvents.OnDialogueRequested?.Invoke(dialogueAsset);
             Debug.Log("Starting fallback dialogue with: " + gameObject.name);

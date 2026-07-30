@@ -8,11 +8,11 @@ public class PlayerEquipment : MonoBehaviour
     [Header("Data Persistence")]
     public PlayerStateSO playerState;
 
-    // מחזיר תמיד את הנשק השמור בתוך ה-PlayerStateSO (מונע התאפסות במעבר סצנה)
+    
     public InventoryItemData EquippedWeapon =>
         (playerState != null) ? playerState.currentWeaponItem : null;
 
-    // אירוע למי שרוצה להאזין לשינויים בזמן אמת
+    
     public event Action<InventoryItemData> OnWeaponEquipped;
 
     private void Awake()
@@ -28,7 +28,7 @@ public class PlayerEquipment : MonoBehaviour
 
     private void Start()
     {
-        // מסנכרן אנימטור מיד בעליית סצנה
+        
         UpdateAnimator();
     }
 
@@ -79,7 +79,7 @@ public class PlayerEquipment : MonoBehaviour
         OnWeaponEquipped?.Invoke(null);
     }
 
-    // מסנכרן את האנימטור לפי ה-State
+    
     public void UpdateAnimator()
     {
         Animator animator = GetComponentInChildren<Animator>();
@@ -91,7 +91,7 @@ public class PlayerEquipment : MonoBehaviour
         }
     }
 
-    // בדיקה אמינה לפי ה-SO
+   
     public bool HasWeaponEquipped()
     {
         if (playerState == null)

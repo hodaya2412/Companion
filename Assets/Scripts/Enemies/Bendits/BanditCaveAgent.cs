@@ -3,7 +3,9 @@ using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class BanditCaveAgent : MonoBehaviour
+
 {
+
     [Header("References")]
     [SerializeField] private Transform cavePoint;
     [SerializeField] private Transform playerTarget;
@@ -25,6 +27,13 @@ public class BanditCaveAgent : MonoBehaviour
     private bool isChasingPlayer;
     private bool isReturningToCave;
 
+    private const float ReturnStoppingDistance = 0f;
+    private const float DefaultCaveReachThreshold = 0.5f;
+    private const float DefaultPositionThreshold = 0.6f;
+    private const float MovementThreshold = 0.1f;
+    private const float RightDirection = 1f;
+    private const float LeftDirection = -1f;
+
     public Transform PlayerTarget => playerTarget;
     public Transform CavePoint => cavePoint;
     public bool IsReturningToCave => isReturningToCave;
@@ -33,7 +42,7 @@ public class BanditCaveAgent : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
 
-        // הגדרה קריטית: מונעים מה-NavMesh לסובב את האויב ב-3D
+        
         if (agent != null)
         {
             agent.updateRotation = false;
@@ -48,7 +57,7 @@ public class BanditCaveAgent : MonoBehaviour
 
     private void Update()
     {
-        // מעדכנים את הכיוון הויזואלי בכל פריים לפי המהירות של הסוכן
+        
         HandleVisualFlip();
         HandleAnimation();
     }
@@ -75,7 +84,7 @@ public class BanditCaveAgent : MonoBehaviour
         facingRight = !facingRight;
 
         Vector3 scale = characterVisuals.localScale;
-        scale.x = Mathf.Abs(scale.x) * (facingRight ? 1 : -1);
+        scale.x = Mathf.Abs(scale.x) * (facingRight ? RightDirection : LeftDirection);
         characterVisuals.localScale = scale;
 
         lastFlipTime = Time.time;
@@ -101,7 +110,7 @@ public class BanditCaveAgent : MonoBehaviour
         isReturningToCave = true;
 
         agent.isStopped = false;
-        agent.stoppingDistance = 0f;
+        agent.stoppingDistance = ReturnStoppingDistance;
         agent.SetDestination(cavePoint.position);
     }
 
@@ -120,7 +129,7 @@ public class BanditCaveAgent : MonoBehaviour
         return Vector3.Distance(transform.position, playerTarget.position) <= range;
     }
 
-    public bool HasReachedCave(float threshold = 0.5f)
+    public bool HasReachedCave(float threshold = DefaultCaveReachThreshold)
     {
         if (cavePoint == null) return false;
         return Vector3.Distance(transform.position, cavePoint.position) <= threshold;
@@ -134,8 +143,8 @@ public class BanditCaveAgent : MonoBehaviour
         return transform.position;
     }
 
-    // שים לב: מחקנו את הפרמטר walk שהיה כאן כי עכשיו הכל זו הליכה
-    public void MoveToPosition(Vector3 targetPosition, float stoppingDistance = 0.6f)
+
+    public void MoveToPosition(Vector3 targetPosition, float stoppingDistance = DefaultPositionThreshold)
     {
         if (agent == null || !agent.enabled) return;
 
@@ -152,7 +161,7 @@ public class BanditCaveAgent : MonoBehaviour
         return Vector3.Distance(transform.position, targetPosition);
     }
 
-    public bool HasReachedPosition(Vector3 targetPosition, float threshold = 0.6f)
+    public bool HasReachedPosition(Vector3 targetPosition, float threshold = DefaultPositionThreshold)
     {
         return DistanceToPosition(targetPosition) <= threshold;
     }
@@ -161,14 +170,14 @@ public class BanditCaveAgent : MonoBehaviour
     {
         if (animator == null || agent == null) return;
 
-        // בודק אם הסוכן לא עצור ויש לו מהירות תנועה
-        bool isMoving = !agent.isStopped && agent.velocity.magnitude > 0.1f;
+       
+        bool isMoving = !agent.isStopped && agent.velocity.magnitude > MovementThreshold;
 
-        // מעדכן רק את ההליכה. שורת ה-IsRunning נמחקה!
+      
         animator.SetBool("IsWalking", isMoving);
     }
 
-    public void KnockBackFrom(Vector3 sourcePosition, float distance = 0.6f)
+    public void KnockBackFrom(Vector3 sourcePosition, float distance = DefaultPositionThreshold)
     {
         if (agent == null || !agent.enabled) return;
 

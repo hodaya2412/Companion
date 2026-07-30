@@ -8,7 +8,7 @@ public class FlagConditionSO : ScriptableObject
 
     public bool IsMet()
     {
-        // בודק מול ה-GameStateManager שלך
+        
         return GameStateManager.Instance.GetFlag(flagName) == requiredValue;
     }
 }

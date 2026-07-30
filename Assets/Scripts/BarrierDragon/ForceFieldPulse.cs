@@ -24,6 +24,13 @@ public class ForceFieldPulse : MonoBehaviour
     public float blockedHitFlashAmount = 0.35f;
     public float validHitFlashAmount = 0.7f;
 
+    [Header("Pulse Alpha Settings")]
+    [SerializeField] private float pulseMultiplierFactor = 0.5f;
+    [SerializeField] private float pulseOffsetFactor = 0.5f;
+    [SerializeField] private float minAlphaStart = 0.3f;
+    [SerializeField] private float minAlphaEnd = 0.05f;
+    [SerializeField] private float alphaMultiplierEnd = 0.5f;
+
     private Renderer rend;
     private Vector2 offset;
     private float hitFlash;
@@ -41,7 +48,7 @@ public class ForceFieldPulse : MonoBehaviour
         offset.y += speedY * Time.deltaTime;
         rend.material.mainTextureOffset = offset;
 
-        float pulse = Mathf.Sin(Time.time * pulseSpeed) * 0.5f + 0.5f;
+        float pulse = Mathf.Sin(Time.time * pulseSpeed) * pulseMultiplierFactor + pulseOffsetFactor;
         hitFlash = Mathf.MoveTowards(hitFlash, 0f, hitFlashDecaySpeed * Time.deltaTime);
 
         Color currentBase = Color.Lerp(baseColor, damagedColor, breakProgress);
@@ -52,8 +59,8 @@ public class ForceFieldPulse : MonoBehaviour
             pulseColor = Color.Lerp(pulseColor, Color.white, hitFlash);
         }
 
-        pulseColor.a = Mathf.Lerp(0.3f, 0.05f, breakProgress) +
-                       pulse * alphaStrength * Mathf.Lerp(1f, 0.5f, breakProgress);
+        pulseColor.a = Mathf.Lerp(minAlphaStart, minAlphaEnd, breakProgress) +
+                       pulse * alphaStrength * Mathf.Lerp(1f, alphaMultiplierEnd, breakProgress);
 
         pulseColor.a = Mathf.Clamp01(pulseColor.a);
 

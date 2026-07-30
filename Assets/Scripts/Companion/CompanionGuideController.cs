@@ -17,6 +17,9 @@ public class CompanionGuideController : MonoBehaviour
     private DialogueAsset currentArrivalDialogue;
     private bool playedArrivalDialogue;
 
+    [SerializeField] private float agentRadiusValue = 0.5f;
+    [SerializeField] private float arrivalDistanceTolerance = 0.05f;
+
     [Header("Scene Targets")]
     public List<GuideTargetMapping> targets = new List<GuideTargetMapping>();
     private Dictionary<GuideTargetID, GuideTargetMapping> targetDict;
@@ -31,7 +34,7 @@ public class CompanionGuideController : MonoBehaviour
         agent.enabled = false;
 
         agent.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
-        agent.radius = 0.5f;
+        agent.radius = agentRadiusValue;
 
         targetDict = new Dictionary<GuideTargetID, GuideTargetMapping>();
         foreach (var t in targets)
@@ -57,7 +60,7 @@ public class CompanionGuideController : MonoBehaviour
 
         if (agent.enabled && agent.hasPath)
         {
-            // אנחנו שולחים את המהירות של ה-Agent לפונקציית האנימציה בסקריפט השני
+           
             GetComponent<CompanionFollow>().UpdateSpriteAnimation(agent.velocity.normalized);
         }
         if (!waitingAtTarget)
@@ -80,10 +83,10 @@ public class CompanionGuideController : MonoBehaviour
             {
                 playedArrivalDialogue = true;
 
-                // עוברים ל-UI של דיאלוג
+                
                 GameEvents.RequestUIStateChange?.Invoke(UIState.Dialogue);
 
-                // מתחילים את דיאלוג ההגעה
+                
                 DialogueManager.Instance.StartDialogue(currentArrivalDialogue);
             }
 
@@ -91,7 +94,7 @@ public class CompanionGuideController : MonoBehaviour
             waitingAtTarget = false;
             agent.enabled = false;
 
-            // חוזרים למצב עולם רגיל
+           
             GameEvents.RequestGameplayStateChange?.Invoke(GameplayState.Playing);
 
             GameEvents.OnCompanionFollowEnabled?.Invoke(true);
@@ -111,7 +114,7 @@ public class CompanionGuideController : MonoBehaviour
 
         GameEvents.OnCompanionFollowEnabled?.Invoke(false);
 
-        // מצב עולם: BeingGuided
+        
         GameEvents.RequestGameplayStateChange?.Invoke(GameplayState.BeingGuided);
 
         agent.enabled = true;
@@ -129,7 +132,7 @@ public class CompanionGuideController : MonoBehaviour
         if (!agent.isOnNavMesh) return false;
         if (agent.pathPending) return false;
 
-        return agent.remainingDistance <= agent.stoppingDistance + 0.05f;
+        return agent.remainingDistance <= agent.stoppingDistance + arrivalDistanceTolerance;
     }
 
     private void StopAgent()

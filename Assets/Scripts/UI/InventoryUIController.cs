@@ -29,6 +29,8 @@ public class InventoryUIController : MonoBehaviour, IPuzzlePanelOwner
     public GameObject questPanel;
     public TMP_Text questDescriptionText;
 
+    [SerializeField] private int unassignedCategoryIndex = -1;
+
     private readonly List<InventorySlotUI> slotUIs = new();
 
     private Dictionary<string, ItemCategory> selectedItems = new();
@@ -67,7 +69,7 @@ public class InventoryUIController : MonoBehaviour, IPuzzlePanelOwner
 
     public void SetCategory(int categoryIndex)
     {
-        selectedCategory = (categoryIndex == -1) ? null : (ItemCategory)categoryIndex;
+        selectedCategory = (categoryIndex == unassignedCategoryIndex) ? null : (ItemCategory)categoryIndex;
         Refresh();
     }
 
@@ -129,7 +131,7 @@ public class InventoryUIController : MonoBehaviour, IPuzzlePanelOwner
     {
         if (item == null) return;
 
-        // לחיצה כפולה — ביטול בחירה
+     
         if (selectedItems.ContainsKey(item.itemId))
         {
             selectedItems.Remove(item.itemId);
@@ -143,13 +145,13 @@ public class InventoryUIController : MonoBehaviour, IPuzzlePanelOwner
             return;
         }
 
-        // ← אם זה נשק, מסירים נשק קיים תחילה (קטגוריה בלעדית)
+        
         if (item.category == ItemCategory.Weapon)
         {
             RemoveSelectionByCategory(ItemCategory.Weapon);
         }
 
-        // לחיצה ראשונה — הוספה לבחירה
+       
         selectedItems[item.itemId] = item.category;
         Refresh();
 
@@ -169,7 +171,7 @@ public class InventoryUIController : MonoBehaviour, IPuzzlePanelOwner
         }
     }
 
-    // ← פונקציה עזר: מסירה את כל הנבחרים מקטגוריה מסוימת
+   
     private void RemoveSelectionByCategory(ItemCategory category)
     {
         var toRemove = selectedItems
