@@ -34,10 +34,14 @@ public class ForceFieldPulse : MonoBehaviour
     private Renderer rend;
     private Vector2 offset;
     private float hitFlash;
-
+    private Material instancedMaterial;
     private void Start()
     {
         rend = GetComponent<Renderer>();
+        if (rend != null)
+        {
+            instancedMaterial = rend.material;
+        }
     }
 
     private void Update()
@@ -46,7 +50,7 @@ public class ForceFieldPulse : MonoBehaviour
 
         offset.x += speedX * Time.deltaTime;
         offset.y += speedY * Time.deltaTime;
-        rend.material.mainTextureOffset = offset;
+        instancedMaterial.mainTextureOffset = offset;
 
         float pulse = Mathf.Sin(Time.time * pulseSpeed) * pulseMultiplierFactor + pulseOffsetFactor;
         hitFlash = Mathf.MoveTowards(hitFlash, 0f, hitFlashDecaySpeed * Time.deltaTime);
@@ -64,8 +68,8 @@ public class ForceFieldPulse : MonoBehaviour
 
         pulseColor.a = Mathf.Clamp01(pulseColor.a);
 
-        rend.material.color = pulseColor;
-        rend.material.SetColor("_EmissionColor", pulseColor * emissionMultiplier);
+        instancedMaterial.color = pulseColor;
+        instancedMaterial.SetColor("_EmissionColor", pulseColor * emissionMultiplier);
     }
 
     public void SetBreakProgress(float value)
@@ -81,5 +85,13 @@ public class ForceFieldPulse : MonoBehaviour
     public void TriggerValidHitFeedback()
     {
         hitFlash = Mathf.Max(hitFlash, validHitFlashAmount);
+    }
+
+    private void OnDestroy()
+    {
+        if (instancedMaterial != null)
+        {
+            Destroy(instancedMaterial);
+        }
     }
 }

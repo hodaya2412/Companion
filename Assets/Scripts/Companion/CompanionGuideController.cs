@@ -86,8 +86,15 @@ public class CompanionGuideController : MonoBehaviour
                 
                 GameEvents.RequestUIStateChange?.Invoke(UIState.Dialogue);
 
-                
-                DialogueManager.Instance.StartDialogue(currentArrivalDialogue);
+
+                if (DialogueManager.Instance != null)
+                {
+                    DialogueManager.Instance.StartDialogue(currentArrivalDialogue);
+                }
+                else
+                {
+                    Debug.LogWarning("[CompanionGuideController] DialogueManager.Instance Not Found !");
+                }
             }
 
             guiding = false;

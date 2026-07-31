@@ -72,9 +72,6 @@ public class CompanionFollow : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Debug.Log(
-        $"[Companion] state={currentGameplayState} followEnabled={followEnabled}"
-    );
        
         if (player == null || rb == null) return;
 
@@ -160,6 +157,11 @@ public class CompanionFollow : MonoBehaviour
 
     private Vector3 CalculateCombatWaitPosition()
     {
+        if (player == null)
+        {
+            return rb != null ? rb.position : Vector3.zero;
+
+        }
         Vector3 playerForward = player.forward;
         playerForward.y = 0f;
         if (playerForward.sqrMagnitude < forwardSqrMagnitudeThreshold) playerForward = Vector3.forward;
