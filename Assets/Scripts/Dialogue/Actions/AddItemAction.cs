@@ -9,13 +9,6 @@ public class AddItemAction : DialogueAction
 
     public override void Execute()
     {
-        if (inventory == null)
-        {
-            var inventories = Resources.FindObjectsOfTypeAll<PlayerInventory>();
-
-            if (inventories.Length > 0)
-                inventory = inventories[0];
-        }
 
         if (inventory != null && itemToAdd != null)
         {
