@@ -12,13 +12,6 @@ public class RemoveItemAction : DialogueAction
 
     public override void Execute()
     {
-        if (inventory == null)
-        {
-            var inventories = Resources.FindObjectsOfTypeAll<PlayerInventory>();
-
-            if (inventories.Length > minInventoriesCount)
-                inventory = inventories[targetInventoryIndex];
-        }
 
         if (inventory != null)
         {
